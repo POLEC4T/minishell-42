@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/11 15:20:34 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/11 15:23:23 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ int main(int argc, char **argv, char **envp)
         return (EXIT_FAILURE);
     }
 
-    minishell(envp);
+    minishell();
     return (EXIT_SUCCESS);
 }
