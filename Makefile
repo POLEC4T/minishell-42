@@ -6,8 +6,11 @@ NAME = minishell
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
+DEP_FLAGS = -MMD -MP -MF
 READLINE = -lreadline
-OBJ_DIR = .obj
+BUILD_DIR = .build
+OBJ_DIR = $(BUILD_DIR)/obj
+DEP_DIR = $(BUILD_DIR)/dep
 SRC_DIR = src
 UTILS_DIR = utils
 INC_DIR = include
@@ -26,8 +29,8 @@ SRC_FILES=\
 	minishell.c \
 	$(UTILS) \
 
-
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+DEPS = $(patsubst $(SRC_DIR)/%.c, $(DEP_DIR)/%.d, $(SRCS))
 
 all: $(NAME)
 	@echo "$(GREEN)$(NAME) ready$(END)"
@@ -36,23 +39,26 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(INCLUDES) $(READLINE) -o $(NAME)
 	@echo "Compiled $(NAME) successfully"
 
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC_DIR)/minishell.h Makefile
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-	@echo "Compiled $<"
+-include $(DEPS)
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c Makefile
+	@dep_file=$(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@); \
+	mkdir -p $(dir $@); \
+	mkdir -p $$(dirname $$dep_file); \
+	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -MF $$dep_file -c $< -o $@; \
+	echo "Compiled $<"
 
 clean:
-	@rm -rf $(OBJ_DIR)
+	@rm -rf $(BUILD_DIR)
 	@echo "$(RED)Cleaned up object files$(END)"
 
-fclean:
-	@rm -rf $(OBJ_DIR)
+fclean: clean
 	@rm -f $(NAME)
-	@echo "$(RED)Cleaned up $(NAME) and object files$(END)"
+	@echo "$(RED)Cleaned up $(NAME)$(END)"
 
 debug:
 	@echo "SRCS: $(SRCS)"
 	@echo "OBJS: $(OBJS)"
+	@echo "DEPS: $(DEPS)"
 
 re: fclean all
 
