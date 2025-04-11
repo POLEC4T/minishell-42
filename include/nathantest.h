@@ -1,41 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   nathantest.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/11 15:47:03 by nle-gued         ###   ########.fr       */
+/*   Created: 2025/03/13 23:24:18 by nle-gued          #+#    #+#             */
+/*   Updated: 2025/04/11 16:42:45 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <readline/readline.h>
 # include <readline/history.h>
+# include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 
-typedef struct s_cmd
+typedef enum
 {
-	char	**args;
-}			t_cmd;
+	command,
+	opertateur,
+	flag,
+	argument,
+	nul
+}					token_type;
 
+typedef struct s_token
+{
+	token_type		type;
+	char			*data;
+	struct s_token	*next;
+}					t_token;
 
-
-void	maintest();
-
-void		msg(char *str1, char *str2, char *str3, int fd);
-void		ft_putstr_fd(char *s, int fd);
-void		*ft_memcpy(void *dest, const void *src, size_t n);
-int			ft_strlen(char *str);
-void		minishell();
-char		*ft_strdup(char *s1);
-char		*ft_strjoin(char *s1, char *s2);
-char        **ft_split(char const *s, char *delim);
-int			pos_in_str(char *str, char c);
+t_token				*put_data(char *str);
+t_token				*parsing(char *str);
+size_t				strcount(char *str);
 
 #endif

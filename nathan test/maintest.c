@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   maintest.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/11 15:47:44 by nle-gued         ###   ########.fr       */
+/*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
+/*   Updated: 2025/04/11 16:55:10 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "nathantest.h"
 
-int main(int argc, char **argv, char **envp)
+void	maintest(void)
 {
-    (void)argc;
-    (void)argv;
+	char *read;
+	t_token *token_test;
+	
 
-    if (!envp || !*envp)
-    {
-        write(STDERR_FILENO, "Error: No environment variables provided.\n", 42);
-        return (EXIT_FAILURE);
-    }
-
-    maintest();
- 
-    return (EXIT_SUCCESS);
+	read = readline("pitishell >");
+	token_test = parsing(read);
+	printf("%s\n", token_test->data);
+	exit(0);
 }

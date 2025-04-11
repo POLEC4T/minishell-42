@@ -5,11 +5,12 @@ END = \033[0m
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -g3#-Wall -Wextra -Werror -g
 READLINE = -lreadline
 OBJ_DIR = .obj
 SRC_DIR = src
 UTILS_DIR = utils
+NATH_DIR = nathantest
 INC_DIR = include
 INCLUDES = -I$(INC_DIR)/
 
@@ -20,11 +21,19 @@ UTILS_FILES=\
 	output.c \
 	str2.c \
 
+NATH = $(addprefix $(NATH_DIR)/, $(NATH_FILES))
+NATH_FILES=\
+	maintest.c \
+	parsing.c \
+	put_data.c \
+
+
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES=\
 	main.c \
 	minishell.c \
 	$(UTILS) \
+	$(NATH) \
 
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
@@ -36,7 +45,7 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(INCLUDES) $(READLINE) -o $(NAME)
 	@echo "Compiled $(NAME) successfully"
 
-$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC_DIR)/minishell.h Makefile
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC_DIR)/minishell.h $(INC_DIR)/nathantest.h Makefile
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	@echo "Compiled $<"
