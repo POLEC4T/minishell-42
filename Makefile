@@ -13,21 +13,38 @@ OBJ_DIR = $(BUILD_DIR)/obj
 DEP_DIR = $(BUILD_DIR)/dep
 SRC_DIR = src
 UTILS_DIR = utils
+STR_DIR = str
+ENV_DIR = env
+LST_DIR = lst
 INC_DIR = include
 INCLUDES = -I$(INC_DIR)/
 
-UTILS = $(addprefix $(UTILS_DIR)/, $(UTILS_FILES))
-UTILS_FILES=\
+STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
+STR_FILES=\
 	str.c \
 	ft_split.c \
-	output.c \
 	str2.c \
+
+LST = $(addprefix $(LST_DIR)/, $(LST_FILES))
+LST_FILES=\
+	lst.c \
+
+UTILS = $(addprefix $(UTILS_DIR)/, $(UTILS_FILES))
+UTILS_FILES=\
+	output.c \
+	$(STR) \
+	$(LST)
+
+ENV = $(addprefix $(ENV_DIR)/, $(ENV_FILES))
+ENV_FILES=\
+	env.c \
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES=\
 	main.c \
 	minishell.c \
 	$(UTILS) \
+	$(ENV) \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS = $(patsubst $(SRC_DIR)/%.c, $(DEP_DIR)/%.d, $(SRCS))
