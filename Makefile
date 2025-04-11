@@ -58,19 +58,19 @@ $(NAME): $(OBJS)
 
 -include $(DEPS)
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c Makefile
-	@dep_file=$(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@); \
+	@dep_file_path=$(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@); \
 	mkdir -p $(dir $@); \
-	mkdir -p $$(dirname $$dep_file); \
-	$(CC) $(CFLAGS) $(INCLUDES) -MMD -MP -MF $$dep_file -c $< -o $@; \
+	mkdir -p $$(dirname $$dep_file_path); \
+	$(CC) $(CFLAGS) $(INCLUDES) $(DEP_FLAGS) $$dep_file_path -c $< -o $@; \
 	echo "Compiled $<"
 
 clean:
 	@rm -rf $(BUILD_DIR)
-	@echo "$(RED)Cleaned up object files$(END)"
+	@echo "$(RED)Removed build files$(END)"
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "$(RED)Cleaned up $(NAME)$(END)"
+	@echo "$(RED)Removed $(NAME)$(END)"
 
 debug:
 	@echo "SRCS: $(SRCS)"
