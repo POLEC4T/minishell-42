@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 23:24:18 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/11 16:42:45 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:34:45 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,16 @@
 
 typedef enum
 {
-	command,
-	opertateur,
-	flag,
-	argument,
-	nul
+	COMMAND,
+	OPERATOR,
+	PIPE,
+	FLAG,
+	ARGUMENT,
+	FILES,
+	IN,
+	OUT,
+	HEREDOC,
+	NUL
 }					token_type;
 
 typedef struct s_token
@@ -35,8 +40,13 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-t_token				*put_data(char *str);
+
+// get_token(lst->content) => *t_token
+
+void				maintest(void);
+void				put_data(char *str, t_token *token, char stop);
 t_token				*parsing(char *str);
-size_t				strcount(char *str);
+size_t				strcount(char *str, char stop);
+int					define_token(char *string);
 
 #endif

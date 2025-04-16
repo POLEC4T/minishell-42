@@ -5,7 +5,7 @@ END = \033[0m
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -g#-Wall -Wextra -Werror -g
 DEP_FLAGS = -MMD -MP -MF
 READLINE = -lreadline
 BUILD_DIR = .build
@@ -17,6 +17,7 @@ STR_DIR = str
 ENV_DIR = env
 LST_DIR = lst
 INC_DIR = include
+NATH_DIR = nathantest
 INCLUDES = -I$(INC_DIR)/
 
 STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
@@ -39,12 +40,20 @@ ENV = $(addprefix $(ENV_DIR)/, $(ENV_FILES))
 ENV_FILES=\
 	env.c \
 
+NATH = $(addprefix $(NATH_DIR)/, $(NATH_FILES))
+NATH_FILES=\
+	maintest.c \
+	parsing.c \
+	put_data.c \
+	define_token.c \
+
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES=\
 	main.c \
 	minishell.c \
 	$(UTILS) \
 	$(ENV) \
+	$(NATH) \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS = $(patsubst $(SRC_DIR)/%.c, $(DEP_DIR)/%.d, $(SRCS))
