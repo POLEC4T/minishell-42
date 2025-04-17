@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/16 15:11:51 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/16 17:55:11 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ typedef struct s_context
 {
 	t_env_node			*head_env;
 }						t_context;
+
+
+void	maintest(void);
 
 void					minishell(char **envp);
 

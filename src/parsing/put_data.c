@@ -6,35 +6,54 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 14:38:11 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/11 16:24:23 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:13:46 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "nathantest.h"
+#include "parsing.h"
 
-size_t	strcount(char *str)
+size_t	strcount(char *str, char stop)
 {
 	size_t	i;
 
 	i = 0;
-	while ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
+	if (str[i] == '<' || str[i] == '>')
+	{
+		while (str[i] == str[0])
+			i++;
+		return (i);
+	}
+	if (str[i] == '|')
+		return (1);
+	while (str[i] && str[i] != stop && str[i] != '"')
+	{
+		if (str[i] == '|')
+			return (i);
+		if (str[i] == '<' || str[i] == '>')
+			return (i);
 		i++;
+	}
 	return (i);
 }
 
-t_token	*put_data(char *str)
+void	put_data(char *str, t_token *token, char stop)
 {
-	size_t i;
-	t_token *new_token;
-	new_token = malloc(sizeof(t_token));
+	size_t	length;
+	size_t	i;
 
-	i = 0;
-	new_token->data = malloc((strcount(str) + 1 )* sizeof(char));
-	while ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
+	length = strcount(str, stop);
+	token->data = malloc((length + 1) * sizeof(char));
+	if (!token->data)
 	{
-		new_token->data[i] = str[i];
-        i++;
+		perror("Malloc failed");
+		exit(EXIT_FAILURE);
 	}
-	new_token->data[i] = '\0';
-    return(new_token);
+	i = 0;
+	while (i < length)
+	{
+		token->data[i] = str[i];
+		i++;
+	}
+	token->data[length] = '\0';
+	token->type = define_token(*token);
 }

@@ -17,7 +17,7 @@ STR_DIR = str
 ENV_DIR = env
 LST_DIR = lst
 INC_DIR = include
-NATH_DIR = nathantest
+PARS_DIR = parsing
 INCLUDES = -I$(INC_DIR)/
 
 STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
@@ -40,8 +40,8 @@ ENV = $(addprefix $(ENV_DIR)/, $(ENV_FILES))
 ENV_FILES=\
 	env.c \
 
-NATH = $(addprefix $(NATH_DIR)/, $(NATH_FILES))
-NATH_FILES=\
+PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
+PARS_FILES=\
 	maintest.c \
 	parsing.c \
 	put_data.c \
@@ -53,7 +53,7 @@ SRC_FILES=\
 	minishell.c \
 	$(UTILS) \
 	$(ENV) \
-	$(NATH) \
+	$(PARS) \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS = $(patsubst $(SRC_DIR)/%.c, $(DEP_DIR)/%.d, $(SRCS))
