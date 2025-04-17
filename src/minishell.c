@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 17:14:20 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/17 18:09:50 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void minishell(char **envp)
     args[2] = NULL;
     ft_export(&ctx, args);
     ft_unset(&ctx, "key2");
-    print_env(ctx.head_env);
+    ft_env(ctx.head_env);
     ft_lstclear(ctx.head_env, ft_free_env_content);
     if (ctx.head_env)
         free(ctx.head_env);

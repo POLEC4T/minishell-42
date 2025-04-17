@@ -6,11 +6,49 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 16:56:53 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/17 18:07:18 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void init_env(t_context *ctx, char **envp)
+{
+    
+    t_node *curr_node;
+    int i;
+    char **line;
+    // char *key;
+    char *value;
+
+    i = -1;
+    while (envp && envp[++i])
+    {
+        line = ft_split_first(envp[i], "=");
+        if (!line)
+        {
+            // TODO
+            
+            continue ;
+        }
+        if (!line[0])
+        {
+            continue;
+        }
+        if (!line[1])
+            value = NULL;
+        else
+            value = line[1];
+        curr_node = ft_envnew(line[0], value);
+        if (!curr_node)
+        {
+            continue;
+        }
+        ft_lstadd_back(ctx->head_env, curr_node);
+        ft_free_tab((void **)line);
+    }
+}
+
 /**
  * @returns a new node for the environment linked list
  */
@@ -94,31 +132,6 @@ int	ft_edit_env_val(t_node **head, char *key, char *value)
 		tmp = tmp->next;
 	}
 	return (EXIT_SUCCESS);
-}
-
-void	print_env(t_node **head)
-{
-	t_node		*tmp;
-	t_key_value	*env;
-
-	if (!head)
-		return ;
-	tmp = *head;
-	while (tmp)
-	{
-		env = cast_to_key_value(tmp->content);
-		if (env && env->key)
-		{
-			ft_putstr_fd(env->key, STDOUT_FILENO);
-		}
-		if (env && env->value && env->value[0])
-		{
-			ft_putstr_fd("=", STDOUT_FILENO);
-			ft_putstr_fd(env->value, STDOUT_FILENO);
-		}
-		ft_putstr_fd("\n", STDOUT_FILENO);
-		tmp = tmp->next;
-	}
 }
 
 void	ft_free_env_content(void *content)

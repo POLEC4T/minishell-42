@@ -14,7 +14,6 @@ DEP_DIR = $(BUILD_DIR)/dep
 SRC_DIR = src
 UTILS_DIR = utils
 STR_DIR = str
-ENV_DIR = env
 ENV_UTILS_DIR = env_utils
 LST_DIR = lst
 BUILTINS_DIR = builtins
@@ -55,15 +54,11 @@ UTILS_FILES=\
 	$(LST) \
 	$(ENV_UTILS) \
 
-
-ENV = $(addprefix $(ENV_DIR)/, $(ENV_FILES))
-ENV_FILES=\
-	env.c \
-
 BUILTINS = $(addprefix $(BUILTINS_DIR)/, $(BUILTINS_FILES))
 BUILTINS_FILES=\
 	export.c \
 	unset.c \
+	env.c \
 
 PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\
@@ -71,7 +66,6 @@ PARS_FILES=\
 	parsing.c \
 	put_data.c \
 	define_token.c \
-
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES=\
