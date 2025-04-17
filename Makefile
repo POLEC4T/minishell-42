@@ -19,6 +19,7 @@ ENV_UTILS_DIR = env_utils
 LST_DIR = lst
 BUILTINS_DIR = builtins
 INC_DIR = include
+PARS_DIR = parsing
 INCLUDES = -I$(INC_DIR)/
 
 STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
@@ -58,10 +59,17 @@ ENV = $(addprefix $(ENV_DIR)/, $(ENV_FILES))
 ENV_FILES=\
 	env.c \
 
-
 BUILTINS = $(addprefix $(BUILTINS_DIR)/, $(BUILTINS_FILES))
 BUILTINS_FILES=\
 	export.c \
+
+PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
+PARS_FILES=\
+	maintest.c \
+	parsing.c \
+	put_data.c \
+	define_token.c \
+
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES=\
@@ -70,6 +78,8 @@ SRC_FILES=\
 	$(UTILS) \
 	$(ENV) \
 	$(BUILTINS) \
+	$(PARS) \
+
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS = $(patsubst $(SRC_DIR)/%.c, $(DEP_DIR)/%.d, $(SRCS))

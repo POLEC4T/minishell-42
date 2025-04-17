@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
 /*   Updated: 2025/04/17 14:09:48 by mniemaz          ###   ########.fr       */
@@ -70,12 +70,18 @@ void				*ft_calloc(size_t nmemb, size_t size);
 // output
 int					ft_fprintf(int fd, const char *fmt, ...);
 
+
 // lst
 void				ft_lstadd_back(t_node **lst, t_node *new);
 t_node				*ft_lstlast(t_node *lst);
 t_node				*ft_lstnew(void *content);
 void				ft_lstdelone(t_node *lst, void (*del)(void *));
 void				ft_lstclear(t_node **lst, void (*del)(void *));
+
+
+void	maintest(void);
+void					minishell(char **envp);
+
 
 // env utils
 t_key_value			*cast_to_key_value(void *to_cast);
