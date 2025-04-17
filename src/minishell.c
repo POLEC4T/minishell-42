@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 14:14:17 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/17 17:14:20 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void minishell(char **envp)
     t_context ctx;
     init_context(&ctx);
     init_env(&ctx, envp);
-    // ft_export(&ctx, "new", "node");
     t_key_value **args;
 
     args = malloc(sizeof(t_key_value*) * 3);
@@ -34,12 +33,11 @@ void minishell(char **envp)
 
     args[0]->key = "key1";
     args[0]->value = "value1";
-    
     args[1]->key = "key2";
     args[1]->value = "value2";
-    
     args[2] = NULL;
     ft_export(&ctx, args);
+    ft_unset(&ctx, "key2");
     print_env(ctx.head_env);
     ft_lstclear(ctx.head_env, ft_free_env_content);
     if (ctx.head_env)
