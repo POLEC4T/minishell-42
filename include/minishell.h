@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 16:10:20 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:01:22 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void				print_env(t_node **head);
 void				init_env(t_context *ctx, char **envp);
 
 void				ft_export(t_context *ctx, t_key_value **args);
+void				ft_unset(t_context *ctx, char *key);
 
 // parsing
 void				maintest(void);
