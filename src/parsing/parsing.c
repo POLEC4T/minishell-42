@@ -6,41 +6,45 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/17 14:01:42 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:00:54 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
 
-t_token *parsing(char *str)
+#include "minishell.h"
+
+t_node *parsing(char *str)
 {
     size_t i = 0;
 
-
-    t_token *first_token = malloc(sizeof(t_token));
-    t_token *current_token = first_token;
-    first_token->previous = NULL;
-
+    t_node *first_token = malloc(sizeof(t_node));
     if (!first_token)
-        return NULL; 
+        return NULL;
+
+    t_node *current_token = first_token;
+    first_token->prev = NULL;
+    first_token->next = NULL;
+    first_token->content = NULL; // ✅
 
     while (str[i])
     {
         if (str[i] == ' ')
+        {
             i++;
+        }
         else if (str[i] != '"')
         {
             put_data(str + i, current_token, ' ');
             i += strcount(str + i, ' ');
 
-            current_token->next = malloc(sizeof(t_token));
-            
+            current_token->next = malloc(sizeof(t_node));
             if (!current_token->next)
-                return first_token; 
-            
-            current_token->next->previous = current_token ;
+                return first_token;
+
+            current_token->next->prev = current_token;
             current_token = current_token->next;
-            current_token->next = NULL; 
+            current_token->next = NULL;
+            current_token->content = NULL; // ✅
         }
         else if (str[i] == '"' && str[i + 1] != '"')
         {
@@ -49,15 +53,14 @@ t_token *parsing(char *str)
             i += strcount(str + i, '"');
             i++;
 
-           
-            current_token->next = malloc(sizeof(t_token));
-            
+            current_token->next = malloc(sizeof(t_node));
             if (!current_token->next)
-                return first_token; 
-            
-            current_token->next->previous = current_token ;    
+                return first_token;
+
+            current_token->next->prev = current_token;
             current_token = current_token->next;
-            current_token->next = NULL; 
+            current_token->next = NULL;
+            current_token->content = NULL; // ✅
         }
         else
         {
@@ -66,3 +69,4 @@ t_token *parsing(char *str)
     }
     return first_token;
 }
+

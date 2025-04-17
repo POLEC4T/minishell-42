@@ -6,17 +6,19 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:11:38 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/17 14:13:05 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:06:57 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 int	ft_strstr(char *str, char *to_find)
 {
 	int	i;
 	int	j;
 
+	if (!str)
+		return (0);
 	i = 0;
 	while (str[i] != '\0')
 	{
@@ -34,28 +36,33 @@ int	ft_strstr(char *str, char *to_find)
 	return (0);
 }
 
-int	define_token(t_token token)
+int	define_token(t_node *node)
 {
-	if (ft_strstr(token.data, "<<") == 1)
+	t_token	*token;
+	t_token	*prev_token;
+
+	token = cast_to_token(node->content);
+	if (ft_strstr(token->data, "<<") == 1)
 		return (HEREDOC);
-	if (ft_strstr(token.data, ">") == 1 || ft_strstr(token.data, "<") == 1)
+	if (ft_strstr(token->data, ">") == 1 || ft_strstr(token->data, "<") == 1)
 		return (OPERATOR);
-	if (ft_strstr(token.data, "|") == 1)
+	if (ft_strstr(token->data, "|") == 1)
 		return (PIPE);
-	if (ft_strstr(token.data, "-") == 1)
+	if (ft_strstr(token->data, "-") == 1)
 		return (FLAG);
-	if (token.previous)
+	if (node->prev)
 	{
-		if (token.previous->type == HEREDOC)
+		prev_token = cast_to_token(node->prev->content);
+		if (prev_token->type == HEREDOC)
 			return (DELIMITER);
-		if (token.previous->type == COMMAND)
+		if (prev_token->type == COMMAND)
 			return (ARGUMENT);
-		if (token.previous->type == PIPE)
+		if (prev_token->type == PIPE)
 			return (COMMAND);
-		if (token.previous->type == DELIMITER)
+		if (prev_token->type == DELIMITER)
 			return (COMMAND);
 	}
-	if(!token.previous)
-		return(COMMAND);
+	if (!node->prev)
+		return (COMMAND);
 	return (FILES);
 }

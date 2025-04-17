@@ -6,39 +6,57 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/17 13:59:32 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:13:22 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+
 #include "minishell.h"
 
-void	print_token_list(t_token *head)
+void print_token_list(t_node *head)
 {
-	t_token *current = head;
+	t_node *current = head;
+	t_token *token;
 
 	while (current)
 	{
-		printf("Current Token Data: %s\n", current->data);
-		printf("Token Type: %d\n", current->type); // vous pouvez adapter selon comment afficher le type
-		if (current->previous)
-			printf("Previous Token Data: %s\n", current->previous->data);
+		if (current->content) // ✅ protection contre les content NULL
+		{
+			token = cast_to_token(current->content);
+			printf("Current Token Data: %s\n", token->data);
+			printf("Token Type: %d\n", token->type);
+		}
 		else
+		{
+			printf("Current Token Data: NULL (content is NULL)\n");
+		}
+
+		if (current->prev && current->prev->content)
+		{
+			printf("Previous Token Data: %s\n", cast_to_token(current->prev->content)->data);
+		}
+		else
+		{
 			printf("Previous Token Data: NULL\n");
+		}
+
 		printf("----------\n");
 		current = current->next;
 	}
 }
 
 
+
 void	maintest(void)
 {
 	char *read;
-	t_token *token;
+	t_node *token;
 	
 
 	
 	read = readline("pitishell >");
+	if(read == NULL)
+		exit(42);
 	token = parsing(read);
 	
 	print_token_list(token);

@@ -44,6 +44,7 @@ LST_FILES=\
 	ft_lstmap.c \
 	ft_lstnew.c \
 	ft_lstsize.c \
+	cast.c \
 
 # lst.c \
 

@@ -6,11 +6,11 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 14:38:11 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/17 14:13:46 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:05:20 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "minishell.h"
 
 size_t	strcount(char *str, char stop)
 {
@@ -36,12 +36,16 @@ size_t	strcount(char *str, char stop)
 	return (i);
 }
 
-void	put_data(char *str, t_token *token, char stop)
+void	put_data(char *str, t_node *node, char stop)
 {
 	size_t	length;
 	size_t	i;
-
+	t_token *token;
+	
+	node->content = malloc(sizeof(t_token));
+	
 	length = strcount(str, stop);
+	token = cast_to_token(node->content);
 	token->data = malloc((length + 1) * sizeof(char));
 	if (!token->data)
 	{
@@ -55,5 +59,5 @@ void	put_data(char *str, t_token *token, char stop)
 		i++;
 	}
 	token->data[length] = '\0';
-	token->type = define_token(*token);
+	token->type = define_token(node);
 }
