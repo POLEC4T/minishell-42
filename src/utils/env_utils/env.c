@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 16:24:11 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/17 16:53:27 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_key_value	*cast_to_key_value(void *to_cast)
-{
-	if (!to_cast)
-		return (NULL);
-	return ((t_key_value *)to_cast);
-}
-
 /**
  * @returns a new node for the environment linked list
  */
