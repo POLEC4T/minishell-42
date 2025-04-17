@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   cast.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 16:55:53 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/04/17 14:30:43 by nle-gued          #+#    #+#             */
+/*   Updated: 2025/04/17 15:19:23 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+t_key_value	*cast_to_key_value(void *to_cast)
 {
-    (void)argc;
-    (void)argv;
-    (void)envp;
+	if (!to_cast)
+		return (NULL);
+	return ((t_key_value *)to_cast);
+}
 
-    minishell(envp);
-    // maintest();
-    return (EXIT_SUCCESS);
+t_token	*cast_to_token(void *to_cast)
+{
+	if (!to_cast)
+		return (NULL);
+	return ((t_token *)to_cast);
 }

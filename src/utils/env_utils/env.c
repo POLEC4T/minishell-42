@@ -6,19 +6,11 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 16:24:11 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/17 16:56:53 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_key_value	*cast_to_key_value(void *to_cast)
-{
-	if (!to_cast)
-		return (NULL);
-	return ((t_key_value *)to_cast);
-}
-
 /**
  * @returns a new node for the environment linked list
  */
@@ -70,7 +62,7 @@ t_node	*ft_get_env(t_node **head, char *key)
 	while (tmp)
 	{
 		kv = cast_to_key_value(tmp->content);
-		if (ft_strncmp(kv->key, key, (size_t)ft_strlen(key) + 1) == 0)
+		if (ft_strncmp(kv->key, key, (size_t)ft_strlen(key) + 1 + 1) == 0)
 			return (tmp);
 		tmp = tmp->next;
 	}
@@ -91,7 +83,7 @@ int	ft_edit_env_val(t_node **head, char *key, char *value)
 	while (tmp)
 	{
 		kv = cast_to_key_value(tmp->content);
-		if (ft_strncmp(kv->key, key, (size_t)ft_strlen(key) + 1) == 0)
+		if (ft_strncmp(kv->key, key, (size_t)ft_strlen(key) + 1 + 1) == 0)
 		{
 			free(kv->value);
 			kv->value = ft_strdup_null(value);

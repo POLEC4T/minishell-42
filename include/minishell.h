@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 14:09:48 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/17 16:10:20 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,27 @@ typedef struct s_context
 	t_node			**head_env;
 }					t_context;
 
+typedef enum
+{
+	COMMAND,
+	OPERATOR,
+	PIPE,
+	FLAG,
+	ARGUMENT,
+	FILES,
+	IN,
+	OUT,
+	HEREDOC,
+	DELIMITER,
+	NUL
+}					token_type;
+
+typedef struct s_token
+{
+	token_type		type;
+	char			*data;
+}					t_token;
+
 void				minishell(char **envp);
 
 // str
@@ -70,18 +91,14 @@ void				*ft_calloc(size_t nmemb, size_t size);
 // output
 int					ft_fprintf(int fd, const char *fmt, ...);
 
-
 // lst
 void				ft_lstadd_back(t_node **lst, t_node *new);
 t_node				*ft_lstlast(t_node *lst);
 t_node				*ft_lstnew(void *content);
 void				ft_lstdelone(t_node *lst, void (*del)(void *));
 void				ft_lstclear(t_node **lst, void (*del)(void *));
-
-
-void	maintest(void);
-void					minishell(char **envp);
-
+t_key_value			*cast_to_key_value(void *to_cast);
+t_token				*cast_to_token(void *to_cast);
 
 // env utils
 t_key_value			*cast_to_key_value(void *to_cast);
@@ -95,5 +112,12 @@ void				print_env(t_node **head);
 void				init_env(t_context *ctx, char **envp);
 
 void				ft_export(t_context *ctx, t_key_value **args);
+
+// parsing
+void				maintest(void);
+void				put_data(char *str, t_node *token, char stop);
+t_node				*parsing(char *str);
+size_t				strcount(char *str, char stop);
+int					define_token(t_node *node);
 
 #endif
