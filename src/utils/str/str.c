@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/11 14:22:55 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/17 10:29:56 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,18 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-char	*ft_strdup(char *s1)
+/**
+ * @brief only difference with strdup: if s1 is NULL => returns ""
+ */
+char	*ft_strdup_null(char *s1)
 {
 	char	*dup;
 	int		len;
 
 	if (!s1)
-		return (NULL);
-	len = ft_strlen(s1);
+		len = 0;
+	else
+		len = ft_strlen(s1);
 	dup = malloc(len + 1);
 	if (!dup)
 		return (NULL);
@@ -63,9 +67,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		len2;
 
 	if (!s1 && s2)
-		return (ft_strdup(s2));
+		return (ft_strdup_null(s2));
 	if (!s2 && s1)
-		return (ft_strdup(s1));
+		return (ft_strdup_null(s1));
 	if (!s1 && !s2)
 		return (NULL);
 	len1 = ft_strlen(s1);

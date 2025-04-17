@@ -5,7 +5,7 @@ END = \033[0m
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g3
 DEP_FLAGS = -MMD -MP -MF
 READLINE = -lreadline
 BUILD_DIR = .build
@@ -15,29 +15,53 @@ SRC_DIR = src
 UTILS_DIR = utils
 STR_DIR = str
 ENV_DIR = env
+ENV_UTILS_DIR = env_utils
 LST_DIR = lst
+BUILTINS_DIR = builtins
 INC_DIR = include
 INCLUDES = -I$(INC_DIR)/
 
 STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
 STR_FILES=\
 	str.c \
-	ft_split.c \
+	ft_split_first.c \
 	str2.c \
+	str3.c \
+
+ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
+ENV_UTILS_FILES=\
+	env.c \
 
 LST = $(addprefix $(LST_DIR)/, $(LST_FILES))
 LST_FILES=\
-	lst.c \
+	ft_lstaddback.c \
+	ft_lstaddfront.c \
+	ft_lstclear.c \
+	ft_lstdelone.c \
+	ft_lstiter_bonus.c \
+	ft_lstlast.c \
+	ft_lstmap.c \
+	ft_lstnew.c \
+	ft_lstsize.c \
+
+# lst.c \
 
 UTILS = $(addprefix $(UTILS_DIR)/, $(UTILS_FILES))
 UTILS_FILES=\
 	output.c \
 	$(STR) \
-	$(LST)
+	$(LST) \
+	$(ENV_UTILS) \
+
 
 ENV = $(addprefix $(ENV_DIR)/, $(ENV_FILES))
 ENV_FILES=\
 	env.c \
+
+
+BUILTINS = $(addprefix $(BUILTINS_DIR)/, $(BUILTINS_FILES))
+BUILTINS_FILES=\
+	export.c \
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES=\
@@ -45,6 +69,7 @@ SRC_FILES=\
 	minishell.c \
 	$(UTILS) \
 	$(ENV) \
+	$(BUILTINS) \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS = $(patsubst $(SRC_DIR)/%.c, $(DEP_DIR)/%.d, $(SRCS))

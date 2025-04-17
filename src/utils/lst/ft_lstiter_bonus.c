@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstiter_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/12 14:50:48 by mniemaz          ###   ########.fr       */
+/*   Created: 2024/11/06 16:05:35 by niemazm           #+#    #+#             */
+/*   Updated: 2025/04/16 14:40:53 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+void	ft_lstiter(t_node *lst, void (*f)(void *))
 {
-    (void)argc;
-    (void)argv;
-
-    // if (!envp || !*envp)
-    // {
-    //     write(STDERR_FILENO, "Error: No environment variables provided.\n", 42);
-    //     return (EXIT_FAILURE);
-    // }
-
-    minishell(envp);
-    return (EXIT_SUCCESS);
+	if (!f)
+		return ;
+	while (lst)
+	{
+		f(lst->content);
+		lst = lst->next;
+	}
 }

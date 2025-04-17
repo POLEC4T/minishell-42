@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/12 14:50:48 by mniemaz          ###   ########.fr       */
+/*   Created: 2024/11/07 09:55:25 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/04/16 16:21:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+t_node	*ft_lstnew(void *content)
 {
-    (void)argc;
-    (void)argv;
+	t_node	*elem_ptr;
 
-    // if (!envp || !*envp)
-    // {
-    //     write(STDERR_FILENO, "Error: No environment variables provided.\n", 42);
-    //     return (EXIT_FAILURE);
-    // }
-
-    minishell(envp);
-    return (EXIT_SUCCESS);
+	elem_ptr = malloc(sizeof(t_node));
+	if (!elem_ptr)
+		return (NULL);
+	elem_ptr->content = content;
+	elem_ptr->next = NULL;
+	elem_ptr->prev = NULL;
+	return (elem_ptr);
 }
