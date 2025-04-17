@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/12 14:50:48 by mniemaz          ###   ########.fr       */
+/*   Created: 2024/11/06 14:44:38 by niemazm           #+#    #+#             */
+/*   Updated: 2025/04/16 16:21:49 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "parsing.h"
 
-int main(int argc, char **argv, char **envp)
+int	ft_lstsize(t_node *lst)
 {
-    (void)argc;
-    (void)argv;
+	int	counter;
 
-    // minishell(envp);
-    maintest();
-    return (EXIT_SUCCESS);
+	counter = 0;
+	while (lst)
+	{
+		counter++;
+		lst = lst->next;
+	}
+	return (counter);
 }
