@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 18:07:18 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/18 13:44:41 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_node	*ft_envnew(char *key, char *value)
 /**
  * @returns the node in the list that matches the key
  */
-t_node	*ft_get_env(t_node **head, char *key)
+t_node	*ft_get_env_node(t_node **head, char *key)
 {
 	t_node		*tmp;
 	t_key_value	*kv;
@@ -108,9 +108,26 @@ t_node	*ft_get_env(t_node **head, char *key)
 }
 
 /**
- * @brief edits the value of the node in the list that matches the key
+ * @returns the value of the node in the list that matches the key
+ * @note if the key is not found, NULL is returned
  */
-int	ft_edit_env_val(t_node **head, char *key, char *value)
+char	*ft_get_env_val(t_node **head, char *key)
+{
+	t_node		*node;
+	node = ft_get_env_node(head, key);
+	if (!node)
+		return (NULL);
+	t_key_value	*kv;
+	kv = cast_to_key_value(node->content);
+	if (kv && kv->value)
+		return (ft_strdup_null(kv->value));
+	return (NULL);
+}
+
+/**
+ * @brief sets the value of the node in the list that matches the key
+ */
+int	ft_set_env_val(t_node **head, char *key, char *value)
 {
 	t_node		*tmp;
 	t_key_value	*kv;
@@ -132,6 +149,21 @@ int	ft_edit_env_val(t_node **head, char *key, char *value)
 		tmp = tmp->next;
 	}
 	return (EXIT_SUCCESS);
+}
+
+void print_env_val(t_node **head, char *key)
+{
+	char *value;
+	value = ft_get_env_val(head, key);
+	if (value)
+	{
+		printf("%s\n", value);
+		free(value);
+	}
+	else
+	{
+		printf("%s not found\n", key);
+	}
 }
 
 void	ft_free_env_content(void *content)

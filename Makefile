@@ -59,6 +59,7 @@ BUILTINS_FILES=\
 	export.c \
 	unset.c \
 	env.c \
+	cd.c \
 
 PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\
