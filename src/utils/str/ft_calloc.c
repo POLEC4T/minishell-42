@@ -1,31 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str3.c                                             :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/17 10:46:16 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 13:38:45 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/04/18 16:36:46 by nle-gued          #+#    #+#             */
+/*   Updated: 2025/04/18 16:37:09 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void ft_free_tab(void **tab)
-{
-    int	i;
-
-    if (!tab)
-        return ;
-    i = 0;
-    while (tab[i])
-    {
-        free(tab[i]);
-        i++;
-    }
-    free(tab);
-}
 
 static void    ft_bzero(void *s, size_t n)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 17:01:22 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/18 14:18:21 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int					ft_isalnum(int c);
 int					ft_isdigit(int c);
 void				ft_free_tab(void **tab);
 void				*ft_calloc(size_t nmemb, size_t size);
+char				*ft_strchr(const char *string, int searchedChar);
 
 // output
 int					ft_fprintf(int fd, const char *fmt, ...);
@@ -120,5 +121,9 @@ void				put_data(char *str, t_node *token, char stop);
 t_node				*parsing(char *str);
 size_t				strcount(char *str, char stop);
 int					define_token(t_node *node);
+
+// syntax
+int					syntax(t_node *head);
+char				*quote_delimiter(char *str);
 
 #endif

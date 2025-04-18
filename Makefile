@@ -20,14 +20,25 @@ LST_DIR = lst
 BUILTINS_DIR = builtins
 INC_DIR = include
 PARS_DIR = parsing
+SYNTAX_DIR = syntax
 INCLUDES = -I$(INC_DIR)/
 
 STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
 STR_FILES=\
-	str.c \
+	ft_memcpy.c \
+	ft_strdup_null.c \
+	ft_strjoin.c \
+	ft_strlen.c \
+	putstr_fd.c \
 	ft_split_first.c \
-	str2.c \
-	str3.c \
+	ft_isalnum.c \
+	ft_isalpha.c \
+	ft_isdigit.c \
+	ft_strncmp.c \
+	is_char_in_str.c\
+	ft_calloc.c \
+	ft_free_tab.c \
+	ft_strchr.c \
 
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
 ENV_UTILS_FILES=\
@@ -72,6 +83,10 @@ PARS_FILES=\
 	put_data.c \
 	define_token.c \
 
+SYNTAX = $(addprefix $(SYNTAX_DIR)/, $(SYNTAX_FILES))
+SYNTAX_FILES=\
+	syntax.c \
+	quote_delimiter.c \
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES=\
@@ -81,6 +96,7 @@ SRC_FILES=\
 	$(ENV) \
 	$(BUILTINS) \
 	$(PARS) \
+	$(SYNTAX) \
 
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
