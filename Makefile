@@ -31,7 +31,11 @@ STR_FILES=\
 	ft_strlen.c \
 	putstr_fd.c \
 	ft_split_first.c \
-	str2.c \
+	ft_isalnum.c \
+	ft_isalpha.c \
+	ft_isdigit.c \
+	ft_strncmp.c \
+	is_char_in_str.c\
 	str3.c \
 	ft_strchr.c \
 
