@@ -36,7 +36,8 @@ STR_FILES=\
 	ft_isdigit.c \
 	ft_strncmp.c \
 	is_char_in_str.c\
-	str3.c \
+	ft_calloc.c \
+	ft_free_tab.c \
 	ft_strchr.c \
 
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
