@@ -6,19 +6,19 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/18 16:59:16 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/18 17:35:17 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <errno.h>
 
 typedef struct s_cmd
 {
@@ -89,6 +89,7 @@ int					ft_isdigit(int c);
 void				ft_free_tab(void **tab);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strchr(const char *string, int searchedChar);
+size_t				ft_tablen(void **tab);
 
 // output
 int					ft_fprintf(int fd, const char *fmt, ...);

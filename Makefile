@@ -38,6 +38,7 @@ STR_FILES=\
 	ft_calloc.c \
 	ft_free_tab.c \
 	ft_strchr.c \
+	ft_tablen.c \
 
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
 ENV_UTILS_FILES=\

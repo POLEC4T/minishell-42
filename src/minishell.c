@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/18 16:35:35 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/18 17:45:46 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void minishell(char **envp)
     print_env_val(ctx.head_env, "PWD");
     print_env_val(ctx.head_env, "OLDPWD");
 
-    cd(&ctx, (char *[]){ "cd", "~/travail/fd", NULL });
+    cd(&ctx, (char *[]){ "cd", "/tmp", NULL });
 
 
     print_env_val(ctx.head_env, "PWD");

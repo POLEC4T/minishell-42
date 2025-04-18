@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_tablen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/18 17:40:56 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/04/18 17:33:08 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/04/18 17:44:41 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+size_t	ft_tablen(void **tab)
 {
-    (void)argc;
-    (void)argv;
-    (void)envp;
+	size_t	i;
 
-    minishell(envp);
-    //  maintest();
-    return (EXIT_SUCCESS);
+	if (!tab)
+		return (0);
+	i = -1;
+	while (tab[++i])
+		;
+	return (i);
 }

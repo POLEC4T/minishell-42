@@ -6,22 +6,19 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:01:44 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/18 16:38:27 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/18 17:42:25 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @if args is NULL, it returns EXIT_FAILURE
  * @if no args after "cd", it sets newpwd to the value of the HOME env
  * variable
  * @else, it sets newpwd to the value of args[1]
  */
 static int	init_newpwd(t_context *context, char **args, char **newpwd)
 {
-	if (!args)
-		return (EXIT_FAILURE);
 	if (args[1] == NULL)
 	{
 		*newpwd = ft_get_env_val(context->head_env, "HOME");
@@ -119,6 +116,14 @@ void	cd(t_context *context, char **args)
 {
 	char	*newpwd;
 
+	if (!args)
+		return ;
+	printf("length: %zu\n", ft_tablen((void **)args));
+	if (ft_tablen((void **)args) > 2)
+	{
+		ft_fprintf(STDERR_FILENO, "cd: too many arguments\n");
+		return ;
+	}
 	newpwd = NULL;
 	if (init_newpwd(context, args, &newpwd) == EXIT_FAILURE)
 		return ;
