@@ -25,7 +25,11 @@ INCLUDES = -I$(INC_DIR)/
 
 STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
 STR_FILES=\
-	str.c \
+	ft_memcpy.c \
+	ft_strdup_null.c \
+	ft_strjoin.c \
+	ft_strlen.c \
+	putstr_fd.c \
 	ft_split_first.c \
 	str2.c \
 	str3.c \
