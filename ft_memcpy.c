@@ -1,24 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 17:50:47 by nle-gued         ###   ########.fr       */
+/*   Created: 2025/04/18 16:06:46 by nle-gued          #+#    #+#             */
+/*   Updated: 2025/04/18 16:06:47 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-int main(int argc, char **argv, char **envp)
-{
-    (void)argc;
-    (void)argv;
-    (void)envp;
-
-    //minishell(envp);
-     maintest();
-    return (EXIT_SUCCESS);
-}
