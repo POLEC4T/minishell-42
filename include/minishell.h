@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/18 14:18:21 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:59:16 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <errno.h>
 
 typedef struct s_cmd
 {
@@ -104,16 +105,20 @@ t_token				*cast_to_token(void *to_cast);
 // env utils
 t_key_value			*cast_to_key_value(void *to_cast);
 t_node				*ft_envnew(char *key, char *value);
-t_node				*ft_get_env(t_node **head, char *key);
-int					ft_edit_env_val(t_node **head, char *key, char *value);
+t_node				*ft_get_env_node(t_node **head, char *key);
+char				*ft_get_env_val(t_node **head, char *key);
+int					ft_set_env_val(t_node **head, char *key, char *value);
 void				ft_free_env_content(void *content);
-void				print_env(t_node **head);
+void				print_env_val(t_node **head, char *key);
 
 // env
 void				init_env(t_context *ctx, char **envp);
 
+// builtins
 void				ft_export(t_context *ctx, t_key_value **args);
 void				ft_unset(t_context *ctx, char *key);
+void				ft_env(t_node **head);
+void				cd(t_context *context, char **args);
 
 // parsing
 void				maintest(void);

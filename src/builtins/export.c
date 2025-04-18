@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 19:09:02 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/16 17:55:33 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/18 11:45:10 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_export(t_context *ctx, t_key_value **args)
 				args[i]->value);
 			continue ;
 		}
-		new_node = ft_get_env(ctx->head_env, args[i]->key);
+		new_node = ft_get_env_node(ctx->head_env, args[i]->key);
 		if (!new_node)
 		{
 			new_node = ft_envnew(args[i]->key, args[i]->value);
@@ -51,7 +51,7 @@ void	ft_export(t_context *ctx, t_key_value **args)
 		}
 		else
 		{
-			ft_edit_env_val(ctx->head_env, args[i]->key, args[i]->value);
+			ft_set_env_val(ctx->head_env, args[i]->key, args[i]->value);
 		}
 	}
 }
