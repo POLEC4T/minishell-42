@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free_tab.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 17:50:47 by nle-gued         ###   ########.fr       */
+/*   Created: 2025/04/18 16:37:26 by nle-gued          #+#    #+#             */
+/*   Updated: 2025/04/18 16:37:28 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int argc, char **argv, char **envp)
+void ft_free_tab(void **tab)
 {
-    (void)argc;
-    (void)argv;
-    (void)envp;
+    int	i;
 
-    //minishell(envp);
-     maintest();
-    return (EXIT_SUCCESS);
+    if (!tab)
+        return ;
+    i = 0;
+    while (tab[i])
+    {
+        free(tab[i]);
+        i++;
+    }
+    free(tab);
 }
