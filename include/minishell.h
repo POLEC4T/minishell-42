@@ -6,19 +6,19 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/18 16:59:16 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:17:29 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <errno.h>
 
 typedef struct s_cmd
 {
@@ -74,11 +74,10 @@ typedef struct s_token
 void				minishell(char **envp);
 
 // str
-void				msg(char *str1, char *str2, char *str3, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 int					ft_strlen(char *str);
-char				*ft_strdup_null(char *s1);
+char				*ft_strdup(char *s1);
 char				*ft_strjoin(char *s1, char *s2);
 char				**ft_split_first(char const *s, char *delim);
 int					is_char_in_str(char c, char *str);
@@ -89,6 +88,7 @@ int					ft_isdigit(int c);
 void				ft_free_tab(void **tab);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strchr(const char *string, int searchedChar);
+size_t				ft_tablen(void **tab);
 
 // output
 int					ft_fprintf(int fd, const char *fmt, ...);
@@ -115,10 +115,11 @@ void				print_env_val(t_node **head, char *key);
 void				init_env(t_context *ctx, char **envp);
 
 // builtins
-void				ft_export(t_context *ctx, t_key_value **args);
-void				ft_unset(t_context *ctx, char *key);
+void				ft_export(t_context *ctx, char **args);
+void				ft_unset(t_context *ctx, char **args);
 void				ft_env(t_node **head);
-void				cd(t_context *context, char **args);
+void				ft_cd(t_context *context, char **args);
+void				ft_echo(t_context *context, char **args);
 
 // parsing
 void				maintest(void);

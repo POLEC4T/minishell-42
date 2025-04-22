@@ -25,7 +25,7 @@ INCLUDES = -I$(INC_DIR)/
 STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
 STR_FILES=\
 	ft_memcpy.c \
-	ft_strdup_null.c \
+	ft_strdup.c \
 	ft_strjoin.c \
 	ft_strlen.c \
 	putstr_fd.c \
@@ -38,6 +38,7 @@ STR_FILES=\
 	ft_calloc.c \
 	ft_free_tab.c \
 	ft_strchr.c \
+	ft_tablen.c \
 
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
 ENV_UTILS_FILES=\
@@ -71,6 +72,7 @@ BUILTINS_FILES=\
 	unset.c \
 	env.c \
 	cd.c \
+	echo.c \
 
 PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\

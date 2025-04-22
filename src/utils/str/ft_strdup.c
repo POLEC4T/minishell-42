@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup_null.c                                   :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:08:14 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/18 16:25:46 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/22 17:07:42 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief only difference with strdup: if s1 is NULL => returns ""
- */
-char	*ft_strdup_null(char *s1)
+char	*ft_strdup(char *s1)
 {
 	char	*dup;
-	size_t		len;
+	size_t	len;
 
 	if (!s1)
-		len = 0;
-	else
-		len = ft_strlen(s1);
+		return (NULL);
+	len = ft_strlen(s1);
 	dup = malloc(len + 1);
 	if (!dup)
 		return (NULL);

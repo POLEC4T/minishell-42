@@ -6,13 +6,13 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:10:36 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/17 17:16:55 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/22 16:48:19 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_unset(t_context *ctx, char *key)
+void	ft_unset_one(t_context *ctx, char *key)
 {
     t_node *tmp;
     t_key_value *kv;
@@ -33,5 +33,19 @@ void	ft_unset(t_context *ctx, char *key)
             return ;
         }
         tmp = tmp->next;
+    }
+}
+
+void	ft_unset(t_context *ctx, char **args)
+{
+    int i;
+
+    if (!args)
+        return ;
+    i = 0;
+    while (args[i])
+    {
+        ft_unset_one(ctx, args[i]);
+        i++;
     }
 }

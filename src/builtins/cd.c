@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   ft_cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:01:44 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/18 16:38:27 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:12:58 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @if args is NULL, it returns EXIT_FAILURE
- * @if no args after "cd", it sets newpwd to the value of the HOME env
+ * @if no path, it sets newpwd to the value of the HOME env
  * variable
- * @else, it sets newpwd to the value of args[1]
+ * @else, it sets newpwd to the value of path
  */
-static int	init_newpwd(t_context *context, char **args, char **newpwd)
+static int	init_newpwd(t_context *context, char *path, char **newpwd)
 {
-	if (!args)
-		return (EXIT_FAILURE);
-	if (args[1] == NULL)
+	if (path == NULL)
 	{
 		*newpwd = ft_get_env_val(context->head_env, "HOME");
 		if (*newpwd == NULL)
@@ -33,7 +30,7 @@ static int	init_newpwd(t_context *context, char **args, char **newpwd)
 	}
 	else
 	{
-		*newpwd = ft_strdup_null(args[1]);
+		*newpwd = ft_strdup(path);
 		if (*newpwd == NULL)
 		{
 			ft_fprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
@@ -48,6 +45,7 @@ static int	init_newpwd(t_context *context, char **args, char **newpwd)
  */
 static int	set_to_oldpwd(t_context *context, char **newpwd)
 {
+	free(*newpwd);
 	*newpwd = ft_get_env_val(context->head_env, "OLDPWD");
 	if (*newpwd == NULL)
 	{
@@ -115,12 +113,22 @@ static int	set_pwds(t_context *context, char **newpwd)
 	return (EXIT_SUCCESS);
 }
 
-void	cd(t_context *context, char **args)
+/**
+ * @param args : expected to be : [[path] NULL]
+ */
+void	ft_cd(t_context *context, char **args)
 {
 	char	*newpwd;
 
+	if (!args)
+		return ;
+	if (ft_tablen((void **)args) > 1)
+	{
+		ft_fprintf(STDERR_FILENO, "cd: too many arguments\n");
+		return ;
+	}
 	newpwd = NULL;
-	if (init_newpwd(context, args, &newpwd) == EXIT_FAILURE)
+	if (init_newpwd(context, args[0], &newpwd) == EXIT_FAILURE)
 		return ;
 	if (ft_strncmp(newpwd, "-", 2) == 0)
 	{
