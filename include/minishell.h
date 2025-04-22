@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/22 17:17:29 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:37:47 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void				ft_export(t_context *ctx, char **args);
 void				ft_unset(t_context *ctx, char **args);
 void				ft_env(t_node **head);
 void				ft_cd(t_context *context, char **args);
+void				ft_pwd(char **args);
 void				ft_echo(t_context *context, char **args);
 
 // parsing
