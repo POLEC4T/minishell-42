@@ -72,6 +72,7 @@ BUILTINS_FILES=\
 	unset.c \
 	env.c \
 	cd.c \
+	pwd.c \
 	echo.c \
 
 PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
