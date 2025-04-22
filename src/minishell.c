@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/22 16:52:13 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:16:36 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void minishell(char **envp)
 {
     t_context ctx;
     init_context(&ctx);
-    export(&ctx, envp);
+    ft_export(&ctx, envp);
 
-    export (&ctx, (char *[]){"test=123", NULL});
-    export (&ctx, (char *[]){"a"});
+    ft_export (&ctx, (char *[]){"test=123", NULL});
+    ft_export (&ctx, (char *[]){"a"});
 
     ft_unset(&ctx, (char *[]){NULL});
 

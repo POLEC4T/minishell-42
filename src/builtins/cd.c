@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   ft_cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /**
- * @if no args after "cd", it sets newpwd to the value of the HOME env
+ * @if no path, it sets newpwd to the value of the HOME env
  * variable
  * @else, it sets newpwd to the value of path
  */
@@ -116,7 +116,7 @@ static int	set_pwds(t_context *context, char **newpwd)
 /**
  * @param args : expected to be : [[path] NULL]
  */
-void	cd(t_context *context, char **args)
+void	ft_cd(t_context *context, char **args)
 {
 	char	*newpwd;
 

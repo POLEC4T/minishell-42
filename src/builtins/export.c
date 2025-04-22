@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   ft_export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -57,7 +57,7 @@ t_key_value	*get_key_value(char *line)
 /**
  * @param args : [key[=value]]
  */
-void	export(t_context *ctx, char **args)
+void	ft_export(t_context *ctx, char **args)
 {
 	t_node		*new_node;
 	t_key_value	*kv;

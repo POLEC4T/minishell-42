@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -34,7 +34,7 @@ static void	print_word(char **args, int i)
 /**
  * @param args : expected to be : [-n] [[...] NULL]
  */
-void	echo(t_context *context, char **args)
+void	ft_echo(t_context *context, char **args)
 {
 	int	i;
 	int	is_n;

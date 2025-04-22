@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/22 17:07:46 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:17:29 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,11 @@ void				print_env_val(t_node **head, char *key);
 void				init_env(t_context *ctx, char **envp);
 
 // builtins
-void				export(t_context *ctx, char **args);
+void				ft_export(t_context *ctx, char **args);
 void				ft_unset(t_context *ctx, char **args);
 void				ft_env(t_node **head);
-void				cd(t_context *context, char **args);
-void				echo(t_context *context, char **args);
+void				ft_cd(t_context *context, char **args);
+void				ft_echo(t_context *context, char **args);
 
 // parsing
 void				maintest(void);
