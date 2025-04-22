@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/18 13:44:41 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:07:16 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,7 @@
 
 void init_env(t_context *ctx, char **envp)
 {
-    
-    t_node *curr_node;
-    int i;
-    char **line;
-    // char *key;
-    char *value;
-
-    i = -1;
-    while (envp && envp[++i])
-    {
-        line = ft_split_first(envp[i], "=");
-        if (!line)
-        {
-            // TODO
-            
-            continue ;
-        }
-        if (!line[0])
-        {
-            continue;
-        }
-        if (!line[1])
-            value = NULL;
-        else
-            value = line[1];
-        curr_node = ft_envnew(line[0], value);
-        if (!curr_node)
-        {
-            continue;
-        }
-        ft_lstadd_back(ctx->head_env, curr_node);
-        ft_free_tab((void **)line);
-    }
+    export(ctx, envp);
 }
 
 /**
@@ -62,18 +30,23 @@ t_node	*ft_envnew(char *key, char *value)
 	content = malloc(sizeof(t_key_value));
 	if (!content)
 		return (NULL);
-	content->key = ft_strdup_null(key);
+	content->key = ft_strdup(key);
 	if (!content->key)
 	{
 		free(content);
 		return (NULL);
 	}
-	content->value = ft_strdup_null(value);
-	if (!content->value)
+	if (!value)
+		content->value = NULL;
+	else
 	{
-		free(content->key);
-		free(content);
-		return (NULL);
+		content->value = ft_strdup(value);
+		if (!content->value)
+		{
+			free(content->key);
+			free(content);
+			return (NULL);
+		}
 	}
 	new = ft_lstnew(content);
 	if (!new)
@@ -109,7 +82,7 @@ t_node	*ft_get_env_node(t_node **head, char *key)
 
 /**
  * @returns the value of the node in the list that matches the key
- * @note if the key is not found, NULL is returned
+ * @note needs to be freed
  */
 char	*ft_get_env_val(t_node **head, char *key)
 {
@@ -120,7 +93,7 @@ char	*ft_get_env_val(t_node **head, char *key)
 	t_key_value	*kv;
 	kv = cast_to_key_value(node->content);
 	if (kv && kv->value)
-		return (ft_strdup_null(kv->value));
+		return (ft_strdup(kv->value));
 	return (NULL);
 }
 
@@ -141,7 +114,7 @@ int	ft_set_env_val(t_node **head, char *key, char *value)
 		if (ft_strncmp(kv->key, key, (size_t)ft_strlen(key) + 1 + 1) == 0)
 		{
 			free(kv->value);
-			kv->value = ft_strdup_null(value);
+			kv->value = ft_strdup(value);
 			if (!kv->value)
 				return (EXIT_FAILURE);
 			return (EXIT_SUCCESS);

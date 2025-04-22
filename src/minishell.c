@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/18 17:45:46 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/22 16:52:13 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,14 @@ void minishell(char **envp)
 {
     t_context ctx;
     init_context(&ctx);
-    init_env(&ctx, envp);
-    // t_key_value **args;
+    export(&ctx, envp);
 
-    // args = malloc(sizeof(t_key_value*) * 3);
-    // args[0] = malloc(sizeof(t_key_value));
-    // args[1] = malloc(sizeof(t_key_value));
+    export (&ctx, (char *[]){"test=123", NULL});
+    export (&ctx, (char *[]){"a"});
 
-    // args[0]->key = "key1";
-    // args[0]->value = "value1";
-    // args[1]->key = "key2";
-    // args[1]->value = "value2";
-    // args[2] = NULL;
-    // ft_export(&ctx, args);
-    // ft_env(ctx.head_env);
+    ft_unset(&ctx, (char *[]){NULL});
 
-
-    print_env_val(ctx.head_env, "PWD");
-    print_env_val(ctx.head_env, "OLDPWD");
-
-    cd(&ctx, (char *[]){ "cd", "/tmp", NULL });
-
-
-    print_env_val(ctx.head_env, "PWD");
-    print_env_val(ctx.head_env, "OLDPWD");
-    
+    ft_env(ctx.head_env);
     ft_lstclear(ctx.head_env, ft_free_env_content);
     if (ctx.head_env)
         free(ctx.head_env);

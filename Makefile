@@ -25,7 +25,7 @@ INCLUDES = -I$(INC_DIR)/
 STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
 STR_FILES=\
 	ft_memcpy.c \
-	ft_strdup_null.c \
+	ft_strdup.c \
 	ft_strjoin.c \
 	ft_strlen.c \
 	putstr_fd.c \
@@ -72,6 +72,7 @@ BUILTINS_FILES=\
 	unset.c \
 	env.c \
 	cd.c \
+	echo.c \
 
 PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\

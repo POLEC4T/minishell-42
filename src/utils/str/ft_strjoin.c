@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:08:59 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/18 16:23:48 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/22 16:57:09 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t		len2;
 
 	if (!s1 && s2)
-		return (ft_strdup_null(s2));
+		return (ft_strdup(s2));
 	if (!s2 && s1)
-		return (ft_strdup_null(s1));
+		return (ft_strdup(s1));
 	if (!s1 && !s2)
 		return (NULL);
 	len1 = ft_strlen(s1);
