@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/22 17:37:47 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/22 18:28:45 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <errno.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
@@ -48,6 +49,7 @@ typedef struct s_node
 typedef struct s_context
 {
 	t_node			**head_env;
+	int				exit_code;
 }					t_context;
 
 typedef enum
@@ -121,6 +123,7 @@ void				ft_env(t_node **head);
 void				ft_cd(t_context *context, char **args);
 void				ft_pwd(char **args);
 void				ft_echo(t_context *context, char **args);
+void				ft_exit(t_context *context, char **args);
 
 // parsing
 void				maintest(void);
@@ -132,5 +135,8 @@ int					define_token(t_node *node);
 // syntax
 int					syntax(t_node *head);
 char				*quote_delimiter(char *str);
+
+// free
+void				exit_free(t_context *context);
 
 #endif
