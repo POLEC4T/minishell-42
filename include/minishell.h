@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 16:44:07 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/23 17:51:03 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_token
 typedef struct s_context
 {
 	t_node			**head_env;
-	t_token			**head_token;
+	t_node			*head_token;
 	int				exit_code;
 }					t_context;
 
@@ -81,8 +81,12 @@ void				ft_putstr_fd(char *s, int fd);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 int					ft_strlen(char *str);
 char				*ft_strdup(char *s1);
+char				*ft_strndup(const char *s, size_t n);
+int					ft_strchr_idx(const char *s, int c);
 char				*ft_strjoin(char *s1, char *s2);
 char				**ft_split_first(char const *s, char *delim);
+char				**ft_split(char const *s, char *delim);
+size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 int					is_char_in_str(char c, char *str);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_isalpha(int c);
@@ -90,7 +94,7 @@ int					ft_isalnum(int c);
 int					ft_isdigit(int c);
 void				ft_free_tab(void **tab);
 void				*ft_calloc(size_t nmemb, size_t size);
-char				*ft_strchr(const char *string, int searchedChar);
+char				*ft_strchr(const char *string, int c);
 size_t				ft_tablen(void **tab);
 
 // output
@@ -127,12 +131,13 @@ void				ft_echo(t_context *context, char **args);
 void				ft_exit(t_context *context, char **args);
 
 // parsing
-t_token				*read_token(void);
+t_node				*read_token(t_context ctx);
 void				put_data(char *str, t_node *token, char stop);
 t_node				*parsing(char *str);
 size_t				strcount(char *str, char stop);
 int					define_token(t_node *node);
 void				print_token_list(t_node *head);
+void				free_token_list(t_node *head);
 
 // syntax
 int					syntax(t_node *head);
@@ -140,6 +145,9 @@ char				*quote_delimiter(char *str);
 
 // free
 void				exit_free(t_context *context);
+
+// get_next_line
+char				*get_next_line(int fd);
 
 ////// pipex
 

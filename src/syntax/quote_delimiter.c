@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_delimiter.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:36:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/18 18:16:19 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:07:37 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ char	*quote_delimiter(char *str)
 		while (ft_strchr(to_add, find_last_quote(str)) == 0)
 		{
 			read = readline(">");
+			free(to_add);
 			to_add = ft_strjoin(to_add, read);
 		}
 		str = ft_strjoin(str, to_add);
@@ -101,6 +102,7 @@ char	*quote_delimiter(char *str)
 		while (ft_strchr(to_add, '"') == 0)
 		{
 			read = readline(">");
+			free(to_add);
 			to_add = ft_strjoin(to_add, read);
 		}
 		str = ft_strjoin(str, to_add);
@@ -111,6 +113,7 @@ char	*quote_delimiter(char *str)
 		while (ft_strchr(to_add, '\'') == 0)
 		{
 			read = readline(">");
+			free(to_add);
 			to_add = ft_strjoin(to_add, read);
 		}
 		str = ft_strjoin(str, to_add);
@@ -122,5 +125,6 @@ char	*quote_delimiter(char *str)
 		str = ft_strjoin(str, read);
 		return (quote_delimiter(str));
 	}
+	free(to_add);
 	return (str);
 }

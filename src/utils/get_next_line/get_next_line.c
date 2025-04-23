@@ -6,13 +6,13 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:06:28 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 14:09:50 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/23 17:25:36 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*extract_line(char *buffer)
+static char	*extract_line(char *buffer)
 {
 	int		nl_idx;
 	char	*line;
@@ -24,7 +24,7 @@ char	*extract_line(char *buffer)
 	return (line);
 }
 
-void	rm_line(char *buffer)
+static void	rm_line(char *buffer)
 {
 	int	nl_idx;
 	int	i;
@@ -46,7 +46,7 @@ void	rm_line(char *buffer)
 	buffer[i] = '\0';
 }
 
-char	*read_file(char *str, char *buffer, int fd)
+static char	*read_file(char *str, char *buffer, int fd)
 {
 	ssize_t	bytes_read;
 	char	*new_str;
