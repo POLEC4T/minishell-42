@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 16:46:43 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:51:03 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,12 @@ void				ft_putstr_fd(char *s, int fd);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 int					ft_strlen(char *str);
 char				*ft_strdup(char *s1);
+char				*ft_strndup(const char *s, size_t n);
+int					ft_strchr_idx(const char *s, int c);
 char				*ft_strjoin(char *s1, char *s2);
 char				**ft_split_first(char const *s, char *delim);
+char				**ft_split(char const *s, char *delim);
+size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 int					is_char_in_str(char c, char *str);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_isalpha(int c);
@@ -90,7 +94,7 @@ int					ft_isalnum(int c);
 int					ft_isdigit(int c);
 void				ft_free_tab(void **tab);
 void				*ft_calloc(size_t nmemb, size_t size);
-char				*ft_strchr(const char *string, int searchedChar);
+char				*ft_strchr(const char *string, int c);
 size_t				ft_tablen(void **tab);
 
 // output
@@ -132,6 +136,8 @@ void				put_data(char *str, t_node *token, char stop);
 t_node				*parsing(char *str);
 size_t				strcount(char *str, char stop);
 int					define_token(t_node *node);
+void				print_token_list(t_node *head);
+void				free_token_list(t_node *head);
 
 // syntax
 int					syntax(t_node *head);
@@ -139,6 +145,9 @@ char				*quote_delimiter(char *str);
 
 // free
 void				exit_free(t_context *context);
+
+// get_next_line
+char				*get_next_line(int fd);
 
 ////// pipex
 
@@ -179,8 +188,8 @@ typedef struct s_data
 	t_fds			fds;
 }					t_data;
 
-// inits
-void				init_data(t_data *d, char **av, int ac, char **env);
+// exec
+int					ft_exec(t_context *ctx);
 
 // exit
 void				exit_process(int error_status, t_data *data);

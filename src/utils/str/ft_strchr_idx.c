@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strchr_idx.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/05 20:56:48 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/23 17:04:21 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/04/23 17:02:36 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/04/23 17:02:42 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strchr(const char *string, int c)
+/**
+ * @brief returns the index of the first occurrence of c in s
+ * @details if c is not found, returns -1
+ */
+int	ft_strchr_idx(const char *s, int c)
 {
-	size_t	i;
+	int	i;
 
-	i = 0;
-	while (string[i])
-	{
-		if (string[i] == (char)c)
-			break ;
-		i++;
-	}
-	if (string[i] == (char)c)
-		return ((char *)string + i);
-	return (0);
+	i = -1;
+	while (s[++i])
+		if (*(unsigned char *)(s + i) == (char)c)
+			return (i);
+	return (-1);
 }

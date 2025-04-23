@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/05 20:56:48 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/23 17:04:21 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/04/23 18:05:25 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strchr(const char *string, int c)
+int	ft_exec(t_context *ctx)
 {
-	size_t	i;
-
-	i = 0;
-	while (string[i])
-	{
-		if (string[i] == (char)c)
-			break ;
-		i++;
-	}
-	if (string[i] == (char)c)
-		return ((char *)string + i);
+	print_token_list(ctx->head_token);
+	// start_children(ctx);
+	// ctx->exit_code = wait_children(ctx);
+	// exit_process(ctx->exit_code, &d);
+	// free_token_list(ctx->head_token);
 	return (0);
 }

@@ -16,10 +16,12 @@ UTILS_DIR = utils
 STR_DIR = str
 ENV_UTILS_DIR = env_utils
 FREE_DIR = free
+GNL_DIR = get_next_line
 LST_DIR = lst
 BUILTINS_DIR = builtins
 INC_DIR = include
 PARS_DIR = parsing
+EXEC_DIR = exec
 SYNTAX_DIR = syntax
 INCLUDES = -I$(INC_DIR)/
 
@@ -27,10 +29,14 @@ STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
 STR_FILES=\
 	ft_memcpy.c \
 	ft_strdup.c \
+	ft_strndup.c \
 	ft_strjoin.c \
 	ft_strlen.c \
+	ft_strlcpy.c \
+	ft_strchr_idx.c \
 	putstr_fd.c \
 	ft_split_first.c \
+	ft_split.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
 	ft_isdigit.c \
@@ -48,6 +54,11 @@ ENV_UTILS_FILES=\
 FREE = $(addprefix $(FREE_DIR)/, $(FREE_FILES))
 FREE_FILES=\
 	free.c \
+
+
+GNL = $(addprefix $(GNL_DIR)/, $(GNL_FILES))
+GNL_FILES=\
+	get_next_line.c \
 
 LST = $(addprefix $(LST_DIR)/, $(LST_FILES))
 LST_FILES=\
@@ -71,6 +82,7 @@ UTILS_FILES=\
 	$(LST) \
 	$(ENV_UTILS) \
 	$(FREE) \
+	$(GNL) \
 
 BUILTINS = $(addprefix $(BUILTINS_DIR)/, $(BUILTINS_FILES))
 BUILTINS_FILES=\
@@ -89,6 +101,19 @@ PARS_FILES=\
 	put_data.c \
 	define_token.c \
 
+EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
+EXEC_FILES=\
+	children.c \
+	close.c \
+	env_check.c \
+	exec.c \
+	frees.c \
+	here_doc.c \
+	inits.c \
+	output.c \
+	parent.c \
+	utils.c \
+
 SYNTAX = $(addprefix $(SYNTAX_DIR)/, $(SYNTAX_FILES))
 SYNTAX_FILES=\
 	syntax.c \
@@ -103,6 +128,7 @@ SRC_FILES=\
 	$(BUILTINS) \
 	$(PARS) \
 	$(SYNTAX) \
+	$(EXEC) \
 
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))

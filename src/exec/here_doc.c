@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 11:03:02 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 14:05:02 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/23 16:58:15 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	process_here_doc(t_data *d, char *limiter)
 		str = get_next_line(STDIN_FILENO);
 		if (!str || !ft_strncmp(shorter(str), limiter, ft_strlen(limiter) + 1))
 			break ;
-		ft_putendl_fd(str, hd_fd);
+		ft_fprintf(hd_fd, "%s\n", str);
 		free(str);
 	}
 	close(hd_fd);

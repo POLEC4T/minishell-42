@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   define_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:11:38 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/17 16:06:57 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:45:15 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	define_token(t_node *node)
 			return (COMMAND);
 		if (prev_token->type == DELIMITER)
 			return (COMMAND);
+		if(prev_token->type == FILES)
+			return(COMMAND);
 	}
 	if (!node->prev)
 		return (COMMAND);
