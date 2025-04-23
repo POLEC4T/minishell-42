@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 16:36:38 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:45:42 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	minishell(char **envp)
 	init_context(&ctx);
 	ft_export(&ctx, envp);
 	//ft_exit(&ctx, (char *[2]){"-9223372036854775809", NULL});
-	ctx.head_token = read_token();
+	ctx.head_token = read_token(ctx);
 	exit_free(&ctx);
 	// ft_free_tab((void **)args);
 }

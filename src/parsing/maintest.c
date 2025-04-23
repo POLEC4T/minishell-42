@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/23 16:35:49 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:48:28 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,13 @@ void	free_token_list(t_node *head)
 	}
 }
 
-t_token	*read_token(void)
+t_node	*read_token(t_context ctx) 
 {
 	char *read;
 	t_node *token;
 
+
+	(void)ctx;
 	read = readline("pitishell >");
 
 		if (read == NULL)

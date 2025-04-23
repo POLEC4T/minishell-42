@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 16:35:45 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:46:43 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct s_node
 	struct s_node	*prev;
 }					t_node;
 
-
 typedef enum
 {
 	COMMAND,
@@ -71,10 +70,9 @@ typedef struct s_token
 typedef struct s_context
 {
 	t_node			**head_env;
-	t_token			**head_token;
+	t_node			*head_token;
 	int				exit_code;
 }					t_context;
-
 
 void				minishell(char **envp);
 
@@ -129,7 +127,7 @@ void				ft_echo(t_context *context, char **args);
 void				ft_exit(t_context *context, char **args);
 
 // parsing
-t_token				*read_token(void);
+t_node				*read_token(t_context ctx);
 void				put_data(char *str, t_node *token, char stop);
 t_node				*parsing(char *str);
 size_t				strcount(char *str, char stop);
