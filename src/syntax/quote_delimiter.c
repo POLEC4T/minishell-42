@@ -6,28 +6,44 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:36:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/18 15:57:09 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:16:19 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	quote_count(char *str)
+int	quote_count(char *str, char quote)
 {
 	size_t	i;
-	size_t	quote;
+	size_t	nbquote;
+	char	outquote;
 
+	if (quote == '"')
+		outquote = '\'';
+	else
+		outquote = '"';
 	i = 0;
-	quote = 0;
+	nbquote = 0;
 	while (str[i])
 	{
-		if (str[i] == '"')
-			quote++;
+		if (str[i] == outquote)
+		{
+            i++;
+			while (str[i] != outquote && str[i])
+				i++;
+		}
+		if (str[i] == quote)
+        {
+			nbquote++;
+            i++;
+            while (str[i] != quote && str[i])
+                i++;
+            if(str[i] == quote)
+                nbquote++;
+        }
 		i++;
 	}
-	if (quote % 2 == 1)
-		return (1);
-	return (0);
+	return (nbquote % 2);
 }
 
 int	check_last_pipe(char *str)
@@ -46,26 +62,65 @@ int	check_last_pipe(char *str)
 	return (0);
 }
 
+char	find_last_quote(char *str)
+{
+	size_t	i;
+
+	i = strlen(str) - 1;
+	while (i >= 0)
+	{
+		if (str[i] == '"' || str[i] == '\'')
+			break ;
+		i--;
+	}
+	if (str[i] == '"')
+		return ('\'');
+	if (str[i] == '\'')
+		return ('"');
+	return (0);
+}
+
 char	*quote_delimiter(char *str)
 {
-	char *to_add = calloc(1, 2);
-	char *read;
+	char	*to_add;
+	char	*read;
 
-	if (quote_count(str) != 0)
+	to_add = calloc(1, 2);
+	if ((quote_count(str, '"') != 0) && (quote_count(str, '\'') != 0))
 	{
-        while (ft_strchr(to_add, '"') == 0)
+		while (ft_strchr(to_add, find_last_quote(str)) == 0)
 		{
-            read = readline(">");
+			read = readline(">");
 			to_add = ft_strjoin(to_add, read);
 		}
 		str = ft_strjoin(str, to_add);
 		return (quote_delimiter(str));
 	}
-    else if (check_last_pipe(str) != 0)
-    {
-        read = readline(">");
-        str = ft_strjoin(str, read);
-        return(quote_delimiter(str));
-    }
-    return(str);
+	else if (quote_count(str, '"') != 0)
+	{
+		while (ft_strchr(to_add, '"') == 0)
+		{
+			read = readline(">");
+			to_add = ft_strjoin(to_add, read);
+		}
+		str = ft_strjoin(str, to_add);
+		return (quote_delimiter(str));
+	}
+	else if (quote_count(str, '\'') != 0)
+	{
+		while (ft_strchr(to_add, '\'') == 0)
+		{
+			read = readline(">");
+			to_add = ft_strjoin(to_add, read);
+		}
+		str = ft_strjoin(str, to_add);
+		return (quote_delimiter(str));
+	}
+	else if (check_last_pipe(str) != 0)
+	{
+		read = readline(">");
+		str = ft_strjoin(str, read);
+		return (quote_delimiter(str));
+	}
+	return (str);
 }
