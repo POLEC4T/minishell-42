@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 16:35:45 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:44:07 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct s_node
 	struct s_node	*prev;
 }					t_node;
 
-
 typedef enum
 {
 	COMMAND,
@@ -74,7 +73,6 @@ typedef struct s_context
 	t_token			**head_token;
 	int				exit_code;
 }					t_context;
-
 
 void				minishell(char **envp);
 
@@ -134,6 +132,7 @@ void				put_data(char *str, t_node *token, char stop);
 t_node				*parsing(char *str);
 size_t				strcount(char *str, char stop);
 int					define_token(t_node *node);
+void				print_token_list(t_node *head);
 
 // syntax
 int					syntax(t_node *head);
@@ -181,8 +180,8 @@ typedef struct s_data
 	t_fds			fds;
 }					t_data;
 
-// inits
-void				init_data(t_data *d, char **av, int ac, char **env);
+// exec
+int					ft_exec(t_context *ctx);
 
 // exit
 void				exit_process(int error_status, t_data *data);
