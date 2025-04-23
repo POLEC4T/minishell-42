@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/18 15:23:20 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:35:49 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,44 +44,45 @@ void	print_token_list(t_node *head)
 	}
 }
 
-void free_token_list(t_node *head)
+void	free_token_list(t_node *head)
 {
-    t_node *current = head;
-    t_node *next_node;
+	t_node	*current;
+	t_node	*next_node;
+	t_token	*token;
 
-    while (current != NULL)
-    {
-        next_node = current->next;
-        if (current->content != NULL)
-        {
-            t_token *token = cast_to_token(current->content);
-            if (token->data != NULL)
-            {
-                free(token->data);
+	current = head;
+	while (current != NULL)
+	{
+		next_node = current->next;
+		if (current->content != NULL)
+		{
+			token = cast_to_token(current->content);
+			if (token->data != NULL)
+			{
+				free(token->data);
 			}
-            free(token);
-        }
-        free(current);
-        current = next_node;
-    }
+			free(token);
+		}
+		free(current);
+		current = next_node;
+	}
 }
 
-void	maintest(void)
+t_token	*read_token(void)
 {
 	char *read;
 	t_node *token;
 
 	read = readline("pitishell >");
-	while (read)
-	{
+
 		if (read == NULL)
 			exit(42);
 		read = quote_delimiter(read);
 		token = parsing(read);
-		//print_token_list(token);
-		free(read);
-		free_token_list(token);
-		read = readline("pitishell >");
-	}
-	exit(0);
+		// print_token_list(token);
+		// free(read);
+		// free_token_list(token);
+		// read = readline("pitishell >");
+
+	return(token);
 }
