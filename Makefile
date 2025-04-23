@@ -15,6 +15,7 @@ SRC_DIR = src
 UTILS_DIR = utils
 STR_DIR = str
 ENV_UTILS_DIR = env_utils
+FREE_DIR = free
 LST_DIR = lst
 BUILTINS_DIR = builtins
 INC_DIR = include
@@ -44,6 +45,10 @@ ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
 ENV_UTILS_FILES=\
 	env.c \
 
+FREE = $(addprefix $(FREE_DIR)/, $(FREE_FILES))
+FREE_FILES=\
+	free.c \
+
 LST = $(addprefix $(LST_DIR)/, $(LST_FILES))
 LST_FILES=\
 	ft_lstaddback.c \
@@ -65,6 +70,7 @@ UTILS_FILES=\
 	$(STR) \
 	$(LST) \
 	$(ENV_UTILS) \
+	$(FREE) \
 
 BUILTINS = $(addprefix $(BUILTINS_DIR)/, $(BUILTINS_FILES))
 BUILTINS_FILES=\
@@ -74,6 +80,7 @@ BUILTINS_FILES=\
 	cd.c \
 	pwd.c \
 	echo.c \
+	exit.c \
 
 PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\
