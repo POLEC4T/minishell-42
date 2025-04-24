@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 17:51:03 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/24 14:02:55 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 
 typedef struct s_cmd
 {
-	char			**args;
+	char			**args; // args contient tout les token de type COMMAND FLAG ARGUMENT
+	int				fd_in; // init a -2 car -1 si erreur
+	int				fd_out;
 }					t_cmd;
 
 // typedef struct s_env_node
@@ -71,6 +73,7 @@ typedef struct s_context
 {
 	t_node			**head_env;
 	t_node			*head_token;
+	t_node			**head_cmd;
 	int				exit_code;
 }					t_context;
 
