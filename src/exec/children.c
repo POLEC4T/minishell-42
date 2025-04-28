@@ -6,67 +6,82 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 14:04:59 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/28 16:29:01 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
+static void exec_builtin(t_context *ctx, t_cmd *cmd)
+{
+	if (!ft_strncmp(cmd->args[0], "echo", 5))
+		ft_echo(ctx, cmd->args + 1);
+	else if (!ft_strncmp(cmd->args[0], "cd", 3))
+		ft_cd(ctx, cmd->args + 1);
+	else if (!ft_strncmp(cmd->args[0], "pwd", 4))
+		ft_pwd(cmd->args + 1);
+	else if (!ft_strncmp(cmd->args[0], "export", 7))
+		ft_export(ctx, cmd->args + 1);
+	else if (!ft_strncmp(cmd->args[0], "unset", 6))
+		ft_unset(ctx, cmd->args + 1);
+	else if (!ft_strncmp(cmd->args[0], "env", 4))
+		ft_env(ctx->head_env);
+	else if (!ft_strncmp(cmd->args[0], "exit", 5))
+		ft_exit(ctx, cmd->args + 1);
+}
+
 /**
- * @brief set the command to execute and its path
- * @example set_cmd_and_path(d, "ls -l") => d->cmd = ["ls", "-l", NULL]
- * @details if str_cmd is "", d->cmd is set to ["", NULL]
+ * @brief set the current input and output file descriptors
+ * @details if fd_in is set in the command, it will be used as input
+ * else if i_cmds > 0, the input will be the output of the previous command
+ * if fd_out is set in the command, it will be used as output
+ * else if [not last cmd], the output will be the input of the next command
  */
-static void	set_cmd_and_path(t_data *d, char *str_cmd)
+static void	set_curr_in_out(t_context *ctx, t_node *node_cmd, int i_cmds)
 {
-	(void) str_cmd;
-	if (ft_strlen(str_cmd) == 0)
-		d->cmd = empty_split();
-	else
-		d->cmd = ft_split(str_cmd, " ");
-	if (!d->cmd)
+	int		input;
+	int		output;
+	t_cmd	*cmd;
+
+	cmd = cast_to_cmd(node_cmd->content);
+	input = STDIN_FILENO;
+	output = STDOUT_FILENO;
+	if (cmd->fd_in >= 0)
+		input = cmd->fd_in;
+	else if (i_cmds > 0)
+		input = ctx->exec_data->pipes[i_cmds - 1][READ];
+	if (cmd->fd_out >= 0)
+		output = cmd->fd_out;
+	else if (i_cmds < ctx->exec_data->nb_cmds - 1)
+		output = ctx->exec_data->pipes[i_cmds][WRITE];
+	redirect(input, output, ctx);
+}
+
+static void	exec_cmd(t_context *ctx, t_cmd *cmd)
+{
+	t_exec	*d;
+
+	d = ctx->exec_data;
+	
+	if (is_builtin_cmd(cmd->args[0]))
+		exec_builtin(ctx, cmd);
+	else 
 	{
-		msg("ft_split: ", strerror(errno), "", STDERR_FILENO);
-		exit_process(EXIT_FAILURE, d);
+		d->cmd_path = get_cmd_path(ctx, cmd->args[0]);
+		execve(d->cmd_path, cmd->args, env_to_tabstr(ctx->head_env));
+		ft_fprintf(STDERR_FILENO, "exec: %s", strerror(errno));
 	}
-	d->cmd_path = get_cmd_path(d, d->cmd[0]);
-	if (!d->cmd_path)
-		exit_process(127, d);
+	exit_free(ctx);
 }
 
-static void	set_curr_in_out(int i_cmds, t_data *d)
+void	process_child(t_context *ctx, t_node *node_cmd, int i_cmds)
 {
-	int	is_first_cmd;
-	int	is_last_cmd;
-	int	input;
-	int	output;
+	t_cmd	*cmd;
 
-	is_first_cmd = i_cmds == 0;
-	is_last_cmd = i_cmds == d->nb_cmds - 1;
-	if (is_first_cmd)
-		input = d->fds.in;
-	else
-		input = d->pipes[i_cmds - 1][READ];
-	if (is_last_cmd)
-		output = d->fds.out;
-	else
-		output = d->pipes[i_cmds][WRITE];
-	redirect(input, output, d);
-}
-
-static void	exec_cmd(t_data *d, char **env)
-{
-	if (execve(d->cmd_path, d->cmd, env) == -1)
-	{
-		msg(strerror(errno), ": ", d->cmd[0], STDERR_FILENO);
-		exit_process(EXIT_FAILURE, d);
-	}
-}
-
-void	process_child(t_data *d, char **av, char **env, int i_cmds)
-{
-	set_curr_in_out(i_cmds, d);
-	set_cmd_and_path(d, av[2 + d->is_here_doc + i_cmds]);
-	close_fds_and_pipes(d);
-	exec_cmd(d, env);
+	cmd = cast_to_cmd(node_cmd->content);
+	set_curr_in_out(ctx, node_cmd, i_cmds);
+	close_pipes(ctx->exec_data);
+	close_fds_cmds(ctx->head_cmd);
+	exec_cmd(ctx, cmd);
 }

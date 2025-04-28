@@ -6,37 +6,32 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 14:04:59 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/25 16:06:59 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_paths(char **env)
+char	**get_paths(t_context *ctx)
 {
-	int		i;
 	char	**res;
 
-	i = 0;
-	while (env[i])
+	char *path = ft_get_env_val(ctx, "PATH");
+	if (path)
 	{
-		if (ft_strncmp(env[i], "PATH=", 5) == 0)
+		res = ft_split(path, ":");
+		free(path);
+		if (!res)
 		{
-			res = ft_split(env[i] + 5, ":");
-			if (!res)
-			{
-				msg("ft_split", ": ", strerror(errno), STDERR_FILENO);
-				return (NULL);
-			}
-			return (res);
+			ft_fprintf(STDERR_FILENO, "get_paths: %s\n", strerror(errno));
+			exit_free(ctx);
 		}
-		i++;
+		return (res);
 	}
-	msg("Error", ": ", "PATH not found", STDERR_FILENO);
 	return (NULL);
 }
 
-static char	*safe_ft_strjoin(t_data *d, char *s1, char *s2, char *to_free)
+static char	*safe_ft_strjoin(t_context *ctx, char *s1, char *s2, char *to_free)
 {
 	char		*res;
 
@@ -46,23 +41,26 @@ static char	*safe_ft_strjoin(t_data *d, char *s1, char *s2, char *to_free)
 		if (to_free)
 			free(to_free);
 		msg("ft_strjoin", ": ", strerror(errno), STDERR_FILENO);
-		exit_process(EXIT_FAILURE, d);
+		exit_free(ctx);
 	}
 	return (res);
 }
 
-char	*get_cmd_path(t_data *d, char *cmd)
+char	*get_cmd_path(t_context *ctx, char *cmd)
 {
 	char	*curr_path;
 	int		i;
+	t_exec *d;
+
+	d = ctx->exec_data;
 
 	if (cmd && ft_strlen(cmd) > 0 && access(cmd, X_OK) != -1)
 		return (cmd);
-	cmd = safe_ft_strjoin(d, "/", cmd, NULL);
+	cmd = safe_ft_strjoin(ctx, "/", cmd, NULL);
 	i = -1;
-	while (d->paths[++i])
+	while (d->paths && d->paths[++i])
 	{
-		curr_path = safe_ft_strjoin(d, d->paths[i], cmd, cmd);
+		curr_path = safe_ft_strjoin(ctx, d->paths[i], cmd, cmd);
 		if (access(curr_path, X_OK) != -1)
 		{
 			free(cmd);
@@ -70,7 +68,9 @@ char	*get_cmd_path(t_data *d, char *cmd)
 		}
 		free(curr_path);
 	}
-	msg("command not found", ": ", cmd + 1, STDERR_FILENO);
+	ft_fprintf(STDERR_FILENO, "command not found: %s\n", cmd + 1);
+	ctx->exit_code = 127;
 	free(cmd);
+	exit_free(ctx);
 	return (NULL);
 }

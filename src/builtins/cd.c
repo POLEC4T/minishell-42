@@ -21,7 +21,7 @@ static int	init_newpwd(t_context *context, char *path, char **newpwd)
 {
 	if (path == NULL)
 	{
-		*newpwd = ft_get_env_val(context->head_env, "HOME");
+		*newpwd = ft_get_env_val(context, "HOME");
 		if (*newpwd == NULL)
 		{
 			ft_fprintf(STDERR_FILENO, "cd: HOME not set\n");
@@ -46,7 +46,7 @@ static int	init_newpwd(t_context *context, char *path, char **newpwd)
 static int	set_to_oldpwd(t_context *context, char **newpwd)
 {
 	free(*newpwd);
-	*newpwd = ft_get_env_val(context->head_env, "OLDPWD");
+	*newpwd = ft_get_env_val(context, "OLDPWD");
 	if (*newpwd == NULL)
 	{
 		ft_fprintf(STDERR_FILENO, "cd: PWD not set\n");
@@ -64,7 +64,7 @@ static int	prefix_home_to_pwd(t_context *context, char **newpwd)
 	char	*home;
 	char	*temp;
 
-	home = ft_get_env_val(context->head_env, "HOME");
+	home = ft_get_env_val(context, "HOME");
 	if (home == NULL)
 	{
 		ft_fprintf(STDERR_FILENO, "cd: HOME not set\n");
@@ -92,7 +92,7 @@ static int	set_pwds(t_context *context, char **newpwd)
 {
 	char	*oldpwd;
 
-	oldpwd = ft_get_env_val(context->head_env, "PWD");
+	oldpwd = ft_get_env_val(context, "PWD");
 	if (oldpwd == NULL)
 	{
 		ft_fprintf(STDERR_FILENO, "cd: PWD not set\n");

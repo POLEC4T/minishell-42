@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/17 16:00:54 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:14:58 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_node *parsing(char *str)
         }
         else if (str[i] != '"')
         {
-            put_data(str + i, current_token, ' ');
+            put_exec(str + i, current_token, ' ');
             i += strcount(str + i, ' ');
 
             current_token->next = malloc(sizeof(t_node));
@@ -49,7 +49,7 @@ t_node *parsing(char *str)
         else if (str[i] == '"' && str[i + 1] != '"')
         {
             i++;
-            put_data(str + i, current_token, '"');
+            put_exec(str + i, current_token, '"');
             i += strcount(str + i, '"');
             i++;
 

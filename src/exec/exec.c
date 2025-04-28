@@ -6,18 +6,39 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 18:05:25 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/28 16:11:20 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_exec(t_context *ctx)
+void	print_cmds(t_node **head_cmd)
 {
-	print_token_list(ctx->head_token);
-	// start_children(ctx);
-	// ctx->exit_code = wait_children(ctx);
-	// exit_process(ctx->exit_code, &d);
-	// free_token_list(ctx->head_token);
-	return (0);
+	t_node	*cmd;
+	t_cmd	*cmd_content;
+
+	cmd = *head_cmd;
+	while (cmd)
+	{
+		cmd_content = cast_to_cmd(cmd->content);
+		if (!cmd_content)
+			break ;
+		printf("Command: ");
+		for (int i = 0; cmd_content->args && cmd_content->args[i]; i++)
+			printf("%s ", cmd_content->args[i]);
+		if (cmd_content->fd_in != -2)
+			printf("    -> fd_in: %d", cmd_content->fd_in);
+		if (cmd_content->fd_out != -2)
+			printf("    -> fd_out: %d", cmd_content->fd_out);
+		printf("\n");
+		cmd = cmd->next;
+	}
+}
+
+void	ft_exec(t_context *ctx)
+{
+	// print_cmds(ctx->head_cmd);
+	init_exec(ctx);
+	start_children(ctx);
+	ctx->exit_code = wait_children(ctx->exec_data);
 }

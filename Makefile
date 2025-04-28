@@ -50,6 +50,7 @@ STR_FILES=\
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
 ENV_UTILS_FILES=\
 	env.c \
+	lst_to_tabstr.c \
 
 FREE = $(addprefix $(FREE_DIR)/, $(FREE_FILES))
 FREE_FILES=\
@@ -73,8 +74,6 @@ LST_FILES=\
 	ft_lstsize.c \
 	cast.c \
 
-# lst.c \
-
 UTILS = $(addprefix $(UTILS_DIR)/, $(UTILS_FILES))
 UTILS_FILES=\
 	output.c \
@@ -93,6 +92,7 @@ BUILTINS_FILES=\
 	pwd.c \
 	echo.c \
 	exit.c \
+	is_builtin_cmd.c
 
 PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\
@@ -107,8 +107,6 @@ EXEC_FILES=\
 	close.c \
 	env_check.c \
 	exec.c \
-	frees.c \
-	here_doc.c \
 	inits.c \
 	output.c \
 	parent.c \

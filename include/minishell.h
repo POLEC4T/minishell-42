@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/24 14:02:55 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/28 16:09:47 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,10 @@
 
 typedef struct s_cmd
 {
-	char			**args; // args contient tout les token de type COMMAND FLAG ARGUMENT
-	int				fd_in; // init a -2 car -1 si erreur
+	char **args; // args contient tout les token de type COMMAND FLAG ARGUMENT
+	int fd_in;   // init a -2 car -1 si erreur
 	int				fd_out;
 }					t_cmd;
-
-// typedef struct s_env_node
-// {
-// 	char				*key;
-// 	char				*value;
-// 	struct s_env_node	*next;
-// }						t_node;
 
 typedef struct s_key_value
 {
@@ -69,11 +62,21 @@ typedef struct s_token
 	char			*data;
 }					t_token;
 
+typedef struct s_exec
+{
+	int				**pipes;
+	int				*pids;
+	int				nb_cmds;
+	char			**paths;
+	char			*cmd_path;
+}					t_exec;
+
 typedef struct s_context
 {
 	t_node			**head_env;
 	t_node			*head_token;
 	t_node			**head_cmd;
+	t_exec			*exec_data;
 	int				exit_code;
 }					t_context;
 
@@ -109,20 +112,23 @@ t_node				*ft_lstlast(t_node *lst);
 t_node				*ft_lstnew(void *content);
 void				ft_lstdelone(t_node *lst, void (*del)(void *));
 void				ft_lstclear(t_node **lst, void (*del)(void *));
+int					ft_lstsize(t_node *lst);
 t_key_value			*cast_to_key_value(void *to_cast);
 t_token				*cast_to_token(void *to_cast);
+t_cmd				*cast_to_cmd(void *to_cast);
 
 // env utils
 t_key_value			*cast_to_key_value(void *to_cast);
 t_node				*ft_envnew(char *key, char *value);
 t_node				*ft_get_env_node(t_node **head, char *key);
-char				*ft_get_env_val(t_node **head, char *key);
+char				*ft_get_env_val(t_context *ctx, char *key);
 int					ft_set_env_val(t_node **head, char *key, char *value);
 void				ft_free_env_content(void *content);
-void				print_env_val(t_node **head, char *key);
+void				print_env_val(t_context *context, char *key);
 
 // env
 void				init_env(t_context *ctx, char **envp);
+char				**env_to_tabstr(t_node **head_env);
 
 // builtins
 void				ft_export(t_context *ctx, char **args);
@@ -132,15 +138,15 @@ void				ft_cd(t_context *context, char **args);
 void				ft_pwd(char **args);
 void				ft_echo(t_context *context, char **args);
 void				ft_exit(t_context *context, char **args);
+int					is_builtin_cmd(char *cmd);
 
 // parsing
 t_node				*read_token(t_context ctx);
-void				put_data(char *str, t_node *token, char stop);
+void				put_exec(char *str, t_node *token, char stop);
 t_node				*parsing(char *str);
 size_t				strcount(char *str, char stop);
 int					define_token(t_node *node);
 void				print_token_list(t_node *head);
-void				free_token_list(t_node *head);
 
 // syntax
 int					syntax(t_node *head);
@@ -152,17 +158,13 @@ void				exit_free(t_context *context);
 // get_next_line
 char				*get_next_line(int fd);
 
+// TO DELETE
+void				print_cmd(t_node *cmd);
+
 ////// pipex
 
 # define READ 0
 # define WRITE 1
-# ifndef BONUS
-#  define BONUS 1
-# endif
-# define BONUS_USAGE_1 "./pipex infile cmd1 cmd2 ... cmdn outfile"
-# define BONUS_USAGE_2 "./pipex is_here_doc LIMITER cmd1 cmd2 ... cmdn outfile"
-# define MANDATORY_USAGE "./pipex infile cmd1 cmd2 outfile"
-# define HEREDOC_FILENAME ".here_doc_tmp"
 # define BUFFER_SIZE 1024
 
 # include <errno.h>
@@ -173,56 +175,34 @@ char				*get_next_line(int fd);
 # include <sys/wait.h>
 # include <unistd.h>
 
-typedef struct s_fds
-{
-	int				in;
-	int				out;
-}					t_fds;
-
-typedef struct s_data
-{
-	int				**pipes;
-	int				*pids;
-	int				nb_cmds;
-	int				is_here_doc;
-	char			**cmd;
-	char			**paths;
-	char			*cmd_path;
-	t_fds			fds;
-}					t_data;
-
 // exec
-int					ft_exec(t_context *ctx);
+void				ft_exec(t_context *ctx);
 
-// exit
-void				exit_process(int error_status, t_data *data);
+// init
+void				init_exec(t_context *ctx);
 
 // output
 void				msg(char *str1, char *str2, char *str3, int fd);
 
 // close
-void				close_fds_and_pipes(t_data *d);
-void				close_fds_in_out(t_data *d);
-void				close_pipes(t_data *d);
+void				close_pipes(t_exec *d);
 void				my_close(int *fd);
+void				close_fds_cmds(t_node **head_cmd);
 
 // env check
-char				*get_cmd_path(t_data *d, char *cmd);
-char				**get_paths(char **env);
+char				*get_cmd_path(t_context *ctx, char *cmd);
+char				**get_paths(t_context *ctx);
 
 // utils
-void				secure_fork(int *pid, t_data *d);
+void				secure_fork(int *pid, t_context *ctx);
 char				**empty_split(void);
-void				redirect(int input, int output, t_data *d);
+void				redirect(int input, int output, t_context *ctx);
 
 // children
-void				process_child(t_data *d, char **av, char **env, int i_cmds);
+void				process_child(t_context *ctx, t_node *cmd, int i_cmds);
 
 // parent
-void				start_children(t_data *d, char **av, char **env);
-int					wait_children(t_data *d);
-
-// here_doc
-void				process_here_doc(t_data *d, char *limiter);
+void				start_children(t_context *ctx);
+int					wait_children(t_exec *d);
 
 #endif

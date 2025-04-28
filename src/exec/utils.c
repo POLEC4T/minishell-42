@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 14:04:59 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/25 14:19:02 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,23 @@
 /**
  * @brief redirects the standard input and output to the given file descriptors
  */
-void	redirect(int input, int output, t_data *d)
+void	redirect(int input, int output, t_context *ctx)
 {
-	if (dup2(input, STDIN_FILENO) == -1)
-		exit_process(EXIT_FAILURE, d);
-	if (dup2(output, STDOUT_FILENO) == -1)
-		exit_process(EXIT_FAILURE, d);
+	if (input != STDIN_FILENO)
+		if (dup2(input, STDIN_FILENO) == -1)
+			exit_free(ctx);
+	if (output != STDOUT_FILENO)
+		if (dup2(output, STDOUT_FILENO) == -1)
+			exit_free(ctx);
 }
 
-void	secure_fork(int *pid, t_data *d)
+void	secure_fork(int *pid, t_context *ctx)
 {
 	*pid = fork();
 	if (*pid == -1)
 	{
 		msg("fork", ": ", strerror(errno), STDERR_FILENO);
-		exit_process(EXIT_FAILURE, d);
+		exit_free(ctx);
 	}
 }
 

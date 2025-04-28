@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:43:03 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 13:51:42 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/28 18:05:34 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void format_exit_code(t_context *context)
 
 	code = context->exit_code;
 	if (code < 0)
-		code = 255 + code;
+		code = 256 + code;
 	else if (code > 255)
 		code = code % 256;
 	context->exit_code = code;
@@ -94,7 +94,8 @@ void	ft_exit(t_context *context, char **args)
 			context->exit_code = 2;
 		}
 	}
-	printf("exit\n");
+	if (ft_lstsize(*context->head_cmd) == 1)
+		printf("exit\n");
 	format_exit_code(context);
 	exit_free(context);
 }
