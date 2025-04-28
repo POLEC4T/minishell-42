@@ -6,31 +6,41 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/23 14:04:59 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/25 16:29:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	start_children(t_data *d, char **av, char **env)
+void	start_children(t_context *ctx)
 {
-	int	i_cmds;
+	int		i_cmds;
+	t_node	*curr_node;
+	t_exec	*d;
+	t_cmd	*curr_cmd;
 
-	i_cmds = -1;
-	while (++i_cmds < d->nb_cmds)
+	d = ctx->exec_data;
+	curr_node = *ctx->head_cmd;
+	i_cmds = 0;
+	while (curr_node)
 	{
-		secure_fork(&d->pids[i_cmds], d);
+		curr_cmd = cast_to_cmd(curr_node->content);
+		secure_fork(&d->pids[i_cmds], ctx);
 		if (!d->pids[i_cmds])
-			process_child(d, av, env, i_cmds);
-		if (i_cmds > 0)
-			my_close(&d->pipes[i_cmds - 1][READ]);
-		if (i_cmds < d->nb_cmds - 1)
-			my_close(&d->pipes[i_cmds][WRITE]);
+			process_child(ctx, curr_node, i_cmds);
+		if (d->nb_cmds > 1)
+		{
+			if (i_cmds > 0)
+				my_close(&d->pipes[i_cmds - 1][READ]);
+			if (i_cmds < d->nb_cmds - 1)
+				my_close(&d->pipes[i_cmds][WRITE]);
+		}
+		i_cmds++;
+		curr_node = curr_node->next;
 	}
-	close_fds_in_out(d);
 }
 
-int	wait_children(t_data *d)
+int	wait_children(t_exec *d)
 {
 	int	status;
 	int	i_pids;

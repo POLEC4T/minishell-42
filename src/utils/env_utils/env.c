@@ -6,15 +6,15 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/22 17:33:20 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/25 14:16:55 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void init_env(t_context *ctx, char **envp)
+void	init_env(t_context *ctx, char **envp)
 {
-    ft_export(ctx, envp);
+	ft_export(ctx, envp);
 }
 
 /**
@@ -84,16 +84,26 @@ t_node	*ft_get_env_node(t_node **head, char *key)
  * @returns the value of the node in the list that matches the key
  * @note needs to be freed
  */
-char	*ft_get_env_val(t_node **head, char *key)
+char	*ft_get_env_val(t_context *ctx, char *key)
 {
 	t_node		*node;
-	node = ft_get_env_node(head, key);
+	t_key_value	*kv;
+	char		*dup;
+
+	node = ft_get_env_node(ctx->head_env, key);
 	if (!node)
 		return (NULL);
-	t_key_value	*kv;
 	kv = cast_to_key_value(node->content);
 	if (kv && kv->value)
-		return (ft_strdup(kv->value));
+	{
+		dup = ft_strdup(kv->value);
+		if (!dup)
+		{
+			ft_fprintf(STDERR_FILENO, "ft_get_env_val: %s\n", strerror(errno));
+			exit_free(ctx);
+		}
+		return (dup);
+	}
 	return (NULL);
 }
 
@@ -124,10 +134,11 @@ int	ft_set_env_val(t_node **head, char *key, char *value)
 	return (EXIT_SUCCESS);
 }
 
-void print_env_val(t_node **head, char *key)
+void	print_env_val(t_context *ctx, char *key)
 {
-	char *value;
-	value = ft_get_env_val(head, key);
+	char	*value;
+
+	value = ft_get_env_val(ctx, key);
 	if (value)
 	{
 		printf("%s\n", value);

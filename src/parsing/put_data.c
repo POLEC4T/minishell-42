@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_data.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 14:38:11 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/17 16:05:20 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:14:58 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ size_t	strcount(char *str, char stop)
 	return (i);
 }
 
-void	put_data(char *str, t_node *node, char stop)
+void	put_exec(char *str, t_node *node, char stop)
 {
 	size_t	length;
 	size_t	i;
