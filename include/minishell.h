@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 16:49:46 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 17:50:35 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ typedef struct s_redirect
 {
 	char			*filename;
 	t_redir_type	redir_type;
+	int				fd_in;
+	int				fd_out;
 }					t_redirect;
 
 typedef struct s_cmd
 {
-	char **args; // args contient tout les token de type COMMAND FLAG ARGUMENT
-	t_redirect		*redirects;
+	char			**args;
+	t_redirect		**redirects;
 	int				pid;
 }					t_cmd;
 
@@ -64,8 +66,8 @@ typedef enum
 	FLAG,
 	ARGUMENT,
 	FILES,
-	IN,
-	OUT,
+	// IN,
+	// OUT,
 	// HEREDOC,
 	DELIMITER,
 	NUL

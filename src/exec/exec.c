@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 13:32:01 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 17:44:59 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,22 @@ void	print_cmds(t_node **head_cmd)
 		printf("Command: ");
 		for (int i = 0; cmd_content->args && cmd_content->args[i]; i++)
 			printf("%s ", cmd_content->args[i]);
-		if (cmd_content->fd_in != -2)
-			printf("    -> fd_in: %d", cmd_content->fd_in);
-		if (cmd_content->fd_out != -2)
-			printf("    -> fd_out: %d", cmd_content->fd_out);
+		if (cmd_content->redirects)
+		{
+			printf("Redirects: ");
+			for (int j = 0; cmd_content->redirects[j]; j++)
+			{
+				printf("%s ", cmd_content->redirects[j]->filename);
+				if (cmd_content->redirects[j]->redir_type == IN)
+					printf("< ");
+				else if (cmd_content->redirects[j]->redir_type == OUT)
+					printf("> ");
+				else if (cmd_content->redirects[j]->redir_type == HEREDOC)
+					printf("<< ");
+				else if (cmd_content->redirects[j]->redir_type == OUT_TRUNC)
+					printf(">> ");
+			}
+		}
 		printf("\n");
 		cmd = cmd->next;
 	}
@@ -37,7 +49,7 @@ void	print_cmds(t_node **head_cmd)
 
 void	ft_exec(t_context *ctx)
 {
-	// print_cmds(ctx->head_cmd);
+	print_cmds(ctx->head_cmd);
 	init_exec(ctx);
 	start_children(ctx);
 	ctx->exit_code = wait_children(ctx);

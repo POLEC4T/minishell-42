@@ -6,14 +6,13 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 14:59:29 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 18:07:13 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-static void exec_builtin(t_context *ctx, t_cmd *cmd)
+static void	exec_builtin(t_context *ctx, t_cmd *cmd)
 {
 	if (!ft_strncmp(cmd->args[0], "echo", 5))
 		ft_echo(ctx, cmd->args + 1);
@@ -43,19 +42,27 @@ static void	set_curr_in_out(t_context *ctx, t_node *node_cmd)
 	int		input;
 	int		output;
 	t_cmd	*cmd;
+	int		i;
 
 	cmd = cast_to_cmd(node_cmd->content);
 	input = STDIN_FILENO;
 	output = STDOUT_FILENO;
-	if (cmd->fd_in >= 0)
-		input = cmd->fd_in;
-	else if (node_cmd->prev)
-		input = ctx->exec_data->prev_pipe_read;
-	if (cmd->fd_out >= 0)
-		output = cmd->fd_out;
-	else if (node_cmd->next)
-		output = ctx->exec_data->pipe_fds[WRITE];
-	redirect(input, output, ctx);
+	i = 0;
+	if (!cmd->redirects)
+		return ;
+	while (cmd->redirects[i])
+	{
+		if (cmd->redirects[i]->fd_in >= 0)
+			input = cmd->redirects[i]->fd_in;
+		else if (node_cmd->prev)
+			input = ctx->exec_data->prev_pipe_read;
+		if (cmd->redirects[i]->fd_out >= 0)
+			output = cmd->redirects[i]->fd_out;
+		else if (node_cmd->next)
+			output = ctx->exec_data->pipe_fds[WRITE];
+		redirect(input, output, ctx);
+		i++;
+	}
 }
 
 static void	exec_cmd(t_context *ctx, t_cmd *cmd)
@@ -63,10 +70,9 @@ static void	exec_cmd(t_context *ctx, t_cmd *cmd)
 	t_exec	*d;
 
 	d = ctx->exec_data;
-	
 	if (is_builtin_cmd(cmd->args[0]))
 		exec_builtin(ctx, cmd);
-	else 
+	else
 	{
 		d->cmd_path = get_cmd_path(ctx, cmd->args[0]);
 		execve(d->cmd_path, cmd->args, env_to_tabstr(ctx->head_env));
