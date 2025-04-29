@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 16:41:00 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 16:50:16 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ void prep_fake_cmd(t_context *ctx, char *args, int fd_in, int fd_out)
 {
 	t_node	*cmd;
 	t_cmd	*fake_cmd;
+	t_redirect *redirs;
 
+
+	
 	cmd = ft_lstnew(NULL);
 	if (!cmd)
 		exit(EXIT_FAILURE);
@@ -57,8 +60,7 @@ void prep_fake_cmd(t_context *ctx, char *args, int fd_in, int fd_out)
 	fake_cmd->args = ft_split(args, " ");
 	if (!fake_cmd->args)
 		exit(EXIT_FAILURE);
-	fake_cmd->fd_in = fd_in;
-	fake_cmd->fd_out = fd_out;
+	fake_cmd->redirects = fd_in;
 	fake_cmd->pid = -2;
 	cmd->content = fake_cmd;
 	ft_lstadd_back(ctx->head_cmd, cmd);
@@ -66,7 +68,7 @@ void prep_fake_cmd(t_context *ctx, char *args, int fd_in, int fd_out)
 
 void prep_fake_cmds(t_context *ctx)
 {
-	prep_fake_cmd(ctx, "echo oui", -2, -2); // not working ????? \n a chaque fin de ligne
+	prep_fake_cmd(ctx, "echo oui", "Makefile", IN); // not working ????? \n a chaque fin de ligne
 	prep_fake_cmd(ctx, "cat", -2, -2); // not working ????? \n a chaque fin de ligne
 }
 

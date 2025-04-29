@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 13:33:06 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 16:49:46 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,25 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+typedef enum e_redir_type
+{
+	IN,        // <
+	HEREDOC,   // <<
+	OUT_TRUNC, // >
+	OUT,       // >>
+	NONE
+}					t_redir_type;
+
+typedef struct s_redirect
+{
+	char			*filename;
+	t_redir_type	redir_type;
+}					t_redirect;
+
 typedef struct s_cmd
 {
 	char **args; // args contient tout les token de type COMMAND FLAG ARGUMENT
-	int fd_in;   // init a -2 car -1 si erreur
-	int				fd_out;
+	t_redirect		*redirects;
 	int				pid;
 }					t_cmd;
 
@@ -52,7 +66,7 @@ typedef enum
 	FILES,
 	IN,
 	OUT,
-	HEREDOC,
+	// HEREDOC,
 	DELIMITER,
 	NUL
 }					token_type;
