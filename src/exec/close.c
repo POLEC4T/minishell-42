@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:37:03 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/28 16:23:20 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 13:12:04 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,12 @@ void	my_close(int *fd)
 
 void	close_pipes(t_exec *d)
 {
-	int	i;
-
-	i = 0;
-	while (d->pipes && d->pipes[i])
-	{
-		my_close(&d->pipes[i][READ]);
-		my_close(&d->pipes[i][WRITE]);
-		i++;
-	}
+	my_close(&d->pipe_fds[READ]);
+	my_close(&d->pipe_fds[WRITE]);
 }
 /**
  * @brief close all file descriptors of the chained list of commands
- * (does not close the pipes)
+ * (does not close the pipe_fds)
  */
 void	close_fds_cmds(t_node **head_cmd)
 {

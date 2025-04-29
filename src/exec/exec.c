@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/28 16:11:20 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 13:32:01 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,5 @@ void	ft_exec(t_context *ctx)
 	// print_cmds(ctx->head_cmd);
 	init_exec(ctx);
 	start_children(ctx);
-	ctx->exit_code = wait_children(ctx->exec_data);
+	ctx->exit_code = wait_children(ctx);
 }

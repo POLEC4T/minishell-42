@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/28 18:43:56 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 15:04:21 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,6 @@ void	free_exec(t_exec *data)
 			free(data->cmd_path);
 		if (data->paths != NULL)
 			ft_free_tab((void **)data->paths);
-		if (data->pids != NULL)
-			free(data->pids);
-		if (data->pipes != NULL)
-			ft_free_tab((void **)data->pipes);
 		free(data);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/28 18:43:24 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 16:41:00 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@ static void	clean_init_exec(t_context *ctx)
 {
 	ctx->exec_data = malloc (sizeof(t_exec));
 	if (!ctx->exec_data)
+	{
+		ft_fprintf(STDERR_FILENO, "malloc: %s\n", strerror(errno));
 		exit_free(ctx);
-	ctx->exec_data->pipes = NULL;
-	ctx->exec_data->pids = NULL;
+	}
 	ctx->exec_data->nb_cmds = -1;
 	ctx->exec_data->paths = NULL;
 	ctx->exec_data->cmd_path = NULL;
+	ctx->exec_data->prev_pipe_read = -2;
+	ctx->exec_data->pipe_fds[READ] = -2;
+	ctx->exec_data->pipe_fds[WRITE] = -2;
 }
 
 void	init_context(t_context *context)
@@ -55,13 +59,15 @@ void prep_fake_cmd(t_context *ctx, char *args, int fd_in, int fd_out)
 		exit(EXIT_FAILURE);
 	fake_cmd->fd_in = fd_in;
 	fake_cmd->fd_out = fd_out;
+	fake_cmd->pid = -2;
 	cmd->content = fake_cmd;
 	ft_lstadd_back(ctx->head_cmd, cmd);
 }
 
 void prep_fake_cmds(t_context *ctx)
 {
-	prep_fake_cmd(ctx, "expr $?", -2, -2);
+	prep_fake_cmd(ctx, "echo oui", -2, -2); // not working ????? \n a chaque fin de ligne
+	prep_fake_cmd(ctx, "cat", -2, -2); // not working ????? \n a chaque fin de ligne
 }
 
 void print_cmd(t_node *cmd)

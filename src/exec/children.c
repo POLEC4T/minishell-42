@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/28 16:29:01 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 14:59:29 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void exec_builtin(t_context *ctx, t_cmd *cmd)
  * if fd_out is set in the command, it will be used as output
  * else if [not last cmd], the output will be the input of the next command
  */
-static void	set_curr_in_out(t_context *ctx, t_node *node_cmd, int i_cmds)
+static void	set_curr_in_out(t_context *ctx, t_node *node_cmd)
 {
 	int		input;
 	int		output;
@@ -49,12 +49,12 @@ static void	set_curr_in_out(t_context *ctx, t_node *node_cmd, int i_cmds)
 	output = STDOUT_FILENO;
 	if (cmd->fd_in >= 0)
 		input = cmd->fd_in;
-	else if (i_cmds > 0)
-		input = ctx->exec_data->pipes[i_cmds - 1][READ];
+	else if (node_cmd->prev)
+		input = ctx->exec_data->prev_pipe_read;
 	if (cmd->fd_out >= 0)
 		output = cmd->fd_out;
-	else if (i_cmds < ctx->exec_data->nb_cmds - 1)
-		output = ctx->exec_data->pipes[i_cmds][WRITE];
+	else if (node_cmd->next)
+		output = ctx->exec_data->pipe_fds[WRITE];
 	redirect(input, output, ctx);
 }
 
@@ -75,12 +75,12 @@ static void	exec_cmd(t_context *ctx, t_cmd *cmd)
 	exit_free(ctx);
 }
 
-void	process_child(t_context *ctx, t_node *node_cmd, int i_cmds)
+void	process_child(t_context *ctx, t_node *node_cmd)
 {
 	t_cmd	*cmd;
 
 	cmd = cast_to_cmd(node_cmd->content);
-	set_curr_in_out(ctx, node_cmd, i_cmds);
+	set_curr_in_out(ctx, node_cmd);
 	close_pipes(ctx->exec_data);
 	close_fds_cmds(ctx->head_cmd);
 	exec_cmd(ctx, cmd);
