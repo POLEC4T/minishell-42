@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 16:25:34 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:50:35 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,28 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-
-typedef enum
+typedef enum e_redir_type
 {
-	IN, // <
-	HEREDOC, // <<
+	IN,        // <
+	HEREDOC,   // <<
 	OUT_TRUNC, // >
-	OUT, // >>
+	OUT,       // >>
 	NONE
-} t_redir_type;
+}					t_redir_type;
 
 typedef struct s_redirect
 {
-	char *filename;
-	t_redir_type redir_type;
-} t_redirect;
-
+	char			*filename;
+	t_redir_type	redir_type;
+	int				fd_in;
+	int				fd_out;
+}					t_redirect;
 
 typedef struct s_cmd
 {
-	char **args; // args contient tout les token de type COMMAND FLAG ARGUMENT
-	t_redirect *redirects;
+	char			**args;
+	t_redirect		**redirects;
+	int				pid;
 }					t_cmd;
 
 typedef struct s_key_value
@@ -65,8 +66,8 @@ typedef enum
 	FLAG,
 	ARGUMENT,
 	FILES,
-	IN,
-	OUT,
+	// IN,
+	// OUT,
 	// HEREDOC,
 	DELIMITER,
 	NUL
@@ -80,8 +81,8 @@ typedef struct s_token
 
 typedef struct s_exec
 {
-	int				**pipes;
-	int				*pids;
+	int				pipe_fds[2];
+	int				prev_pipe_read;
 	int				nb_cmds;
 	char			**paths;
 	char			*cmd_path;
@@ -211,14 +212,15 @@ char				**get_paths(t_context *ctx);
 
 // utils
 void				secure_fork(int *pid, t_context *ctx);
+void				secure_pipe(t_context *ctx);
 char				**empty_split(void);
 void				redirect(int input, int output, t_context *ctx);
 
 // children
-void				process_child(t_context *ctx, t_node *cmd, int i_cmds);
+void				process_child(t_context *ctx, t_node *cmd);
 
 // parent
 void				start_children(t_context *ctx);
-int					wait_children(t_exec *d);
+int					wait_children(t_context *ctx);
 
 #endif

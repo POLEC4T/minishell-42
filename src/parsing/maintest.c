@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/23 18:17:01 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/04/29 17:07:30 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ void	print_token_type(token_type type)
 	case FILES:
 		printf("FILES\n");
 		break ;
-	case IN:
-		printf("IN\n");
-		break ;
-	case OUT:
-		printf("OUT\n");
-		break ;
-	case HEREDOC:
-		printf("HEREDOC\n");
-		break ;
+	// case IN:
+	// 	printf("IN\n");
+	// 	break ;
+	// case OUT:
+	// 	printf("OUT\n");
+	// 	break ;
+	// case HEREDOC:
+	// 	printf("HEREDOC\n");
+	// 	break ;
 	case DELIMITER:
 		printf("DELIMITER\n");
 		break ;
