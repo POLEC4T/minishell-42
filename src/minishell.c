@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 18:01:59 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/04 10:06:10 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,9 +120,10 @@ void	minishell(char **envp)
 	t_context ctx;
 	init_context(&ctx);
 	ft_export(&ctx, envp);
-
-	prep_fake_cmds(&ctx);
-	ft_exec(&ctx);
+	
+	read_token(ctx);
+	//prep_fake_cmds(&ctx);
+	//ft_exec(&ctx);
 
 	exit_free(&ctx);
 }

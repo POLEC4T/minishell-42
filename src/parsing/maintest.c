@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maintest.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/29 17:07:30 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/04 10:06:35 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ t_node	*read_token(t_context ctx)
 	}
 	read = quote_delimiter(read);
 	token = parsing(read);
-	// print_token_list(token);
+	print_token_list(token);
 	// free(read);
 	// read = readline("pitishell >");
 

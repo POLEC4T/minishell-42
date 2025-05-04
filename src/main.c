@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/22 15:05:54 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/04 10:05:50 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int main(int argc, char **argv, char **envp)
 {
     (void)argc;
     (void)argv;
+    (void)envp;
     // envp = NULL;
     minishell(envp);
-    //  maintest();
     return (EXIT_SUCCESS);
 }
