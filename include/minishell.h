@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/05 11:58:32 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/05 14:40:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ char				*quote_delimiter(char *str);
 // free
 void				exit_free(t_context *context);
 void				free_context(t_context *context);
+void				ft_free_ctx_cmds(t_node **head_cmd);
 
 // get_next_line
 char				*get_next_line(int fd);
