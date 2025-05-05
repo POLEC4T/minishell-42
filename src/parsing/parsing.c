@@ -3,70 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/24 15:14:58 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/05 14:26:00 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
+
 #include "minishell.h"
 
-t_node *parsing(char *str)
+t_node **parsing(char *str)
 {
     size_t i = 0;
+    t_node **head_cmd = NULL;
+    t_node *prev_cmd = NULL;
+    t_node *new_node = NULL;
 
-    t_node *first_token = malloc(sizeof(t_node));
-    if (!first_token)
+    head_cmd = malloc(sizeof(t_node *));
+    *head_cmd = NULL;
+    char **spipe = ft_split(str, "|");
+    if (!spipe)
         return NULL;
-
-    t_node *current_token = first_token;
-    first_token->prev = NULL;
-    first_token->next = NULL;
-    first_token->content = NULL; // ✅
-
-    while (str[i])
+    
+    while (spipe[i])
     {
-        if (str[i] == ' ')
+        new_node = ft_lstnew((void *)split_cmd(spipe[i]));
+        new_node->prev = prev_cmd;
+        if (prev_cmd)
+            prev_cmd->next = new_node;
+        prev_cmd = new_node;
+        if (!*head_cmd)
         {
-            i++;
+            *head_cmd = new_node;
         }
-        else if (str[i] != '"')
-        {
-            put_exec(str + i, current_token, ' ');
-            i += strcount(str + i, ' ');
 
-            current_token->next = malloc(sizeof(t_node));
-            if (!current_token->next)
-                return first_token;
 
-            current_token->next->prev = current_token;
-            current_token = current_token->next;
-            current_token->next = NULL;
-            current_token->content = NULL; // ✅
-        }
-        else if (str[i] == '"' && str[i + 1] != '"')
-        {
-            i++;
-            put_exec(str + i, current_token, '"');
-            i += strcount(str + i, '"');
-            i++;
-
-            current_token->next = malloc(sizeof(t_node));
-            if (!current_token->next)
-                return first_token;
-
-            current_token->next->prev = current_token;
-            current_token = current_token->next;
-            current_token->next = NULL;
-            current_token->content = NULL; // ✅
-        }
-        else
-        {
-            i += 2;
-        }
+        i++;
     }
-    return first_token;
+    
+    return (head_cmd);
 }
 
