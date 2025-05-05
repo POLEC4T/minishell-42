@@ -98,7 +98,6 @@ PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\
 	maintest.c \
 	parsing.c \
-put_data.c \
 	define_token.c \
 	split_cmd.c \
 

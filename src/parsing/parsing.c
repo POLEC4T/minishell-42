@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/05 14:26:00 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:45:57 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_node **parsing(char *str)
 
         i++;
     }
-    
+    ft_free_tab((void **)spipe);
     return (head_cmd);
 }
 
