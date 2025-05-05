@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maintest.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/29 17:07:30 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/05 14:25:37 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,23 +100,25 @@ void	print_token_list(t_node *head)
 	}
 }
 
-t_node	*read_token(t_context ctx)
+t_context	*read_token(t_context *ctx)
 {
 	char *read;
-	t_node *token;
-
-	(void)ctx;
 	read = readline("pitishell >");
-
+	
 	if (read == NULL)
 	{
-		exit_free(&ctx);
+		exit_free(ctx);
 	}
-	read = quote_delimiter(read);
-	token = parsing(read);
-	// print_token_list(token);
+	while(read)
+	{	
+		read = quote_delimiter(read);
+		ctx->head_cmd = parsing(read);
+		ft_exec(ctx);
+		read = readline("pitishell >");
+	}
+	//print_token_list(token);
 	// free(read);
 	// read = readline("pitishell >");
 
-	return (token);
+	return (NULL);
 }

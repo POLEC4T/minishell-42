@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
 /*   Updated: 2025/05/05 11:58:38 by mniemaz          ###   ########.fr       */
@@ -34,10 +34,7 @@ void	init_context(t_context *context)
 	if (!context->head_env)
 		exit(EXIT_FAILURE);
 	(*(context->head_env)) = NULL;
-	context->head_cmd = malloc(sizeof(t_node *));
-	if (!context->head_cmd)
-		exit(EXIT_FAILURE);
-	(*(context->head_cmd)) = NULL;
+	context->head_token = NULL;
 	context->exit_code = 0;
 	clean_init_exec(context);
 }
@@ -125,16 +122,9 @@ void	minishell(char **envp)
 	t_context ctx;
 	init_context(&ctx);
 	ft_export(&ctx, envp);
-
-	prep_fake_cmds(&ctx);
-	ft_exec(&ctx);
 	
-	// ft_cd(&ctx, (char *[]){"/home/mniemaz/travail", NULL});
-	printf("fin\n");
-	print_env_val(&ctx, "PWD");
-	print_env_val(&ctx, "OLDPWD");
-	free_context(&ctx);
-	init_context(&ctx);
-	
+	read_token(&ctx);
+	//prep_fake_cmds(&ctx);
+	//ft_exec(&ctx);
 	exit_free(&ctx);
 }
