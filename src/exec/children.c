@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 18:07:13 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/04 11:10:15 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,80 @@ static void	exec_cmd(t_context *ctx, t_cmd *cmd)
 		d->cmd_path = get_cmd_path(ctx, cmd->args[0]);
 		execve(d->cmd_path, cmd->args, env_to_tabstr(ctx->head_env));
 		ft_fprintf(STDERR_FILENO, "exec: %s", strerror(errno));
+		exit_free(ctx);
 	}
-	exit_free(ctx);
+}
+// TODO put opens in another file
+int	open_infile(t_context *ctx, char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_RDONLY, 644);
+	if (fd == -1)
+	{
+		ft_fprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
+		exit_free(ctx);
+	}
+	return (fd);
 }
 
-void	process_child(t_context *ctx, t_node *node_cmd)
+int	open_outfile(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+		ft_fprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
+	return (fd);
+}
+
+/**
+ * * @brief open the output file in append mode
+ */
+int	open_outfile_append(char *filename)
+{
+	int	fd;
+
+	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
+		ft_fprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
+	return (fd);
+}
+
+static void	open_redirs(t_context *ctx, t_node *node_cmd)
+{
+	int			i;
+	t_cmd		*cmd;
+	t_redirect	*redir;
+
+	cmd = cast_to_cmd(node_cmd->content);
+	i = 0;
+	while (cmd->redirects[i])
+	{
+		redir = cmd->redirects[i];
+		if (redir->redir_type == IN)
+			redir->fd_in = open_infile(ctx, redir->filename);
+		else if (redir->redir_type == OUT)
+			redir->fd_out = open_outfile(redir->filename);
+		else if (redir->redir_type == OUT_TRUNC)
+			redir->fd_out = open_outfile_append(redir->filename);
+		i++;
+	}
+}
+
+/**
+ * @brief this function processes
+ * - the child (created the calling function in a fork)
+ * OR
+ * - a builtin cmd (no fork because builtins need to change the ctx for parent)
+ */
+void	process_cmd(t_context *ctx, t_node *node_cmd)
 {
 	t_cmd	*cmd;
 
 	cmd = cast_to_cmd(node_cmd->content);
+	if (cmd->redirects)
+		open_redirs(ctx, node_cmd);
 	set_curr_in_out(ctx, node_cmd);
 	close_pipes(ctx->exec_data);
 	close_fds_cmds(ctx->head_cmd);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cd.c                                               :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:01:44 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/22 17:12:58 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/05 11:25:29 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	set_to_oldpwd(t_context *context, char **newpwd)
 /**
  * @brief sets newpwd to the value of HOME concatenated with the rest of newpwd.
  */
-static int	prefix_home_to_pwd(t_context *context, char **newpwd)
+static int	prefix_home_path(t_context *context, char **newpwd)
 {
 	char	*home;
 	char	*temp;
@@ -72,14 +72,13 @@ static int	prefix_home_to_pwd(t_context *context, char **newpwd)
 		return (EXIT_FAILURE);
 	}
 	temp = ft_strjoin(home, *newpwd + 1);
+	free(*newpwd);
 	if (!temp)
 	{
 		free(home);
 		ft_fprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
-		free(*newpwd);
 		return (EXIT_FAILURE);
 	}
-	free(*newpwd);
 	*newpwd = temp;
 	free(home);
 	return (EXIT_SUCCESS);
@@ -91,11 +90,12 @@ static int	prefix_home_to_pwd(t_context *context, char **newpwd)
 static int	set_pwds(t_context *context, char **newpwd)
 {
 	char	*oldpwd;
+	char	*to_free;
 
-	oldpwd = ft_get_env_val(context, "PWD");
+	oldpwd = getcwd(NULL, 0);
 	if (oldpwd == NULL)
 	{
-		ft_fprintf(STDERR_FILENO, "cd: PWD not set\n");
+		ft_fprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
 		free(*newpwd);
 		return (EXIT_FAILURE);
 	}
@@ -106,8 +106,24 @@ static int	set_pwds(t_context *context, char **newpwd)
 		free(oldpwd);
 		return (EXIT_FAILURE);
 	}
-	ft_set_env_val(context->head_env, "PWD", *newpwd);
-	ft_set_env_val(context->head_env, "OLDPWD", oldpwd);
+	free(*newpwd);
+	*newpwd = getcwd(NULL, 0);
+	if (*newpwd == NULL)
+	{
+		ft_fprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
+		free(oldpwd);
+		return (EXIT_FAILURE);
+	}
+	// TODO clean this shhh
+	to_free = *newpwd;
+	*newpwd = ft_strjoin("PWD=", *newpwd);
+	
+	free(to_free);
+	to_free = oldpwd;
+	oldpwd = ft_strjoin("OLDPWD=", oldpwd);
+	free(to_free);
+	ft_export(context, (char *[]){*newpwd, NULL});
+	ft_export(context, (char *[]){oldpwd, NULL});
 	free(*newpwd);
 	free(oldpwd);
 	return (EXIT_SUCCESS);
@@ -116,29 +132,29 @@ static int	set_pwds(t_context *context, char **newpwd)
 /**
  * @param args : expected to be : [[path] NULL]
  */
-void	ft_cd(t_context *context, char **args)
+int	ft_cd(t_context *context, char **args)
 {
 	char	*newpwd;
 
 	if (!args)
-		return ;
+		return (EXIT_FAILURE);
 	if (ft_tablen((void **)args) > 1)
 	{
 		ft_fprintf(STDERR_FILENO, "cd: too many arguments\n");
-		return ;
+		return (EXIT_FAILURE);
 	}
 	newpwd = NULL;
 	if (init_newpwd(context, args[0], &newpwd) == EXIT_FAILURE)
-		return ;
+		return (EXIT_FAILURE);
 	if (ft_strncmp(newpwd, "-", 2) == 0)
 	{
 		if (set_to_oldpwd(context, &newpwd) == EXIT_FAILURE)
-			return ;
+			return (EXIT_FAILURE);
 	}
 	else if (newpwd[0] == '~')
 	{
-		if (prefix_home_to_pwd(context, &newpwd) == EXIT_FAILURE)
-			return ;
+		if (prefix_home_path(context, &newpwd) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 	}
-	set_pwds(context, &newpwd);
+	return (set_pwds(context, &newpwd) == EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/25 14:16:55 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/04 12:18:40 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ int	ft_set_env_val(t_node **head, char *key, char *value)
 	while (tmp)
 	{
 		kv = cast_to_key_value(tmp->content);
+		// TODO: why + 1 + 1 ???
 		if (ft_strncmp(kv->key, key, (size_t)ft_strlen(key) + 1 + 1) == 0)
 		{
 			free(kv->value);

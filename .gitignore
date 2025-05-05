@@ -6,4 +6,5 @@ minishell
 .build
 readline.sup
 *test*
+*test*/*
 *.txt

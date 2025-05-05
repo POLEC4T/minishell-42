@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 18:03:08 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/05 14:27:38 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,21 @@ void	free_exec(t_exec *data)
 	}
 }
 
-void	exit_free(t_context *context)
+void free_context(t_context *context)
 {
 	if (context->head_env)
 		ft_lstclear(context->head_env, ft_free_env_content);
 	if (context->head_env)
 		free(context->head_env);
-	if (context->head_token)
-		ft_lstclear(&context->head_token, ft_free_token_content);
 	if (context->head_cmd)
 		ft_lstclear(context->head_cmd, ft_free_cmd_content);
 	if (context->head_cmd)
 		free(context->head_cmd);
 	free_exec(context->exec_data);
+}
+
+void	exit_free(t_context *context)
+{
+	free_context(context);
 	exit(context->exit_code);
 }
