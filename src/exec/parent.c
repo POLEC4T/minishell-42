@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/04 11:21:27 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/05 15:56:53 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,26 @@ void	start_children(t_context *ctx)
 		curr_cmd = cast_to_cmd(curr_node->content);
 		if (curr_node->next)
 			secure_pipe(ctx);
-		if (!is_builtin_cmd(curr_cmd->args[0]))
-			secure_fork(&curr_cmd->pid, ctx);
-		if (!curr_cmd->pid || is_builtin_cmd(curr_cmd->args[0]))
+		if (!curr_node->next && !curr_node->prev && is_builtin_cmd(curr_cmd->args[0]))
 			process_cmd(ctx, curr_node);
+		else
+		{
+			secure_fork(&curr_cmd->pid, ctx);
+			
+			if (!curr_cmd->pid)
+			{
+				// printf("cmd: %s, pid: %d, next: %d, prev: %d\n",
+				// 	curr_cmd->args[0], curr_cmd->pid,
+				// 	(curr_node->next ? 1 : 0), (curr_node->prev ? 1 : 0));
+				process_cmd(ctx, curr_node);
+			}
+		}
+
+		
+		
+
+		
+		
 		if (curr_node->next)
 		{
 			my_close(&d->pipe_fds[WRITE]);

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/04 11:10:15 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/05 16:28:36 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,30 +48,34 @@ static void	set_curr_in_out(t_context *ctx, t_node *node_cmd)
 	input = STDIN_FILENO;
 	output = STDOUT_FILENO;
 	i = 0;
-	if (!cmd->redirects)
-		return ;
-	while (cmd->redirects[i])
+	if (node_cmd->next)
+		output = ctx->exec_data->pipe_fds[WRITE];
+	if (node_cmd->prev)
+		input = ctx->exec_data->prev_pipe_read;
+	while (cmd->redirects && cmd->redirects[i])
 	{
 		if (cmd->redirects[i]->fd_in >= 0)
 			input = cmd->redirects[i]->fd_in;
-		else if (node_cmd->prev)
-			input = ctx->exec_data->prev_pipe_read;
 		if (cmd->redirects[i]->fd_out >= 0)
 			output = cmd->redirects[i]->fd_out;
-		else if (node_cmd->next)
-			output = ctx->exec_data->pipe_fds[WRITE];
-		redirect(input, output, ctx);
 		i++;
 	}
+	redirect(input, output, ctx);
 }
 
-static void	exec_cmd(t_context *ctx, t_cmd *cmd)
+static void	exec_cmd(t_context *ctx, t_node *node_cmd)
 {
 	t_exec	*d;
+	t_cmd	*cmd;
 
 	d = ctx->exec_data;
+	cmd = cast_to_cmd(node_cmd->content);
 	if (is_builtin_cmd(cmd->args[0]))
+	{
 		exec_builtin(ctx, cmd);
+		if (node_cmd->next || node_cmd->prev)
+			exit_free(ctx);
+	}
 	else
 	{
 		d->cmd_path = get_cmd_path(ctx, cmd->args[0]);
@@ -154,5 +158,5 @@ void	process_cmd(t_context *ctx, t_node *node_cmd)
 	set_curr_in_out(ctx, node_cmd);
 	close_pipes(ctx->exec_data);
 	close_fds_cmds(ctx->head_cmd);
-	exec_cmd(ctx, cmd);
+	exec_cmd(ctx, node_cmd);
 }
