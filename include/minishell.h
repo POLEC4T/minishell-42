@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 17:50:35 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/05 12:02:06 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef enum e_redir_type
 {
 	IN,        // <
 	HEREDOC,   // <<
-	OUT_TRUNC, // >
-	OUT,       // >>
+	OUT_TRUNC, // >>
+	OUT,       // >
 	NONE
 }					t_redir_type;
 
@@ -158,12 +158,13 @@ void				ft_exit(t_context *context, char **args);
 int					is_builtin_cmd(char *cmd);
 
 // parsing
-t_node				*read_token(t_context ctx);
+t_context				*read_token(t_context *ctx);
 void				put_exec(char *str, t_node *token, char stop);
-t_node				*parsing(char *str);
+t_node				**parsing(char *str);
 size_t				strcount(char *str, char stop);
 int					define_token(t_node *node);
 void				print_token_list(t_node *head);
+t_cmd				*split_cmd(char *str);
 
 // syntax
 int					syntax(t_node *head);

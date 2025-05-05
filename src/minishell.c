@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/04 10:06:10 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/05 12:04:30 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,9 @@ void	minishell(char **envp)
 	init_context(&ctx);
 	ft_export(&ctx, envp);
 	
-	read_token(ctx);
+	read_token(&ctx);
 	//prep_fake_cmds(&ctx);
 	//ft_exec(&ctx);
 
-	exit_free(&ctx);
+	//exit_free(&ctx);
 }
