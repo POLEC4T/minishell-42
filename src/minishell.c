@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/05 12:04:30 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:00:47 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@ void	init_context(t_context *context)
 	if (!context->head_env)
 		exit(EXIT_FAILURE);
 	(*(context->head_env)) = NULL;
-	context->head_cmd = malloc(sizeof(t_node *));
-	if (!context->head_cmd)
-		exit(EXIT_FAILURE);
-	(*(context->head_cmd)) = NULL;
 	context->head_token = NULL;
 	context->exit_code = 0;
 	clean_init_exec(context);
@@ -125,5 +121,5 @@ void	minishell(char **envp)
 	//prep_fake_cmds(&ctx);
 	//ft_exec(&ctx);
 
-	//exit_free(&ctx);
+	exit_free(&ctx);
 }

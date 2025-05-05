@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/05 11:40:46 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:26:18 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,12 +178,14 @@ t_cmd	*split_cmd(char *str)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-
 	i = 0;
 	redirect = 0;
 	args = 0;
 	cmd->args = malloc((count_args(str) + 1) * sizeof(char *));
-	cmd->redirects = malloc(count_redirect(str) * sizeof(t_redirect *));
+	if (!cmd->args)
+		return (NULL); // Vérifiez si l'allocation échoue
+	cmd->redirects = malloc((count_redirect(str) + 1)* sizeof(t_redirect *));
+	cmd->pid = -2;
 	i = 0;
 	while (str[i])
 	{
