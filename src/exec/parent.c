@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 17:44:00 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/04 11:21:27 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ void	start_children(t_context *ctx)
 		curr_cmd = cast_to_cmd(curr_node->content);
 		if (curr_node->next)
 			secure_pipe(ctx);
-		secure_fork(&curr_cmd->pid, ctx);
-		if (!curr_cmd->pid)
-			process_child(ctx, curr_node);
+		if (!is_builtin_cmd(curr_cmd->args[0]))
+			secure_fork(&curr_cmd->pid, ctx);
+		if (!curr_cmd->pid || is_builtin_cmd(curr_cmd->args[0]))
+			process_cmd(ctx, curr_node);
 		if (curr_node->next)
 		{
 			my_close(&d->pipe_fds[WRITE]);
@@ -39,7 +40,7 @@ void	start_children(t_context *ctx)
 	}
 }
 
-int	wait_children(t_context *ctx)
+void	wait_children(t_context *ctx)
 {
 	int		status;
 	t_node	*curr_node;
@@ -49,10 +50,12 @@ int	wait_children(t_context *ctx)
 	while (curr_node)
 	{
 		cmd = cast_to_cmd(curr_node->content);
-		waitpid(cmd->pid, &status, 0);
-		if (WIFEXITED(status))
-			status = WEXITSTATUS(status);
+		if (cmd->pid > 0)
+		{
+			waitpid(cmd->pid, &status, 0);
+			if (WIFEXITED(status))
+				ctx->exit_code = WEXITSTATUS(status);
+		}
 		curr_node = curr_node->next;
 	}
-	return (status);
 }

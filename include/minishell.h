@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/05 12:02:06 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/05 11:58:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ typedef struct s_exec
 typedef struct s_context
 {
 	t_node			**head_env;
-	t_node			*head_token;
 	t_node			**head_cmd;
 	t_exec			*exec_data;
 	int				exit_code;
@@ -151,7 +150,7 @@ char				**env_to_tabstr(t_node **head_env);
 void				ft_export(t_context *ctx, char **args);
 void				ft_unset(t_context *ctx, char **args);
 void				ft_env(t_node **head);
-void				ft_cd(t_context *context, char **args);
+int					ft_cd(t_context *context, char **args);
 void				ft_pwd(char **args);
 void				ft_echo(t_context *context, char **args);
 void				ft_exit(t_context *context, char **args);
@@ -172,11 +171,12 @@ char				*quote_delimiter(char *str);
 
 // free
 void				exit_free(t_context *context);
+void				free_context(t_context *context);
 
 // get_next_line
 char				*get_next_line(int fd);
 
-// TO DELETE
+// TODO: delete
 void				print_cmd(t_node *cmd);
 
 ////// pipex
@@ -218,10 +218,10 @@ char				**empty_split(void);
 void				redirect(int input, int output, t_context *ctx);
 
 // children
-void				process_child(t_context *ctx, t_node *cmd);
+void				process_cmd(t_context *ctx, t_node *cmd);
 
 // parent
 void				start_children(t_context *ctx);
-int					wait_children(t_context *ctx);
+void				wait_children(t_context *ctx);
 
 #endif

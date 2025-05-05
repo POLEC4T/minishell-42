@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 17:44:59 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/04 11:21:46 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,17 @@ void	print_cmds(t_node **head_cmd)
 			printf("%s ", cmd_content->args[i]);
 		if (cmd_content->redirects)
 		{
-			printf("Redirects: ");
 			for (int j = 0; cmd_content->redirects[j]; j++)
 			{
-				printf("%s ", cmd_content->redirects[j]->filename);
 				if (cmd_content->redirects[j]->redir_type == IN)
-					printf("< ");
+				printf("< ");
 				else if (cmd_content->redirects[j]->redir_type == OUT)
-					printf("> ");
+				printf("> ");
 				else if (cmd_content->redirects[j]->redir_type == HEREDOC)
-					printf("<< ");
+				printf("<< ");
 				else if (cmd_content->redirects[j]->redir_type == OUT_TRUNC)
-					printf(">> ");
+				printf(">> ");
+				printf("%s ", cmd_content->redirects[j]->filename);
 			}
 		}
 		printf("\n");
@@ -49,8 +48,8 @@ void	print_cmds(t_node **head_cmd)
 
 void	ft_exec(t_context *ctx)
 {
-	print_cmds(ctx->head_cmd);
+	// print_cmds(ctx->head_cmd);
 	init_exec(ctx);
 	start_children(ctx);
-	ctx->exit_code = wait_children(ctx);
+	wait_children(ctx);
 }
