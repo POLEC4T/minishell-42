@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:01:44 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/05 17:10:59 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 14:03:05 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,23 +82,6 @@ static int	prefix_home_path(t_context *context, char **newpwd)
 	*newpwd = temp;
 	free(home);
 	return (EXIT_SUCCESS);
-}
-
-void create_or_set_env_var(t_context *context, char *key, char *value)
-{
-	t_node	*node;
-
-	node = ft_get_env_node(context->head_env, key);
-	if (node == NULL)
-	{
-		node = ft_envnew(key, value);
-		ft_lstadd_back(context->head_env, node);
-	}
-	else
-	{
-		free(cast_to_key_value(node->content)->value);
-		cast_to_key_value(node->content)->value = value;
-	}
 }
 
 /**

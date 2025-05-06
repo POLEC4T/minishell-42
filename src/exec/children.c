@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/05 16:28:36 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 12:51:06 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ static void	exec_cmd(t_context *ctx, t_node *node_cmd)
 	}
 	else
 	{
-		d->cmd_path = get_cmd_path(ctx, cmd->args[0]);
-		execve(d->cmd_path, cmd->args, env_to_tabstr(ctx->head_env));
+		execve(get_cmd_path(ctx, cmd->args[0]), cmd->args,
+			env_to_tabstr(ctx->head_env));
 		ft_fprintf(STDERR_FILENO, "exec: %s", strerror(errno));
 		exit_free(ctx);
 	}
@@ -145,8 +145,12 @@ static void	open_redirs(t_context *ctx, t_node *node_cmd)
 /**
  * @brief this function processes
  * - the child (created the calling function in a fork)
- * OR
- * - a builtin cmd (no fork because builtins need to change the ctx for parent)
+ * - OR
+ * - one builtin command in the parent process
+ * @example
+ * pitishell$ echo hello -> in the parent process
+ * pitishell$ echo hello | grep hello -> all in children processes
+ * pitishell$ cat file.txt -> in a child process
  */
 void	process_cmd(t_context *ctx, t_node *node_cmd)
 {

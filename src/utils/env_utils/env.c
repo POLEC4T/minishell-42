@@ -6,15 +6,37 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/04 12:18:40 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 14:22:55 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_env(t_context *ctx, char **envp)
+/**
+ * @brief create a new env variable or set the value of an existing one
+ */
+void	create_or_set_env_var(t_context *context, char *key, char *value)
 {
-	ft_export(ctx, envp);
+	t_node		*node;
+	t_key_value	*kv;
+	char		*old_value;
+
+	if (!key)
+		return ;
+	node = ft_get_env_node(context->head_env, key);
+	if (node == NULL)
+	{
+		node = ft_envnew(key, value);
+		ft_lstadd_back(context->head_env, node);
+	}
+	else
+	{
+		kv = cast_to_key_value(node->content);
+		old_value = kv->value;
+		if (old_value != NULL)
+			free(old_value);
+		kv->value = value;
+	}
 }
 
 /**

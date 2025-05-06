@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/05 15:56:53 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 12:55:39 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ void	start_children(t_context *ctx)
 
 		
 		
+		if (curr_node->prev)
+			my_close(&d->prev_pipe_read);
 		if (curr_node->next)
 		{
 			my_close(&d->pipe_fds[WRITE]);
 			d->prev_pipe_read = d->pipe_fds[READ];
 		}
-		if (curr_node->prev)
-			my_close(&d->prev_pipe_read);
 		curr_node = curr_node->next;
 	}
 }

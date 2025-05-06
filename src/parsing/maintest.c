@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/05 15:04:14 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 10:54:03 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ t_context	*read_token(t_context *ctx)
 		read = quote_delimiter(read);
 		ctx->head_cmd = parsing(read);
 		ft_exec(ctx);
-		ft_free_ctx_cmds(ctx->head_cmd);
+		ft_free_ctx_cmds(ctx);
 		read = readline("pitishell$ ");
 	}
 	//print_token_list(token);

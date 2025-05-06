@@ -59,12 +59,13 @@ t_key_value	*get_key_value(char *line)
  */
 void	ft_export(t_context *ctx, char **args)
 {
-	t_node		*new_node;
 	t_key_value	*kv;
 	int			i;
+	int			exit_code;
 
 	if (!args)
 		return ;
+	exit_code = 0;
 	i = -1;
 	while (args[++i])
 	{
@@ -77,18 +78,10 @@ void	ft_export(t_context *ctx, char **args)
 				"export: `%s=%s': not a valid identifier\n", kv->key,
 				kv->value);
 			ft_free_env_content((void *)kv);
+			exit_code = 1;
 			continue ;
 		}
-		new_node = ft_get_env_node(ctx->head_env, kv->key);
-		if (!new_node)
-		{
-			new_node = ft_envnew(kv->key, kv->value);
-			ft_lstadd_back(ctx->head_env, new_node);
-		}
-		else
-		{
-			ft_set_env_val(ctx->head_env, kv->key, kv->value);
-		}
+		create_or_set_env_var(ctx, kv->key, kv->value);
 		ft_free_env_content((void *)kv);
 	}
 }

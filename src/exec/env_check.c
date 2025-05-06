@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/25 16:06:59 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 13:42:43 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,20 @@ char	*get_cmd_path(t_context *ctx, char *cmd)
 {
 	char	*curr_path;
 	int		i;
-	t_exec *d;
+	char **paths;
 
-	d = ctx->exec_data;
-
+	paths = get_paths(ctx);
 	if (cmd && ft_strlen(cmd) > 0 && access(cmd, X_OK) != -1)
 		return (cmd);
 	cmd = safe_ft_strjoin(ctx, "/", cmd, NULL);
 	i = -1;
-	while (d->paths && d->paths[++i])
+	while (paths && paths[++i])
 	{
-		curr_path = safe_ft_strjoin(ctx, d->paths[i], cmd, cmd);
+		curr_path = safe_ft_strjoin(ctx, paths[i], cmd, cmd);
 		if (access(curr_path, X_OK) != -1)
 		{
 			free(cmd);
+			ft_free_tab((void **)paths);
 			return (curr_path);
 		}
 		free(curr_path);
@@ -71,6 +71,7 @@ char	*get_cmd_path(t_context *ctx, char *cmd)
 	ft_fprintf(STDERR_FILENO, "command not found: %s\n", cmd + 1);
 	ctx->exit_code = 127;
 	free(cmd);
+	ft_free_tab((void **)paths);
 	exit_free(ctx);
 	return (NULL);
 }

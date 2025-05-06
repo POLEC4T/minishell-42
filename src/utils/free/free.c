@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/05 14:42:38 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 13:40:11 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,26 @@ void	free_exec(t_exec *data)
 	if (data)
 	{
 		close_pipes(data);
-		if (data->cmd_path != NULL)
-			free(data->cmd_path);
-		if (data->paths != NULL)
-			ft_free_tab((void **)data->paths);
 		free(data);
 	}
 }
 
-void ft_free_ctx_cmds(t_node **head_cmd)
+/**
+ * @brief free each command in the ctx and close the file descriptors
+ */
+void ft_free_ctx_cmds(t_context *context)
 {
+	t_node	**head_cmd;
+
+	head_cmd = context->head_cmd;
 	if (!head_cmd)
 		return ;
-	ft_lstclear(head_cmd, ft_free_cmd_content);
+	close_fds_cmds(head_cmd);
+	if (*head_cmd)
+		ft_lstclear(head_cmd, ft_free_cmd_content);
 	free(head_cmd);
+	context->head_cmd = NULL;
 }
-
 
 void free_context(t_context *context)
 {
@@ -66,7 +70,7 @@ void free_context(t_context *context)
 		ft_lstclear(context->head_env, ft_free_env_content);
 	if (context->head_env)
 		free(context->head_env);
-	ft_free_ctx_cmds(context->head_cmd);
+	ft_free_ctx_cmds(context);
 	free_exec(context->exec_data);
 }
 
