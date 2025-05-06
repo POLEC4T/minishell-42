@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:37:03 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/29 18:00:43 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:18:39 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	close_pipes(t_exec *d)
 {
 	my_close(&d->pipe_fds[READ]);
 	my_close(&d->pipe_fds[WRITE]);
+	my_close(&d->prev_pipe_read);
 }
 /**
  * @brief close all file descriptors of the chained list of commands

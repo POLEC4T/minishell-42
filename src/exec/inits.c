@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/02 13:46:09 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 13:38:36 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,4 @@ void	init_exec(t_context *ctx)
 
 	d = ctx->exec_data;
 	d->nb_cmds = ft_lstsize(*ctx->head_cmd);
-	d->paths = get_paths(ctx);
-	// open_redirs(ctx);
 }

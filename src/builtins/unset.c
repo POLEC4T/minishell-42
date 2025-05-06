@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:10:36 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/05 17:10:47 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 13:58:36 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	ft_unset_one(t_context *ctx, char *key)
         {
             if (tmp->prev)
                 tmp->prev->next = tmp->next;
+            else
+                *ctx->head_env = tmp->next;
             if (tmp->next)
                 tmp->next->prev = tmp->prev;
             ft_lstdelone(tmp, ft_free_env_content);

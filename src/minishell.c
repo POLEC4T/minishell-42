@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/05 14:42:17 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 13:39:21 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ static void	clean_init_exec(t_context *ctx)
 		exit_free(ctx);
 	}
 	ctx->exec_data->nb_cmds = -1;
-	ctx->exec_data->paths = NULL;
-	ctx->exec_data->cmd_path = NULL;
 	ctx->exec_data->prev_pipe_read = -2;
 	ctx->exec_data->pipe_fds[READ] = -2;
 	ctx->exec_data->pipe_fds[WRITE] = -2;

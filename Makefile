@@ -50,7 +50,7 @@ STR_FILES=\
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
 ENV_UTILS_FILES=\
 	env.c \
-	lst_to_tabstr.c \
+	env_to_tabstr.c \
 
 FREE = $(addprefix $(FREE_DIR)/, $(FREE_FILES))
 FREE_FILES=\

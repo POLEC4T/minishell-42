@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/05 17:23:33 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 14:13:14 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ typedef struct s_exec
 	int				pipe_fds[2];
 	int				prev_pipe_read;
 	int				nb_cmds;
-	char			**paths;
-	char			*cmd_path;
 }					t_exec;
 
 typedef struct s_context
@@ -143,9 +141,9 @@ void				ft_free_env_content(void *content);
 void				print_env_val(t_context *context, char *key);
 
 // env
-void				init_env(t_context *ctx, char **envp);
 char				**env_to_tabstr(t_node **head_env);
-
+void				create_or_set_env_var(t_context *context, char *key,
+						char *value);
 // builtins
 void				ft_export(t_context *ctx, char **args);
 void				ft_unset(t_context *ctx, char **args);
@@ -157,7 +155,7 @@ void				ft_exit(t_context *context, char **args);
 int					is_builtin_cmd(char *cmd);
 
 // parsing
-t_context				*read_token(t_context *ctx);
+t_context			*read_token(t_context *ctx);
 void				put_exec(char *str, t_node *token, char stop);
 t_node				**parsing(char *str);
 size_t				strcount(char *str, char stop);
@@ -172,7 +170,7 @@ char				*quote_delimiter(char *str);
 // free
 void				exit_free(t_context *context);
 void				free_context(t_context *context);
-void				ft_free_ctx_cmds(t_node **head_cmd);
+void				ft_free_ctx_cmds(t_context *context);
 
 // get_next_line
 char				*get_next_line(int fd);
