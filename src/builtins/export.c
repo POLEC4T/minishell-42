@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                           :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 19:09:02 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/22 16:53:50 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 18:00:05 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// TODO : fix ft_is_key_valid
 static int	ft_is_key_valid(char *key)
 {
 	int	i;
@@ -28,30 +29,33 @@ static int	ft_is_key_valid(char *key)
 	return (1);
 }
 
-t_key_value	*get_key_value(char *line)
+/**
+ * @brief get the key and value from a char * line
+ * @returns a str tab of two elements, [key, value]
+ */
+static char	**get_key_value(t_context *ctx, char *line)
 {
-	t_key_value	*kv;
-	char		**line_tab;
+	char	**line_tab;
 
-	kv = malloc(sizeof(t_key_value));
-	if (!kv)
+	if (!line)
 		return (NULL);
 	line_tab = ft_split_first(line, "=");
-	if (!line_tab)
+	if (line_tab == NULL)
 	{
-		free(kv);
-		return (NULL);
+		ft_fprintf(STDERR_FILENO, "export: %s\n", strerror(errno));
+		exit_free(ctx);
 	}
-	if (!line_tab[0])
-	{
-		free(kv);
-		free(line_tab);
-		return (NULL);
-	}
-	kv->key = ft_strdup(line_tab[0]);
-	kv->value = ft_strdup(line_tab[1]);
-	ft_free_tab((void **)line_tab);
-	return (kv);
+	return (line_tab);
+}
+
+static void	print_export_err(char *key, char *value)
+{
+	if (value != NULL)
+		ft_fprintf(STDERR_FILENO, "export: `%s=%s': not a valid identifier\n",
+			key, value);
+	else
+		ft_fprintf(STDERR_FILENO, "export: `%s': not a valid identifier\n", key,
+			value);
 }
 
 /**
@@ -59,9 +63,9 @@ t_key_value	*get_key_value(char *line)
  */
 void	ft_export(t_context *ctx, char **args)
 {
-	t_key_value	*kv;
-	int			i;
-	int			exit_code;
+	char	**kv;
+	int		i;
+	int		exit_code;
 
 	if (!args)
 		return ;
@@ -69,19 +73,17 @@ void	ft_export(t_context *ctx, char **args)
 	i = -1;
 	while (args[++i])
 	{
-		kv = get_key_value(args[i]);
+		kv = get_key_value(ctx, args[i]);
 		if (!kv)
 			continue ;
-		if (!ft_is_key_valid(kv->key))
+		if (!ft_is_key_valid(kv[0]))
 		{
-			ft_fprintf(STDERR_FILENO,
-				"export: `%s=%s': not a valid identifier\n", kv->key,
-				kv->value);
-			ft_free_env_content((void *)kv);
+			print_export_err(kv[0], kv[1]);
+			ft_free_tab((void **)kv);
 			exit_code = 1;
 			continue ;
 		}
-		create_or_set_env_var(ctx, kv->key, kv->value);
-		ft_free_env_content((void *)kv);
+		create_or_set_env_var(ctx, kv[0], kv[1]);
+		ft_free_tab((void **)kv);
 	}
 }

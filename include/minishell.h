@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 14:13:14 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 16:27:48 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ typedef struct s_exec
 {
 	int				pipe_fds[2];
 	int				prev_pipe_read;
-	int				nb_cmds;
 }					t_exec;
 
 typedef struct s_context
@@ -97,7 +96,7 @@ typedef struct s_context
 void				minishell(char **envp);
 
 // str
-void				ft_putstr_fd(char *s, int fd);
+int					ft_putstr_fd(char *s, int fd);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 int					ft_strlen(char *str);
 char				*ft_strdup(char *s1);
@@ -149,9 +148,9 @@ void				ft_export(t_context *ctx, char **args);
 void				ft_unset(t_context *ctx, char **args);
 void				ft_env(t_node **head);
 int					ft_cd(t_context *context, char **args);
-void				ft_pwd(char **args);
-void				ft_echo(t_context *context, char **args);
-void				ft_exit(t_context *context, char **args);
+int					ft_pwd(char **args);
+int					ft_echo(char **args);
+int					ft_exit(t_context *context, char **args);
 int					is_builtin_cmd(char *cmd);
 
 // parsing

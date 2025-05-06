@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 14:22:55 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 17:37:47 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 /**
  * @brief create a new env variable or set the value of an existing one
+ * @param key must be allocated
+ * @param value must be allocated, or NULL
  */
 void	create_or_set_env_var(t_context *context, char *key, char *value)
 {
@@ -36,6 +38,7 @@ void	create_or_set_env_var(t_context *context, char *key, char *value)
 		if (old_value != NULL)
 			free(old_value);
 		kv->value = value;
+		free(key);
 	}
 }
 
