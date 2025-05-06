@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 12:51:06 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/06 16:28:38 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 static void	exec_builtin(t_context *ctx, t_cmd *cmd)
 {
 	if (!ft_strncmp(cmd->args[0], "echo", 5))
-		ft_echo(ctx, cmd->args + 1);
+		ctx->exit_code = ft_echo(cmd->args + 1);
 	else if (!ft_strncmp(cmd->args[0], "cd", 3))
-		ft_cd(ctx, cmd->args + 1);
+		ctx->exit_code = ft_cd(ctx, cmd->args + 1);
 	else if (!ft_strncmp(cmd->args[0], "pwd", 4))
-		ft_pwd(cmd->args + 1);
+		ctx->exit_code = ft_pwd(cmd->args + 1);
 	else if (!ft_strncmp(cmd->args[0], "export", 7))
 		ft_export(ctx, cmd->args + 1);
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
@@ -27,7 +27,7 @@ static void	exec_builtin(t_context *ctx, t_cmd *cmd)
 	else if (!ft_strncmp(cmd->args[0], "env", 4))
 		ft_env(ctx->head_env);
 	else if (!ft_strncmp(cmd->args[0], "exit", 5))
-		ft_exit(ctx, cmd->args + 1);
+		ctx->exit_code = ft_exit(ctx, cmd->args + 1);
 }
 
 /**

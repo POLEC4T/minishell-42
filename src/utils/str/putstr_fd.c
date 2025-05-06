@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   putstr_fd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:10:12 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/18 16:11:09 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:01:12 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_putstr_fd(char *s, int fd)
+int	ft_putstr_fd(char *s, int fd)
 {
 	if (!s)
-		return ;
-	write(fd, s, ft_strlen(s));
-}   
+		return (-2);
+	return (write(fd, s, ft_strlen(s)));
+}
