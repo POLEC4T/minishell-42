@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/04 11:21:46 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/07 14:31:47 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ void	print_cmds(t_node **head_cmd)
 			for (int j = 0; cmd_content->redirects[j]; j++)
 			{
 				if (cmd_content->redirects[j]->redir_type == IN)
-				printf("< ");
+					printf("< ");
 				else if (cmd_content->redirects[j]->redir_type == OUT)
-				printf("> ");
+					printf("> ");
 				else if (cmd_content->redirects[j]->redir_type == HEREDOC)
-				printf("<< ");
+					printf("<< ");
 				else if (cmd_content->redirects[j]->redir_type == OUT_TRUNC)
-				printf(">> ");
+					printf(">> ");
 				printf("%s ", cmd_content->redirects[j]->filename);
 			}
 		}

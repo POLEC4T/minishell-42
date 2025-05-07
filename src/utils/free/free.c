@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 13:40:11 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/07 16:40:05 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,23 @@ void	ft_free_token_content(void *content)
 		free(token->data);
 	free(token);
 }
+
+void	ft_free_redirects(t_redirect **redirects)
+{
+	int	i;
+
+	if (!redirects)
+		return ;
+	i = 0;
+	while (redirects[i])
+	{
+		if (redirects[i]->filename != NULL)
+			free(redirects[i]->filename);
+		free(redirects[i]);
+		i++;
+	}
+	free(redirects);
+}
 void	ft_free_cmd_content(void *content)
 {
 	t_cmd	*cmd;
@@ -33,7 +50,7 @@ void	ft_free_cmd_content(void *content)
 	if (cmd->args != NULL)
 		ft_free_tab((void **)cmd->args);
 	if (cmd->redirects != NULL)
-		ft_free_tab((void **)cmd->redirects);
+		ft_free_redirects(cmd->redirects);
 	// my_close(&cmd->fd_in);
 	// my_close(&cmd->fd_out);
 	free(cmd);
@@ -50,7 +67,7 @@ void	free_exec(t_exec *data)
 /**
  * @brief free each command in the ctx and close the file descriptors
  */
-void ft_free_ctx_cmds(t_context *context)
+void	ft_free_ctx_cmds(t_context *context)
 {
 	t_node	**head_cmd;
 
@@ -64,7 +81,7 @@ void ft_free_ctx_cmds(t_context *context)
 	context->head_cmd = NULL;
 }
 
-void free_context(t_context *context)
+void	free_context(t_context *context)
 {
 	if (context->head_env)
 		ft_lstclear(context->head_env, ft_free_env_content);

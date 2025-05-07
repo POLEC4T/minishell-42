@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 16:28:38 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/07 15:54:22 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	exec_builtin(t_context *ctx, t_cmd *cmd)
 	else if (!ft_strncmp(cmd->args[0], "pwd", 4))
 		ctx->exit_code = ft_pwd(cmd->args + 1);
 	else if (!ft_strncmp(cmd->args[0], "export", 7))
-		ft_export(ctx, cmd->args + 1);
+		ctx->exit_code = ft_export(ctx, cmd->args + 1);
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
 		ft_unset(ctx, cmd->args + 1);
 	else if (!ft_strncmp(cmd->args[0], "env", 4))
