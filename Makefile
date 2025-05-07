@@ -29,6 +29,7 @@ STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
 STR_FILES=\
 	ft_memcpy.c \
 	ft_strdup.c \
+	ft_secure_strdup.c \
 	ft_strndup.c \
 	ft_strjoin.c \
 	ft_strlen.c \
@@ -89,9 +90,11 @@ BUILTINS_FILES=\
 	unset.c \
 	env.c \
 	cd.c \
+	cd_utils.c \
 	pwd.c \
 	echo.c \
 	exit.c \
+	exit_utils.c \
 	is_builtin_cmd.c
 
 PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))

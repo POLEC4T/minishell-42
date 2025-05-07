@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_builtin_cmd.c                                   :+:      :+:    :+:   */
+/*   ft_secure_strdup.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/28 16:03:55 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 17:30:03 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/05/07 16:57:45 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/05/07 16:57:51 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtin_cmd(char *cmd)
+/**
+ * @brief Duplicates a string and exits the program if it fails.
+ * @param err_title : error title to print if strdup fails
+ */
+char	*ft_secure_strdup(t_context *ctx, char *s, char *err_title)
 {
-	if (!ft_strncmp(cmd, "echo", 5))
-		return (1);
-	if (!ft_strncmp(cmd, "cd", 3))
-		return (1);
-	if (!ft_strncmp(cmd, "pwd", 4))
-		return (1);
-	if (!ft_strncmp(cmd, "export", 7))
-		return (1);
-	if (!ft_strncmp(cmd, "unset", 6))
-		return (1);
-	if (!ft_strncmp(cmd, "env", 4))
-		return (1);
-	if (!ft_strncmp(cmd, "exit", 5))
-		return (1);
-	return (0);
+	char	*dup;
+
+	if (!s)
+		return (NULL);
+	dup = ft_strdup(s);
+	if (!dup)
+	{
+		ft_fprintf(STDERR_FILENO, "%s: %s\n", err_title, strerror(errno));
+		exit_free(ctx);
+	}
+	return (dup);
 }

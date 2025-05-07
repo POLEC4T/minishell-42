@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:57:07 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 16:29:52 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/07 17:38:55 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
  */
 void	ft_env(t_node **head)
 {
-	t_node *tmp;
-	t_key_value *env;
+	t_node		*tmp;
+	t_key_value	*env;
 
 	if (!head)
 		return ;

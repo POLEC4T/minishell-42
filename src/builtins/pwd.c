@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:26:01 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 16:28:35 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/07 17:38:21 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_pwd(char **args)
 {
-	char *pwd;
+	char	*pwd;
 
 	if (args && args[0])
 	{

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/05 14:44:39 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/07 16:15:07 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,9 +184,10 @@ t_cmd	*split_cmd(char *str)
 	redirect = 0;
 	args = 0;
 	cmd->args = malloc((count_args(str) + 1) * sizeof(char *));
+	// printf("nb args: %d\n", count_args(str));
 	if (!cmd->args)
 		return (NULL); // Vérifiez si l'allocation échoue
-	cmd->redirects = malloc((count_redirect(str) + 1)* sizeof(t_redirect *));
+	cmd->redirects = malloc((count_redirect(str) + 1)* sizeof(t_redirect *)); // gerer si y a pas de redirects
 	cmd->pid = -2;
 	i = 0;
 	while (str[i])
@@ -213,6 +214,7 @@ t_cmd	*split_cmd(char *str)
 			i++;
 	}
 	cmd->redirects[redirect] = NULL;
+	// printf("trying to NULL index %zu, max index is %d\n", args, count_args(str) + 1 - 1);
 	cmd->args[args] = NULL;
 	return (cmd);
 }
