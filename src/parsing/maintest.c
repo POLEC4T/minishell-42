@@ -117,6 +117,7 @@ t_context	*read_token(t_context *ctx)
 		ft_exec(ctx);
 		ft_free_ctx_cmds(ctx);
 		read = readline("pitishell$ ");
+		// printf("final exit code: %d\n", ctx->exit_code);
 	}
 	//print_token_list(token);
 	// free(read);

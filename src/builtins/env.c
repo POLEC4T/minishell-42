@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:57:07 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/22 14:06:40 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/07 17:38:55 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,8 @@ void	ft_env(t_node **head)
 	while (tmp)
 	{
 		env = cast_to_key_value(tmp->content);
-		if (env && env->key)
-		{
-			ft_putstr_fd(env->key, STDOUT_FILENO);
-		}
-		if (env && env->value && env->value[0])
-		{
-			ft_putstr_fd("=", STDOUT_FILENO);
-			ft_putstr_fd(env->value, STDOUT_FILENO);
-		}
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		if (env && env->key && env->value)
+			printf("%s=%s\n", env->key, env->value);
 		tmp = tmp->next;
 	}
 }

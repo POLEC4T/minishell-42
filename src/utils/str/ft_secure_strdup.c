@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   inits.c                                            :+:      :+:    :+:   */
+/*   ft_secure_strdup.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 15:41:17 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/05/07 16:57:45 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/05/07 16:57:51 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-void	init_exec(t_context *ctx)
+/**
+ * @brief Duplicates a string and exits the program if it fails.
+ * @param err_title : error title to print if strdup fails
+ */
+char	*ft_secure_strdup(t_context *ctx, char *s, char *err_title)
 {
-	t_exec *d;
+	char	*dup;
 
-	d = ctx->exec_data;
+	if (!s)
+		return (NULL);
+	dup = ft_strdup(s);
+	if (!dup)
+	{
+		ft_fprintf(STDERR_FILENO, "%s: %s\n", err_title, strerror(errno));
+		exit_free(ctx);
+	}
+	return (dup);
 }

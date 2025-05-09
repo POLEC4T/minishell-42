@@ -1,87 +1,109 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                           :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 19:09:02 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/22 16:53:50 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/07 14:30:31 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_is_key_valid(char *key)
+/**
+ * @brief check if the key is valid
+ * @details:
+ * - the first character must not be a digit
+ * - the key must contain only alphanumeric characters and underscores
+ * - the key must not be empty
+ */
+static int	ft_is_arg_valid(char *key)
 {
 	int	i;
 
 	if (!key || ft_isdigit(key[0]))
 		return (0);
 	i = 0;
-	while (key[i])
+	while (key[i] && key[i] != '=')
 	{
 		if (!(ft_isalnum(key[i]) || key[i] == '_'))
 			return (0);
 		i++;
 	}
-	return (1);
+	return (i != 0);
 }
 
-t_key_value	*get_key_value(char *line)
+/**
+ * @brief get the key and value from the string param line
+ * @returns a str tab of two elements, [key, value]
+ */
+static char	**get_key_value(t_context *ctx, char *line)
 {
-	t_key_value	*kv;
-	char		**line_tab;
+	char	**line_tab;
 
-	kv = malloc(sizeof(t_key_value));
-	if (!kv)
-		return (NULL);
 	line_tab = ft_split_first(line, "=");
-	if (!line_tab)
+	if (line_tab == NULL)
 	{
-		free(kv);
-		return (NULL);
+		ft_fprintf(STDERR_FILENO, "export: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
 	}
-	if (!line_tab[0])
+	return (line_tab);
+}
+
+/**
+ * @brief diff with command "env": 
+ * - prints "export " before the line
+ * - prints the the line EVEN IF there is no value
+ */
+void	display_all_env(t_node **head)
+{
+	t_node		*curr_node;
+	t_key_value	*env;
+
+	if (!head)
+		return ;
+	curr_node = *head;
+	while (curr_node)
 	{
-		free(kv);
-		free(line_tab);
-		return (NULL);
+		env = cast_to_key_value(curr_node->content);
+		if (env && env->key && env->value)
+			printf("export %s=\"%s\"\n", env->key, env->value);
+		else if (env && env->key && !env->value)
+			printf("export \"%s\\n", env->key);
+		curr_node = curr_node->next;
 	}
-	kv->key = ft_strdup(line_tab[0]);
-	kv->value = ft_strdup(line_tab[1]);
-	ft_free_tab((void **)line_tab);
-	return (kv);
 }
 
 /**
  * @param args : [key[=value]]
  */
-void	ft_export(t_context *ctx, char **args)
+int	ft_export(t_context *ctx, char **args)
 {
-	t_key_value	*kv;
-	int			i;
-	int			exit_code;
+	char	**kv;
+	int		i;
+	int		exit_code;
 
 	if (!args)
-		return ;
-	exit_code = 0;
+		return (EXIT_FAILURE);
+	exit_code = EXIT_SUCCESS;
+	if (args[0] == NULL)
+		display_all_env(ctx->head_env);
 	i = -1;
 	while (args[++i])
 	{
-		kv = get_key_value(args[i]);
-		if (!kv)
-			continue ;
-		if (!ft_is_key_valid(kv->key))
+		if (!ft_is_arg_valid(args[i]))
 		{
-			ft_fprintf(STDERR_FILENO,
-				"export: `%s=%s': not a valid identifier\n", kv->key,
-				kv->value);
-			ft_free_env_content((void *)kv);
-			exit_code = 1;
+			ft_fprintf(STDERR_FILENO, "export: `%s': not a valid identifier\n",
+				args[i]);
+			exit_code = EXIT_FAILURE;
 			continue ;
 		}
-		create_or_set_env_var(ctx, kv->key, kv->value);
-		ft_free_env_content((void *)kv);
+		kv = get_key_value(ctx, args[i]);
+		create_or_set_env_var(ctx, kv[0], kv[1]);
+		ft_free_tab((void **)kv);
 	}
+	return (exit_code);
 }

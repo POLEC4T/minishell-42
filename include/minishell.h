@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/08 23:19:19 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:19:19 by nle-gued         ###   ########.fr       *
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ typedef struct s_exec
 {
 	int				pipe_fds[2];
 	int				prev_pipe_read;
-	int				nb_cmds;
 }					t_exec;
 
 typedef struct s_context
@@ -97,11 +96,12 @@ typedef struct s_context
 void				minishell(char **envp);
 
 // str
-void				ft_putstr_fd(char *s, int fd);
+int					ft_putstr_fd(char *s, int fd);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 int					ft_strlen(char *str);
 char				*ft_strdup(char *s1);
 char				*ft_strndup(const char *s, size_t n);
+char				*ft_secure_strdup(t_context *ctx, char *s, char *err_title);
 int					ft_strchr_idx(const char *s, int c);
 char				*ft_strjoin(char *s1, char *s2);
 char				**ft_split_first(char const *s, char *delim);
@@ -145,13 +145,15 @@ char				**env_to_tabstr(t_node **head_env);
 void				create_or_set_env_var(t_context *context, char *key,
 						char *value);
 // builtins
-void				ft_export(t_context *ctx, char **args);
+int					ft_export(t_context *ctx, char **args);
 void				ft_unset(t_context *ctx, char **args);
 void				ft_env(t_node **head);
 int					ft_cd(t_context *context, char **args);
-void				ft_pwd(char **args);
-void				ft_echo(t_context *context, char **args);
-void				ft_exit(t_context *context, char **args);
+int					cwd_error(char *to_free);
+int					ft_pwd(char **args);
+int					ft_echo(char **args);
+int					ft_exit(t_context *context, char **args);
+long long			ft_atoi_exit(const char *str_exit_code, int *error);
 int					is_builtin_cmd(char *cmd);
 
 // parsing

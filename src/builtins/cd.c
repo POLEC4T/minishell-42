@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:01:44 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 14:03:05 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/07 17:48:36 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,18 +87,13 @@ static int	prefix_home_path(t_context *context, char **newpwd)
 /**
  * @brief Set the PWD and OLDPWD environment variables.
  */
-static int	set_pwds(t_context *context, char **newpwd)
+static int	set_pwds(t_context *ctx, char **newpwd)
 {
 	char	*oldpwd;
-	// char	*to_free;
 
 	oldpwd = getcwd(NULL, 0);
 	if (oldpwd == NULL)
-	{
-		ft_fprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
-		free(*newpwd);
-		return (EXIT_FAILURE);
-	}
+		return (cwd_error(*newpwd));
 	if (chdir(*newpwd) == -1)
 	{
 		ft_fprintf(STDERR_FILENO, "cd: %s: %s\n", *newpwd, strerror(errno));
@@ -109,39 +104,9 @@ static int	set_pwds(t_context *context, char **newpwd)
 	free(*newpwd);
 	*newpwd = getcwd(NULL, 0);
 	if (*newpwd == NULL)
-	{
-		ft_fprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
-		free(oldpwd);
-		return (EXIT_FAILURE);
-	}
-	// TODO clean this shhh
-	// to_free = *newpwd;
-	// *newpwd = ft_strjoin("PWD=", *newpwd);
-	// if (!(*newpwd))
-	// {
-	// 	free(to_free);
-	// 	free(oldpwd);
-	// 	ft_fprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
-	// 	return (EXIT_FAILURE);
-	// }
-	// free(to_free);
-	// to_free = oldpwd;
-	// oldpwd = ft_strjoin("OLDPWD=", oldpwd);
-	// if (!oldpwd)
-	// {
-	// 	free(to_free);
-	// 	free(*newpwd);
-	// 	ft_fprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
-	// 	return (EXIT_FAILURE);
-	// }
-	// free(to_free);
-	// ft_export(context, (char *[]){*newpwd, NULL});
-	// ft_export(context, (char *[]){oldpwd, NULL});
-
-	create_or_set_env_var(context, "PWD", *newpwd);
-	create_or_set_env_var(context, "OLDPWD", oldpwd);
-	free(*newpwd);
-	free(oldpwd);
+		return (cwd_error(oldpwd));
+	create_or_set_env_var(ctx, ft_secure_strdup(ctx, "PWD", "cd"), *newpwd);
+	create_or_set_env_var(ctx, ft_secure_strdup(ctx, "OLDPWD", "cd"), oldpwd);
 	return (EXIT_SUCCESS);
 }
 
