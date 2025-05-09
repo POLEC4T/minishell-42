@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maintest.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/07 16:02:44 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/09 02:15:53 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ t_context	*read_token(t_context *ctx)
 	while(read)
 	{	
 		read = quote_delimiter(read);
+		read = interpretation(read, ctx);
 		ctx->head_cmd = parsing(read);
 		ft_exec(ctx);
 		ft_free_ctx_cmds(ctx);

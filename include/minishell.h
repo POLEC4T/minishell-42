@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 17:49:27 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/08 23:19:19 by nle-gued         ###   ########.fr       *
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ size_t				strcount(char *str, char stop);
 int					define_token(t_node *node);
 void				print_token_list(t_node *head);
 t_cmd				*split_cmd(char *str);
+char				*interpretation(char *str, t_context *ctx);
 
 // syntax
 int					syntax(t_node *head);
