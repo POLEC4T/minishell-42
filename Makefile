@@ -100,6 +100,7 @@ PARS_FILES=\
 	parsing.c \
 	define_token.c \
 	split_cmd.c \
+	interpretation.c \
 
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
 EXEC_FILES=\
