@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/12 10:55:34 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/12 16:27:51 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,15 +158,19 @@ char	*args_define(char *str)
 {
 	char	*args;
 	size_t	i;
+	int args_len;
 
 	i = 0;
-	args = malloc(argslen(str) + 1);
+	args_len = argslen(str);
+	if (args_len == 0)
+		return (NULL);
+	args = malloc(args_len + 1);
 	while (str[i] && str[i] != ' ' && str[i] != '<' && str[i] != '>')
 	{
 		args[i] = str[i];
 		i++;
 	}
-	args[i] = '\0';
+	args[args_len] = '\0';
 	return (args);
 }
 
@@ -211,11 +215,11 @@ t_cmd	*split_cmd(char *str)
 		{
 			cmd->redirects[redirect] = redirect_define(str + i);
 			redirect++;
-			while (str[i] == '<' || str[i] == '>')
+			while (str[i] && (str[i] == '<' || str[i] == '>'))
 				i++;
-			while (str[i] == ' ' && str[i])
+			while (str[i] && str[i] == ' ')
 				i++;
-			while (str[i] != ' ' && str[i])
+ 			while (str[i] && str[i] != ' ')
 				i++;
 		}
 		if (str[i] != ' ')
@@ -229,6 +233,6 @@ t_cmd	*split_cmd(char *str)
 			i++;
 	}
 	cmd->redirects[redirect] = NULL;
-	cmd->args[args] = NULL;
+	cmd->args[count_args(str)] = NULL;
 	return (cmd);
 }

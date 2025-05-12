@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 19:09:02 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 14:30:31 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/12 16:34:29 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	display_all_env(t_node **head)
 		if (env && env->key && env->value)
 			printf("export %s=\"%s\"\n", env->key, env->value);
 		else if (env && env->key && !env->value)
-			printf("export \"%s\\n", env->key);
+			printf("export %s\n", env->key);
 		curr_node = curr_node->next;
 	}
 }

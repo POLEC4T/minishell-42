@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:01:44 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 17:48:36 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/12 17:04:11 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,10 @@ static int	set_pwds(t_context *ctx, char **newpwd)
 	*newpwd = getcwd(NULL, 0);
 	if (*newpwd == NULL)
 		return (cwd_error(oldpwd));
-	create_or_set_env_var(ctx, ft_secure_strdup(ctx, "PWD", "cd"), *newpwd);
-	create_or_set_env_var(ctx, ft_secure_strdup(ctx, "OLDPWD", "cd"), oldpwd);
+	create_or_set_env_var(ctx, "PWD", *newpwd);
+	create_or_set_env_var(ctx, "OLDPWD", oldpwd);
+	free(oldpwd);
+	free(*newpwd);
 	return (EXIT_SUCCESS);
 }
 

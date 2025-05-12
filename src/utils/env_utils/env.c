@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 17:37:47 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/12 16:54:16 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ void	create_or_set_env_var(t_context *context, char *key, char *value)
 		old_value = kv->value;
 		if (old_value != NULL)
 			free(old_value);
-		kv->value = value;
-		free(key);
+		kv->value = ft_strdup(value);
 	}
 }
 
@@ -73,7 +72,7 @@ t_node	*ft_envnew(char *key, char *value)
 			return (NULL);
 		}
 	}
-	new = ft_lstnew(content);
+	new = ft_lstnew(content); // idee : mettre ca au debut de la fonction
 	if (!new)
 	{
 		free(content->value);

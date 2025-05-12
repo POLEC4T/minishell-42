@@ -6,10 +6,9 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/12 11:15:36 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/12 19:12:29 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -84,6 +83,8 @@ typedef struct s_exec
 {
 	int				pipe_fds[2];
 	int				prev_pipe_read;
+	int				saved_stdout;
+	int				saved_stdin;
 }					t_exec;
 
 typedef struct s_context
@@ -175,6 +176,7 @@ char				*quote_delimiter(char *str);
 void				exit_free(t_context *context);
 void				free_context(t_context *context);
 void				ft_free_ctx_cmds(t_context *context);
+void				free_exec(t_exec *data);
 
 // get_next_line
 char				*get_next_line(int fd);
@@ -199,8 +201,14 @@ void				print_cmd(t_node *cmd);
 // exec
 void				ft_exec(t_context *ctx);
 
+// opens
+int					open_infile(t_context *ctx, char *filename);
+int					open_outfile(char *filename);
+int					open_outfile_append(char *filename);
+
 // init
 void				init_exec(t_context *ctx);
+void				clean_init_exec(t_context *ctx);
 
 // output
 void				msg(char *str1, char *str2, char *str3, int fd);
@@ -217,7 +225,6 @@ char				**get_paths(t_context *ctx);
 // utils
 void				secure_fork(int *pid, t_context *ctx);
 void				secure_pipe(t_context *ctx);
-char				**empty_split(void);
 void				redirect(int input, int output, t_context *ctx);
 
 // children

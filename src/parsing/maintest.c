@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maintest.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/12 10:47:25 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/12 18:02:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,10 @@ t_context	*read_token(t_context *ctx)
 		ctx->head_cmd = parsing(read);
 		ft_exec(ctx);
 		ft_free_ctx_cmds(ctx);
+		free_exec(ctx->exec_data);
+		clean_init_exec(ctx);
 		free(read);
 		read = readline("pitishell$ ");
-		// printf("final exit code: %d\n", ctx->exit_code);
 	}
 	//print_token_list(token);
 	// free(read);
