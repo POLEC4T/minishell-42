@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 16:40:05 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/12 14:59:14 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	free_exec(t_exec *data)
 	if (data)
 	{
 		close_pipes(data);
+		my_close(&data->saved_stdin);
+		my_close(&data->saved_stdout);
 		free(data);
 	}
 }

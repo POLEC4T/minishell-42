@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 15:54:22 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/12 19:11:39 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,35 @@ static void	exec_builtin(t_context *ctx, t_cmd *cmd)
 		ctx->exit_code = ft_exit(ctx, cmd->args + 1);
 }
 
+void	set_in_out_to_redirs(t_context *ctx, t_cmd *cmd, int *input,
+		int *output)
+{
+	int	i;
+	int	is_in_set;
+	int	is_out_set;
+
+	is_in_set = 0;
+	is_out_set = 0;
+	i = -1;
+	while (cmd->redirects && cmd->redirects[++i])
+	{
+		if (cmd->redirects[i]->fd_in >= 0)
+		{
+			*input = cmd->redirects[i]->fd_in;
+			is_in_set = 1;
+		}
+		if (cmd->redirects[i]->fd_out >= 0)
+		{
+			*output = cmd->redirects[i]->fd_out;
+			is_out_set = 1;
+		}
+	}
+	if (cmd->pid && is_in_set)
+		ctx->exec_data->saved_stdin = dup(STDIN_FILENO);
+	if (cmd->pid && is_out_set)
+		ctx->exec_data->saved_stdout = dup(STDOUT_FILENO);
+}
+
 /**
  * @brief set the current input and output file descriptors
  * @details if fd_in is set in the command, it will be used as input
@@ -42,83 +71,55 @@ static void	set_curr_in_out(t_context *ctx, t_node *node_cmd)
 	int		input;
 	int		output;
 	t_cmd	*cmd;
-	int		i;
 
-	cmd = cast_to_cmd(node_cmd->content);
-	input = STDIN_FILENO;
-	output = STDOUT_FILENO;
-	i = 0;
+	input = -2;
+	output = -2;
 	if (node_cmd->next)
 		output = ctx->exec_data->pipe_fds[WRITE];
 	if (node_cmd->prev)
 		input = ctx->exec_data->prev_pipe_read;
-	while (cmd->redirects && cmd->redirects[i])
-	{
-		if (cmd->redirects[i]->fd_in >= 0)
-			input = cmd->redirects[i]->fd_in;
-		if (cmd->redirects[i]->fd_out >= 0)
-			output = cmd->redirects[i]->fd_out;
-		i++;
-	}
+	cmd = cast_to_cmd(node_cmd->content);
+	set_in_out_to_redirs(ctx, cmd, &input, &output);
 	redirect(input, output, ctx);
+}
+
+/**
+ * what I call a native cmd is all cmds except builtins
+ */
+static void	exec_native_cmd(t_context *ctx, t_cmd *cmd)
+{
+	char	*cmd_path;
+	char	**env_tab;
+
+	cmd_path = get_cmd_path(ctx, cmd->args[0]);
+	env_tab = env_to_tabstr(ctx->head_env);
+	execve(cmd_path, cmd->args, env_tab);
+	ft_fprintf(STDERR_FILENO, "execve: %s\n", strerror(errno));
+	free(cmd_path);
+	ft_free_tab((void **)env_tab);
+	exit_free(ctx);
 }
 
 static void	exec_cmd(t_context *ctx, t_node *node_cmd)
 {
-	t_exec	*d;
 	t_cmd	*cmd;
 
-	d = ctx->exec_data;
 	cmd = cast_to_cmd(node_cmd->content);
 	if (is_builtin_cmd(cmd->args[0]))
 	{
 		exec_builtin(ctx, cmd);
-		if (node_cmd->next || node_cmd->prev)
+		if (!cmd->pid)
 			exit_free(ctx);
+		else
+		{
+			redirect(ctx->exec_data->saved_stdin, ctx->exec_data->saved_stdout,
+				ctx);
+			my_close(&ctx->exec_data->saved_stdin);
+			my_close(&ctx->exec_data->saved_stdout);
+		}
 	}
 	else
-	{
-		execve(get_cmd_path(ctx, cmd->args[0]), cmd->args,
-			env_to_tabstr(ctx->head_env));
-		ft_fprintf(STDERR_FILENO, "exec: %s", strerror(errno));
-		exit_free(ctx);
-	}
-}
-// TODO put opens in another file
-int	open_infile(t_context *ctx, char *filename)
-{
-	int	fd;
-
-	fd = open(filename, O_RDONLY, 644);
-	if (fd == -1)
-	{
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
-		exit_free(ctx);
-	}
-	return (fd);
-}
-
-int	open_outfile(char *filename)
-{
-	int	fd;
-
-	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
-	return (fd);
-}
-
-/**
- * * @brief open the output file in append mode
- */
-int	open_outfile_append(char *filename)
-{
-	int	fd;
-
-	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd == -1)
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
-	return (fd);
+		exec_native_cmd(ctx, cmd);
 }
 
 static void	open_redirs(t_context *ctx, t_node *node_cmd)
@@ -129,6 +130,8 @@ static void	open_redirs(t_context *ctx, t_node *node_cmd)
 
 	cmd = cast_to_cmd(node_cmd->content);
 	i = 0;
+	if (cmd->redirects == NULL)
+		return ;
 	while (cmd->redirects[i])
 	{
 		redir = cmd->redirects[i];
@@ -157,8 +160,7 @@ void	process_cmd(t_context *ctx, t_node *node_cmd)
 	t_cmd	*cmd;
 
 	cmd = cast_to_cmd(node_cmd->content);
-	if (cmd->redirects)
-		open_redirs(ctx, node_cmd);
+	open_redirs(ctx, node_cmd);
 	set_curr_in_out(ctx, node_cmd);
 	close_pipes(ctx->exec_data);
 	close_fds_cmds(ctx->head_cmd);

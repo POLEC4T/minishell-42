@@ -108,6 +108,7 @@ PARS_FILES=\
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
 EXEC_FILES=\
 	children.c \
+	opens.c \
 	close.c \
 	env_check.c \
 	exec.c \
