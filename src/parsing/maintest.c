@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/09 02:15:53 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/12 10:47:25 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ t_context	*read_token(t_context *ctx)
 		ctx->head_cmd = parsing(read);
 		ft_exec(ctx);
 		ft_free_ctx_cmds(ctx);
+		free(read);
 		read = readline("pitishell$ ");
 		// printf("final exit code: %d\n", ctx->exit_code);
 	}

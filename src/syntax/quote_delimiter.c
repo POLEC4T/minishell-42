@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_delimiter.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:36:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/23 18:07:37 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/12 10:53:26 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*quote_delimiter(char *str)
 	char	*to_add;
 	char	*read;
 
-	to_add = calloc(1, 2);
+	to_add = ft_calloc(1, 2);
 	if ((quote_count(str, '"') != 0) && (quote_count(str, '\'') != 0))
 	{
 		while (ft_strchr(to_add, find_last_quote(str)) == 0)
