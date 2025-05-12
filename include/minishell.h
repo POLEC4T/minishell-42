@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/08 23:19:19 by nle-gued         ###   ########.fr       *
+/*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
+/*   Updated: 2025/05/12 09:53:11 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H

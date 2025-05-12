@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/06 11:50:38 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/12 10:41:56 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ t_node **parsing(char *str)
         {
             *head_cmd = new_node;
         }
-
-
         i++;
     }
     ft_free_tab((void **)spipe);
