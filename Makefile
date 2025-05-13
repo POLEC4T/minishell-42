@@ -101,9 +101,9 @@ PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\
 	maintest.c \
 	parsing.c \
-	define_token.c \
 	split_cmd.c \
 	interpretation.c \
+	parsing_utils.c \
 
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
 EXEC_FILES=\

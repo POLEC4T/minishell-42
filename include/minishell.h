@@ -6,10 +6,9 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/12 09:53:11 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:00:04 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -166,6 +165,12 @@ int					define_token(t_node *node);
 void				print_token_list(t_node *head);
 t_cmd				*split_cmd(char *str);
 char				*interpretation(char *str, t_context *ctx);
+// utils pars
+size_t				argslen(char *str);
+size_t				redirlen(char *str);
+size_t				skip_word(char *str, size_t i);
+size_t				skip_redirection(char *str, size_t i);
+size_t				skip_spaces(char *str, size_t i);
 
 // syntax
 int					syntax(t_node *head);

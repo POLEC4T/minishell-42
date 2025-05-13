@@ -6,97 +6,66 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/12 10:55:34 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:01:08 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_args(char *str)
+size_t	count_redirect_core(char *str, size_t i, size_t redir)
 {
-	size_t	i;
-	size_t	args;
-
-	i = 0;
-	args = 0;
 	while (str[i])
 	{
 		if (str[i] == '<' || str[i] == '>')
 		{
-			while (str[i] == '<' || str[i] == '>')
-				i++;
-			while (str[i] == ' ' && str[i])
-				i++;
-			while (str[i] != ' ' && str[i])
-				i++;
-		}
-		else if (str[i] != ' ')
-		{
-			while (str[i] != ' ' && str[i])
-				i++;
-			args++;
-		}
-		else
-			i++;
-	}
-	return (args);
-}
-
-int	count_redirect(char *str)
-{
-	size_t	i;
-	size_t	redir;
-
-	i = 0;
-	redir = 0;
-	while (str[i])
-	{
-		if (str[i] == '<' || str[i] == '>')
-		{
-			while (str[i] == '<' || str[i] == '>')
-				i++;
-			while (str[i] == ' ' && str[i])
-				i++;
-			while (str[i] != ' ' && str[i])
-				i++;
+			i = skip_redirection(str, i);
+			i = skip_spaces(str, i);
+			i = skip_word(str, i);
 			redir++;
 		}
 		else if (str[i] != ' ')
 		{
-			while (str[i] != ' ' && str[i])
-				i++;
+			i = skip_word(str, i);
 		}
 		else
+		{
 			i++;
+		}
 	}
 	return (redir);
 }
-int	redirlen(char *str)
-{
-	size_t	i;
-	size_t	j;
 
-	i = 0;
-	j = 0;
-	if (str[i + j] == '<' || str[i + j] == '>')
+size_t	count_args_core(char *str, size_t i, size_t args)
+{
+	while (str[i])
 	{
-		while (str[i + j] == '<' || str[i + j] == '>')
-			j++;
-		while (str[i + j] == ' ' && str[i + j])
-			j++;
-		while (str[i + j] != ' ' && str[i + j])
+		if (str[i] == '<' || str[i] == '>')
+		{
+			i = skip_redirection(str, i);
+			i = skip_spaces(str, i);
+			i = skip_word(str, i);
+		}
+		else if (str[i] != ' ')
+		{
+			i = skip_word(str, i);
+			args++;
+		}
+		else
+		{
 			i++;
+		}
 	}
-	return (i);
+	return (args);
 }
-int	argslen(char *str)
-{
-	size_t	i;
 
-	i = 0;
-	while (str[i] != ' ' && str[i] && str[i] != '<' && str[i] != '>')
-		i++;
-	return (i);
+int	count_args(char *str)
+{
+	return ((int)count_args_core(str, 0, 0));
+}
+
+int	count_redirect(char *str)
+{
+	return ((int)count_redirect_core(str, 0, 0));
 }
 
 t_redirect	*redirect_define(char *str)
@@ -170,17 +139,18 @@ char	*args_define(char *str)
 	return (args);
 }
 
-int space_check(char *str)
+int	space_check(char *str)
 {
-	int i = 0;
-	
-	while(str[i])
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		if(str[i] != ' ')
-			return(i);
+		if (str[i] != ' ')
+			return (i);
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
 t_cmd	*split_cmd(char *str)
@@ -197,12 +167,9 @@ t_cmd	*split_cmd(char *str)
 	redirect = 0;
 	args = 0;
 	cmd->args = malloc((count_args(str) + 1) * sizeof(char *));
-
 	if (!cmd->args)
-		return (NULL);                                                        
-
+		return (NULL);
 	cmd->redirects = malloc((count_redirect(str) + 1) * sizeof(t_redirect *));
-
 	cmd->pid = -2;
 	i = 0;
 	while (str[i])
