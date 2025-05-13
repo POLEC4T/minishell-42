@@ -104,6 +104,9 @@ PARS_FILES=\
 	split_cmd.c \
 	interpretation.c \
 	parsing_utils.c \
+	count_utils.c \
+	redir_utils.c \
+	cmd_utils.c \
 
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
 EXEC_FILES=\
