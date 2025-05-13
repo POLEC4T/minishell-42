@@ -102,9 +102,12 @@ PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\
 	maintest.c \
 	parsing.c \
-	define_token.c \
 	split_cmd.c \
 	interpretation.c \
+	parsing_utils.c \
+	count_utils.c \
+	redir_utils.c \
+	cmd_utils.c \
 
 CHILDREN = $(addprefix $(CHILDREN_DIR)/, $(CHILDREN_FILES))
 CHILDREN_FILES=\
