@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
 /*   Updated: 2025/05/13 11:59:58 by nle-gued         ###   ########.fr       */
@@ -83,6 +83,8 @@ typedef struct s_exec
 {
 	int				pipe_fds[2];
 	int				prev_pipe_read;
+	int				saved_stdout;
+	int				saved_stdin;
 }					t_exec;
 
 typedef struct s_context
@@ -190,6 +192,7 @@ char				*quote_delimiter(char *str);
 void				exit_free(t_context *context);
 void				free_context(t_context *context);
 void				ft_free_ctx_cmds(t_context *context);
+void				free_exec(t_exec *data);
 
 // get_next_line
 char				*get_next_line(int fd);
@@ -214,8 +217,17 @@ void				print_cmd(t_node *cmd);
 // exec
 void				ft_exec(t_context *ctx);
 
+// open_redirs
+void				open_redirs(t_context *ctx, t_node *node_cmd);
+
+// redirs
+void				dup_redirs(t_context *ctx, t_node *node_cmd);
+
+// exec_cmd
+void				exec_cmd(t_context *ctx, t_node *node_cmd);
+
 // init
-void				init_exec(t_context *ctx);
+void				clean_init_exec(t_context *ctx);
 
 // output
 void				msg(char *str1, char *str2, char *str3, int fd);
@@ -232,7 +244,6 @@ char				**get_paths(t_context *ctx);
 // utils
 void				secure_fork(int *pid, t_context *ctx);
 void				secure_pipe(t_context *ctx);
-char				**empty_split(void);
 void				redirect(int input, int output, t_context *ctx);
 
 // children

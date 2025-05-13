@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   maintest.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
 /*   Updated: 2025/05/13 10:14:20 by nle-gued         ###   ########.fr       */
@@ -28,6 +28,8 @@ t_context	*read_token(t_context *ctx)
 		ctx->head_cmd = parsing(read);
 		ft_exec(ctx);
 		ft_free_ctx_cmds(ctx);
+		free_exec(ctx->exec_data);
+		clean_init_exec(ctx);
 		free(read);
 		read = readline("pitishell$ ");
 	}

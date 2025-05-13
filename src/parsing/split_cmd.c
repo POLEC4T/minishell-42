@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   split_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
 /*   Updated: 2025/05/13 11:58:19 by nle-gued         ###   ########.fr       */
@@ -91,6 +91,6 @@ t_cmd	*split_cmd(char *str)
 			i++;
 	}
 	cmd->redirects[redirect] = NULL;
-	cmd->args[args] = NULL;
+	cmd->args[count_args(str)] = NULL;
 	return (cmd);
 }

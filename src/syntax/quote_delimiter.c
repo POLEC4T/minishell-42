@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_delimiter.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:36:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/12 10:53:26 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:41:24 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,16 @@ int	check_last_pipe(char *str)
 {
 	size_t	i;
 
+	if (!str)
+		return (0);
 	i = ft_strlen(str) - 1;
 	while (i >= 0)
 	{
-		if (str[i] != ' ')
+		if (str[i] && str[i] != ' ')
 			break ;
 		i--;
 	}
-	if (str[i] == '|')
+	if (str[i] && str[i] == '|')
 		return (1);
 	return (0);
 }
@@ -119,7 +121,7 @@ char	*quote_delimiter(char *str)
 		str = ft_strjoin(str, to_add);
 		return (quote_delimiter(str));
 	}
-	else if (check_last_pipe(str) != 0)
+	else if (ft_strchr(str , '|') && check_last_pipe(str) != 0)
 	{
 		read = readline(">");
 		str = ft_strjoin(str, read);

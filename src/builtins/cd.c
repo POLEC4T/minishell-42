@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:01:44 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 17:48:36 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 09:58:50 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,34 +57,6 @@ static int	set_to_oldpwd(t_context *context, char **newpwd)
 }
 
 /**
- * @brief sets newpwd to the value of HOME concatenated with the rest of newpwd.
- */
-static int	prefix_home_path(t_context *context, char **newpwd)
-{
-	char	*home;
-	char	*temp;
-
-	home = ft_get_env_val(context, "HOME");
-	if (home == NULL)
-	{
-		ft_fprintf(STDERR_FILENO, "cd: HOME not set\n");
-		free(*newpwd);
-		return (EXIT_FAILURE);
-	}
-	temp = ft_strjoin(home, *newpwd + 1);
-	free(*newpwd);
-	if (!temp)
-	{
-		free(home);
-		ft_fprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
-		return (EXIT_FAILURE);
-	}
-	*newpwd = temp;
-	free(home);
-	return (EXIT_SUCCESS);
-}
-
-/**
  * @brief Set the PWD and OLDPWD environment variables.
  */
 static int	set_pwds(t_context *ctx, char **newpwd)
@@ -105,8 +77,10 @@ static int	set_pwds(t_context *ctx, char **newpwd)
 	*newpwd = getcwd(NULL, 0);
 	if (*newpwd == NULL)
 		return (cwd_error(oldpwd));
-	create_or_set_env_var(ctx, ft_secure_strdup(ctx, "PWD", "cd"), *newpwd);
-	create_or_set_env_var(ctx, ft_secure_strdup(ctx, "OLDPWD", "cd"), oldpwd);
+	create_or_set_env_var(ctx, "PWD", *newpwd);
+	create_or_set_env_var(ctx, "OLDPWD", oldpwd);
+	free(oldpwd);
+	free(*newpwd);
 	return (EXIT_SUCCESS);
 }
 
@@ -130,11 +104,6 @@ int	ft_cd(t_context *context, char **args)
 	if (ft_strncmp(newpwd, "-", 2) == 0)
 	{
 		if (set_to_oldpwd(context, &newpwd) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
-	}
-	else if (newpwd[0] == '~')
-	{
-		if (prefix_home_path(context, &newpwd) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}
 	return (set_pwds(context, &newpwd) == EXIT_FAILURE);

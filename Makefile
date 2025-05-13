@@ -23,6 +23,7 @@ INC_DIR = include
 PARS_DIR = parsing
 EXEC_DIR = exec
 SYNTAX_DIR = syntax
+CHILDREN_DIR = children
 INCLUDES = -I$(INC_DIR)/
 
 STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
@@ -108,16 +109,22 @@ PARS_FILES=\
 	redir_utils.c \
 	cmd_utils.c \
 
+CHILDREN = $(addprefix $(CHILDREN_DIR)/, $(CHILDREN_FILES))
+CHILDREN_FILES=\
+	process_cmd.c \
+	open_redirs.c \
+	redirs.c \
+	exec_cmd.c \
+
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
 EXEC_FILES=\
-	children.c \
 	close.c \
 	env_check.c \
-	exec.c \
-	inits.c \
 	output.c \
 	parent.c \
+	exec.c \
 	utils.c \
+	$(CHILDREN) \
 
 SYNTAX = $(addprefix $(SYNTAX_DIR)/, $(SYNTAX_FILES))
 SYNTAX_FILES=\
@@ -134,7 +141,6 @@ SRC_FILES=\
 	$(PARS) \
 	$(SYNTAX) \
 	$(EXEC) \
-
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS = $(patsubst $(SRC_DIR)/%.c, $(DEP_DIR)/%.d, $(SRCS))

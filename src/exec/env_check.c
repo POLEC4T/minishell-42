@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/06 13:42:43 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 10:40:21 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 char	**get_paths(t_context *ctx)
 {
 	char	**res;
+	char	*path;
 
-	char *path = ft_get_env_val(ctx, "PATH");
+	path = ft_get_env_val(ctx, "PATH");
 	if (path)
 	{
 		res = ft_split(path, ":");
@@ -33,7 +34,7 @@ char	**get_paths(t_context *ctx)
 
 static char	*safe_ft_strjoin(t_context *ctx, char *s1, char *s2, char *to_free)
 {
-	char		*res;
+	char	*res;
 
 	res = ft_strjoin(s1, s2);
 	if (!res)
@@ -50,7 +51,7 @@ char	*get_cmd_path(t_context *ctx, char *cmd)
 {
 	char	*curr_path;
 	int		i;
-	char **paths;
+	char	**paths;
 
 	paths = get_paths(ctx);
 	if (cmd && ft_strlen(cmd) > 0 && access(cmd, X_OK) != -1)
