@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/12 10:06:16 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:34:28 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,12 @@ int	interlen(char *str, char *keyword)
 	len += ft_strlen(keyword);
 	return (len);
 }
-char	*replace(char *str, char *inter, int interlen)
-{
-	char	*replace;
-	size_t	i;
-	size_t	j;
-	size_t	h;
 
-	i = 0;
-	j = 0;
+int	find_end_inter(char *str)
+{
+	int	h;
+
 	h = 0;
-	replace = ft_calloc(interlen + 1, 1);
-	while (str[i] != '$')
-	{
-		replace[i] = str[i];
-		i++;
-	}
-	while (inter[j])
-	{
-		replace[i + j] = inter[j];
-		j++;
-	}
 	while (str[h] != '$')
 		h++;
 	h++;
@@ -86,6 +71,25 @@ char	*replace(char *str, char *inter, int interlen)
 		h++;
 	while (str[h] != ' ' && str[h])
 		h++;
+	return (h);
+}
+
+char	*replace(char *str, char *inter, int interlen)
+{
+	char	*replace;
+	size_t	i;
+	size_t	j;
+	size_t	h;
+
+	i = -1;
+	j = -1;
+	h = 0;
+	h = find_end_inter(str);
+	replace = ft_calloc(interlen + 1, 1);
+	while (str[++i] != '$')
+		replace[i] = str[i];
+	while (inter[++j])
+		replace[i + j] = inter[j];
 	while (str[h])
 	{
 		replace[i + j] = str[h];
@@ -114,6 +118,6 @@ char	*interpretation(char *str, t_context *ctx)
 	repl = replace(str, inter, len);
 	free(keyword);
 	free(inter);
-    free(str);
+	free(str);
 	return (interpretation(repl, ctx));
 }

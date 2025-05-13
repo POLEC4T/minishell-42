@@ -6,185 +6,66 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/12 16:27:51 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 11:58:19 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_args(char *str)
-{
-	size_t	i;
-	size_t	args;
-
-	i = 0;
-	args = 0;
-	while (str[i])
-	{
-		if (str[i] == '<' || str[i] == '>')
-		{
-			while (str[i] == '<' || str[i] == '>')
-				i++;
-			while (str[i] == ' ' && str[i])
-				i++;
-			while (str[i] != ' ' && str[i])
-				i++;
-		}
-		else if (str[i] != ' ')
-		{
-			while (str[i] != ' ' && str[i])
-				i++;
-			args++;
-		}
-		else
-			i++;
-	}
-	return (args);
-}
-
-int	count_redirect(char *str)
-{
-	size_t	i;
-	size_t	redir;
-
-	i = 0;
-	redir = 0;
-	while (str[i])
-	{
-		if (str[i] == '<' || str[i] == '>')
-		{
-			while (str[i] == '<' || str[i] == '>')
-				i++;
-			while (str[i] == ' ' && str[i])
-				i++;
-			while (str[i] != ' ' && str[i])
-				i++;
-			redir++;
-		}
-		else if (str[i] != ' ')
-		{
-			while (str[i] != ' ' && str[i])
-				i++;
-		}
-		else
-			i++;
-	}
-	return (redir);
-}
-int	redirlen(char *str)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	if (str[i + j] == '<' || str[i + j] == '>')
-	{
-		while (str[i + j] == '<' || str[i + j] == '>')
-			j++;
-		while (str[i + j] == ' ' && str[i + j])
-			j++;
-		while (str[i + j] != ' ' && str[i + j])
-			i++;
-	}
-	return (i);
-}
-int	argslen(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != ' ' && str[i] && str[i] != '<' && str[i] != '>')
-		i++;
-	return (i);
-}
-
-t_redirect	*redirect_define(char *str)
-{
-	t_redirect	*redir;
-	size_t		i;
-	size_t		j;
-	size_t		filename_len;
-
-	i = 0;
-	j = 0;
-	redir = malloc(sizeof(t_redirect));
-	if (!redir)
-		return (NULL);
-	filename_len = redirlen(str);
-	redir->filename = malloc((filename_len + 1) * sizeof(char));
-	if (!redir->filename)
-	{
-		free(redir);
-		return (NULL);
-	}
-	if (str[i] == '>')
-	{
-		i++;
-		if (str[i] == '>')
-		{
-			redir->redir_type = OUT_TRUNC;
-			i++;
-		}
-		else
-			redir->redir_type = OUT;
-	}
-	else if (str[i] == '<')
-	{
-		i++;
-		if (str[i] == '<')
-		{
-			redir->redir_type = HEREDOC;
-			i++;
-		}
-		else
-			redir->redir_type = IN;
-	}
-	while (str[i] == ' ')
-		i++;
-	while (str[i] && str[i] != ' ')
-	{
-		redir->filename[j] = str[i];
-		i++;
-		j++;
-	}
-	redir->filename[j] = '\0';
-	redir->fd_in = -2;
-	redir->fd_out = -2;
-	return (redir);
-}
-
 char	*args_define(char *str)
 {
 	char	*args;
 	size_t	i;
-	int args_len;
 
-	i = 0;
-	args_len = argslen(str);
-	if (args_len == 0)
+	args = malloc(argslen(str) + 1);
+	if (!args)
 		return (NULL);
-	args = malloc(args_len + 1);
+	i = 0;
 	while (str[i] && str[i] != ' ' && str[i] != '<' && str[i] != '>')
 	{
 		args[i] = str[i];
 		i++;
 	}
-	args[args_len] = '\0';
+	args[i] = '\0';
 	return (args);
 }
 
-int space_check(char *str)
+int	space_check(char *str)
 {
-	int i = 0;
-	
-	while(str[i])
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		if(str[i] != ' ')
-			return(i);
+		if (str[i] != ' ')
+			return (i);
 		i++;
 	}
-	return(0);
+	return (0);
+}
+
+t_cmd	*cmd_initialize(size_t args_count, size_t redirects_count)
+{
+	t_cmd	*cmd;
+
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->args = malloc((args_count + 1) * sizeof(char *));
+	if (!cmd->args)
+	{
+		free(cmd);
+		return (NULL);
+	}
+	cmd->redirects = malloc((redirects_count + 1) * sizeof(t_redirect *));
+	if (!cmd->redirects)
+	{
+		free(cmd->args);
+		free(cmd);
+		return (NULL);
+	}
+	cmd->pid = -2;
+	return (cmd);
 }
 
 t_cmd	*split_cmd(char *str)
@@ -194,41 +75,18 @@ t_cmd	*split_cmd(char *str)
 	size_t	args;
 	t_cmd	*cmd;
 
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (NULL);
 	i = 0;
 	redirect = 0;
 	args = 0;
-	cmd->args = malloc((count_args(str) + 1) * sizeof(char *));
-
-	if (!cmd->args)
-		return (NULL);                                                        
-
-	cmd->redirects = malloc((count_redirect(str) + 1) * sizeof(t_redirect *));
-
-	cmd->pid = -2;
-	i = 0;
+	cmd = initialize_cmd_with_counts(str);
+	if (!cmd)
+		return (NULL);
 	while (str[i])
 	{
 		if (str[i] == '<' || str[i] == '>')
-		{
-			cmd->redirects[redirect] = redirect_define(str + i);
-			redirect++;
-			while (str[i] && (str[i] == '<' || str[i] == '>'))
-				i++;
-			while (str[i] && str[i] == ' ')
-				i++;
- 			while (str[i] && str[i] != ' ')
-				i++;
-		}
-		if (str[i] != ' ')
-		{
-			cmd->args[args] = args_define(str + i);
-			args++;
-			while (str[i] != ' ' && str[i] && str[i] != '<' && str[i] != '>')
-				i++;
-		}
+			i = handle_redirection(str, i, cmd, &redirect);
+		else if (str[i] != ' ')
+			i = handle_argument(str, i, cmd, &args);
 		else
 			i++;
 	}
