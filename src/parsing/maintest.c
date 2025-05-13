@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/12 18:02:32 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 13:01:36 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ t_context	*read_token(t_context *ctx)
 	
 	if (read == NULL)
 	{
+		write(1, "exit\n", 6);
 		exit_free(ctx);
 	}
 	while(read)
@@ -120,10 +121,11 @@ t_context	*read_token(t_context *ctx)
 		clean_init_exec(ctx);
 		free(read);
 		read = readline("pitishell$ ");
+		if (!read)
+		{
+			write(1, "exit\n", 6);
+			exit_free(ctx);
+		}
 	}
-	//print_token_list(token);
-	// free(read);
-	// read = readline("pitishell >");
-
 	return (NULL);
 }
