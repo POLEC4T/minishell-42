@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/12 19:12:29 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 11:04:13 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,13 +201,16 @@ void				print_cmd(t_node *cmd);
 // exec
 void				ft_exec(t_context *ctx);
 
-// opens
-int					open_infile(t_context *ctx, char *filename);
-int					open_outfile(char *filename);
-int					open_outfile_append(char *filename);
+// open_redirs
+void				open_redirs(t_context *ctx, t_node *node_cmd);
+
+// redirs
+void				dup_redirs(t_context *ctx, t_node *node_cmd);
+
+// exec_cmd
+void				exec_cmd(t_context *ctx, t_node *node_cmd);
 
 // init
-void				init_exec(t_context *ctx);
 void				clean_init_exec(t_context *ctx);
 
 // output
