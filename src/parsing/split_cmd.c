@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/14 11:07:57 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:13:50 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*args_define(char *str)
 	char	*args;
 	size_t	i;
 	size_t	j;
-	char	in_quotes; // Variable pour suivre le type de guillemet actif (simple ou double)
+	char	in_quotes;
 
 	args = malloc(argslen(str) + 1);
 	if (!args)
@@ -27,13 +27,14 @@ char	*args_define(char *str)
 	in_quotes = 0;
 	while (str[i])
 	{
-		if (str[i] == in_quotes) // Fin des guillemets actifs
+		if (str[i] == in_quotes)
 			in_quotes = 0;
-		else if ((str[i] == '"' || str[i] == '\'') && !in_quotes) // Début des guillemets simples ou doubles
+		else if ((str[i] == '"' || str[i] == '\'') && !in_quotes)
 			in_quotes = str[i];
-		else if (!in_quotes && (str[i] == ' ' || str[i] == '<' || str[i] == '>')) // Hors guillemets, condition d'arrêt
-			break;
-		else // Copier le caractère
+		else if (!in_quotes && (str[i] == ' ' || str[i] == '<'
+				|| str[i] == '>'))
+			break ;
+		else
 		{
 			args[j] = str[i];
 			j++;

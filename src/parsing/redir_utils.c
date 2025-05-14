@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/13 18:05:28 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 11:14:47 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ int	handle_output_redirection(char *str, size_t *i)
 	(*i)++;
 	if (str[*i] == '>')
 	{
-		type = OUT_TRUNC; // OUT_TRUNC
+		type = OUT_TRUNC;
 		(*i)++;
 	}
 	else
 	{
-		type = OUT; // OUT
+		type = OUT;
 	}
 	return (type);
 }
@@ -36,12 +36,12 @@ int	handle_input_redirection(char *str, size_t *i)
 	(*i)++;
 	if (str[*i] == '<')
 	{
-		type = HEREDOC; // HEREDOC
+		type = HEREDOC;
 		(*i)++;
 	}
 	else
 	{
-		type = IN; // IN
+		type = IN;
 	}
 	return (type);
 }
