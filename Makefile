@@ -47,6 +47,7 @@ STR_FILES=\
 	ft_calloc.c \
 	ft_free_tab.c \
 	ft_strchr.c \
+	ft_itoa.c \
 	ft_tablen.c \
 
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
@@ -112,8 +113,7 @@ PARS_FILES=\
 CHILDREN = $(addprefix $(CHILDREN_DIR)/, $(CHILDREN_FILES))
 CHILDREN_FILES=\
 	process_cmd.c \
-	open_redirs.c \
-	redirs.c \
+	dup_redirs.c \
 	exec_cmd.c \
 
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
@@ -121,6 +121,7 @@ EXEC_FILES=\
 	close.c \
 	env_check.c \
 	output.c \
+	open_redirs.c \
 	parent.c \
 	exec.c \
 	utils.c \

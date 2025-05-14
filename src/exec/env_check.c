@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 10:40:21 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 13:51:53 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ char	*get_cmd_path(t_context *ctx, char *cmd)
 
 	paths = get_paths(ctx);
 	if (cmd && ft_strlen(cmd) > 0 && access(cmd, X_OK) != -1)
+	{
+		ft_free_tab((void **)paths);
 		return (cmd);
+	}
 	cmd = safe_ft_strjoin(ctx, "/", cmd, NULL);
 	i = -1;
 	while (paths && paths[++i])

@@ -6,22 +6,19 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 19:10:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 10:45:26 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 17:26:12 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	open_infile(t_context *ctx, char *filename)
+static int	open_infile(char *filename)
 {
 	int	fd;
 
 	fd = open(filename, O_RDONLY, 644);
 	if (fd == -1)
-	{
 		ft_fprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
-		exit_free(ctx);
-	}
 	return (fd);
 }
 
@@ -48,25 +45,31 @@ static int	open_outfile_append(char *filename)
 	return (fd);
 }
 
-void	open_redirs(t_context *ctx, t_node *node_cmd)
+int	open_redirs(t_node *node_cmd)
 {
 	int			i;
 	t_cmd		*cmd;
 	t_redirect	*redir;
-
+	int exit_code;
+	
+	exit_code = EXIT_SUCCESS;
 	cmd = cast_to_cmd(node_cmd->content);
-	i = 0;
+	i = -1;
 	if (cmd->redirects == NULL)
-		return ;
-	while (cmd->redirects[i])
+		return (EXIT_SUCCESS);
+	while (cmd->redirects[++i])
 	{
 		redir = cmd->redirects[i];
-		if (redir->redir_type == IN)
-			redir->fd_in = open_infile(ctx, redir->filename);
+		if (redir->redir_type == IN || redir->redir_type == HEREDOC)
+		{
+			redir->fd_in = open_infile(redir->filename);
+			if (redir->fd_in == -1 && exit_code == EXIT_SUCCESS)
+				exit_code = EXIT_FAILURE;
+		}
 		else if (redir->redir_type == OUT)
 			redir->fd_out = open_outfile(redir->filename);
 		else if (redir->redir_type == OUT_TRUNC)
 			redir->fd_out = open_outfile_append(redir->filename);
-		i++;
 	}
+	return (exit_code);
 }
