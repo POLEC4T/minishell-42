@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/14 11:14:47 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:28:51 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char	*get_hd_name(void)
 	return (hd_name);
 }
 
-void	handle_heredoc(char *str, size_t *i, t_redirect *redir)
+int	handle_heredoc(char *str, size_t *i, t_redirect *redir)
 {
 	int		fd;
 	char	*line;
@@ -124,16 +124,10 @@ void	handle_heredoc(char *str, size_t *i, t_redirect *redir)
 	redir->filename = get_hd_name();
 	fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-	{
-		printf("heredoc todo");
-		return ;
-	}
+		return (-1);
 	eof = malloc(redirlen(str) + 1);
 	if (!eof)
-	{
-		printf("hd todo");
-		return ;
-	}
+		return (-1);
 	*i += extract_redirection_filename(str + *i, eof);
 	while (1)
 	{
@@ -147,6 +141,7 @@ void	handle_heredoc(char *str, size_t *i, t_redirect *redir)
 	close(fd);
 	free(line);
 	free(eof);
+	return (0);
 }
 
 t_redirect	*redirect_define(char *str)
@@ -161,7 +156,11 @@ t_redirect	*redirect_define(char *str)
 	redir->redir_type = detect_redirection_type(str, &i);
 	if (redir->redir_type == HEREDOC)
 	{
-		handle_heredoc(str, &i, redir);
+		if (handle_heredoc(str, &i, redir) == -1)
+		{
+			free(redir);
+			return (NULL);
+		}
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/14 11:14:34 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:56:30 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_context	*read_token(t_context *ctx)
 		add_history(read);
 		read = quote_delimiter(read);
 		read = interpretation(read, ctx);
-		ctx->head_cmd = parsing_init(read);
+		ctx->head_cmd = parsing_init(read, ctx);
 		ft_exec(ctx);
 		ft_free_ctx_cmds(ctx);
 		free_exec(ctx->exec_data);
