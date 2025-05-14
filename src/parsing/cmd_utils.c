@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:52:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/13 12:00:28 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:56:54 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 size_t	handle_redirection(char *str, size_t i, t_cmd *cmd, size_t *redirect)
 {
 	cmd->redirects[*redirect] = redirect_define(str + i);
+	if (!cmd->redirects[*redirect])
+		return (-1);
 	(*redirect)++;
 	i = skip_redirection(str, i);
 	i = skip_spaces(str, i);
@@ -26,6 +28,8 @@ size_t	handle_redirection(char *str, size_t i, t_cmd *cmd, size_t *redirect)
 size_t	handle_argument(char *str, size_t i, t_cmd *cmd, size_t *args)
 {
 	cmd->args[*args] = args_define(str + i);
+	if (!cmd->args[*args])
+		return (-1);
 	(*args)++;
 	i = skip_word(str, i);
 	return (i);

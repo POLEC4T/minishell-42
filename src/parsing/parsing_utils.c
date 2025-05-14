@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:55:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/13 11:00:27 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:13:57 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,20 @@ size_t	skip_redirection(char *str, size_t i)
 
 size_t	skip_word(char *str, size_t i)
 {
-	while (str[i] != ' ' && str[i] && str[i] != '<' && str[i] != '>')
-		i++;
+	char	in_quotes;
+
+	in_quotes = 0;
+	while (str[i])
+	{
+		if (str[i] == in_quotes && in_quotes)
+			in_quotes = 0;
+		else if ((str[i] == '"' || str[i] == '\'') && !in_quotes)
+			in_quotes = str[i];
+		if (!in_quotes && (str[i] == ' ' || str[i] == '<' || str[i] == '>'))
+			break ;
+		else
+			i++;
+	}
 	return (i);
 }
 

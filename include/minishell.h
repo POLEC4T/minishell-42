@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/14 13:49:05 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 13:54:50 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,11 +165,11 @@ int					is_builtin_cmd(char *cmd);
 // parsing
 t_context			*read_token(t_context *ctx);
 void				put_exec(char *str, t_node *token, char stop);
-t_node				**parsing_init(char *str);
+t_node				**parsing_init(char *str, t_context *ctx);
 size_t				strcount(char *str, char stop);
 int					define_token(t_node *node);
 void				print_token_list(t_node *head);
-t_cmd				*split_cmd(char *str);
+t_cmd				*split_cmd(char *str, t_context *ctx);
 char				*interpretation(char *str, t_context *ctx);
 // utils pars
 size_t				argslen(char *str);
