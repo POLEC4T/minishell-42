@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/13 13:27:59 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:48:07 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+# define HD_FILENAME "heredoc_tmp_"
 
 typedef enum e_redir_type
 {
@@ -118,6 +120,7 @@ void				ft_free_tab(void **tab);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strchr(const char *string, int c);
 size_t				ft_tablen(void **tab);
+char				*ft_itoa(int n);
 
 // output
 int					ft_fprintf(int fd, const char *fmt, ...);
@@ -154,7 +157,7 @@ int					ft_cd(t_context *context, char **args);
 int					cwd_error(char *to_free);
 int					ft_pwd(char **args);
 int					ft_echo(char **args);
-int					ft_exit(t_context *context, char **args);
+void				ft_exit(t_context *context, char **args);
 long long			ft_atoi_exit(const char *str_exit_code, int *error);
 int					is_builtin_cmd(char *cmd);
 
@@ -218,7 +221,7 @@ void				print_cmd(t_node *cmd);
 void				ft_exec(t_context *ctx);
 
 // open_redirs
-void				open_redirs(t_context *ctx, t_node *node_cmd);
+int					open_redirs(t_node *node_cmd);
 
 // redirs
 void				dup_redirs(t_context *ctx, t_node *node_cmd);
@@ -235,7 +238,8 @@ void				msg(char *str1, char *str2, char *str3, int fd);
 // close
 void				close_pipes(t_exec *d);
 void				my_close(int *fd);
-void				close_fds_cmds(t_node **head_cmd);
+void				close_all_cmds_redirs(t_node **head_cmd);
+void				close_cmd_redirs(t_node *cmd_node);
 
 // env check
 char				*get_cmd_path(t_context *ctx, char *cmd);

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/12 14:59:14 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 18:17:41 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	ft_free_redirects(t_redirect **redirects)
 	i = 0;
 	while (redirects[i])
 	{
+		if (redirects[i]->redir_type == HEREDOC)
+			unlink(redirects[i]->filename);
 		if (redirects[i]->filename != NULL)
 			free(redirects[i]->filename);
 		free(redirects[i]);
@@ -76,7 +78,7 @@ void	ft_free_ctx_cmds(t_context *context)
 	head_cmd = context->head_cmd;
 	if (!head_cmd)
 		return ;
-	close_fds_cmds(head_cmd);
+	close_all_cmds_redirs(head_cmd);
 	if (*head_cmd)
 		ft_lstclear(head_cmd, ft_free_cmd_content);
 	free(head_cmd);

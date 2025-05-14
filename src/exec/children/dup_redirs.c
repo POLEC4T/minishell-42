@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:53:56 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 11:21:58 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 13:33:44 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,7 @@ int	get_redir_out(t_context *ctx, t_cmd *cmd)
 }
 
 /**
- * @brief set the current input and output file descriptors
- * @details if fd_in is set in the command, it will be used as input
- * else if i_cmds > 0, the input will be the output of the previous command
- * if fd_out is set in the command, it will be used as output
- * else if [not last cmd], the output will be the input of the next command
+ * @brief duplicate the input and output file descriptors of the command
  */
 void	dup_redirs(t_context *ctx, t_node *node_cmd)
 {

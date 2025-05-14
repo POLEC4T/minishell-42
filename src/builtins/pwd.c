@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:26:01 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 17:38:21 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 15:35:46 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_pwd(char **args)
 		ft_fprintf(STDERR_FILENO, "pwd: %s\n", strerror(errno));
 		return (EXIT_FAILURE);
 	}
-	ft_fprintf(STDOUT_FILENO, "%s\n", pwd);
+	printf("%s\n", pwd);
 	free(pwd);
 	return (EXIT_SUCCESS);
 }

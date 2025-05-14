@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:43:03 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 17:38:03 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/13 14:43:10 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,42 +27,30 @@ static void	format_exit_code(t_context *context)
 	context->exit_code = code;
 }
 
-/**
- * @brief If there is only one command (not in a pipeline) -> exit
- * @details exit builtin cmd only exits the parent process if there is one cmd
- */
-static void	exit_if_in_parent(t_context *context)
-{
-	if (ft_lstsize(*context->head_cmd) == 1)
-	{
-		printf("exit\n");
-		exit_free(context);
-	}
-}
 
-int	ft_exit(t_context *context, char **args)
+void	ft_exit(t_context *context, char **args)
 {
 	int	error;
-	int	exit_code;
 
 	error = 0;
-	exit_code = 0;
+	if (ft_lstsize(*context->head_cmd) == 1)
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (args && args[0])
 	{
-		if (args[1])
-		{
-			ft_fprintf(STDERR_FILENO, "exit: too many arguments\n");
-			return (exit_code);
-		}
-		exit_code = ft_atoi_exit(args[0], &error);
+		context->exit_code = ft_atoi_exit(args[0], &error);
 		if (error)
 		{
 			ft_fprintf(STDERR_FILENO, "exit: %s: numeric argument required\n",
 				args[0]);
-			exit_code = 2;
+			context->exit_code = 2;
+		}
+		else if (args[1])
+		{
+			ft_fprintf(STDERR_FILENO, "exit: too many arguments\n");
+			context->exit_code = 1;
+			return ;
 		}
 	}
 	format_exit_code(context);
-	exit_if_in_parent(context);
-	return (exit_code);
+	exit_free(context);
 }
