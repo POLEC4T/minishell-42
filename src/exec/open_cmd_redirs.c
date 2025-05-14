@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   open_redirs.c                                      :+:      :+:    :+:   */
+/*   open_cmd_redirs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -45,13 +45,16 @@ static int	open_outfile_append(char *filename)
 	return (fd);
 }
 
-int	open_redirs(t_node *node_cmd)
+/**
+ * @returns EXIT_FAILURE if one of the input redir files cannot be opened
+ */
+int	open_cmd_redirs(t_node *node_cmd)
 {
 	int			i;
 	t_cmd		*cmd;
 	t_redirect	*redir;
-	int exit_code;
-	
+	int			exit_code;
+
 	exit_code = EXIT_SUCCESS;
 	cmd = cast_to_cmd(node_cmd->content);
 	i = -1;

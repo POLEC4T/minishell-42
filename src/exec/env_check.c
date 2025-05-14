@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 13:51:53 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 13:53:56 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,50 +32,44 @@ char	**get_paths(t_context *ctx)
 	return (NULL);
 }
 
-static char	*safe_ft_strjoin(t_context *ctx, char *s1, char *s2, char *to_free)
+static char	*safe_ft_double_strjoin(t_context *ctx, char *s1, char *s2, char *s3)
 {
 	char	*res;
 
-	res = ft_strjoin(s1, s2);
+	res = ft_double_strjoin(s1, s2, s3);
 	if (!res)
 	{
-		if (to_free)
-			free(to_free);
-		msg("ft_strjoin", ": ", strerror(errno), STDERR_FILENO);
+		ft_fprintf(STDERR_FILENO, "safe_ft_strjoin: %s\n", strerror(errno));
 		exit_free(ctx);
 	}
 	return (res);
 }
 
+/**
+ * @returns the path of the command if it exists in PATH, else NULL
+ */
 char	*get_cmd_path(t_context *ctx, char *cmd)
 {
 	char	*curr_path;
 	int		i;
 	char	**paths;
 
-	paths = get_paths(ctx);
+	if (!cmd)
+		return (NULL);
 	if (cmd && ft_strlen(cmd) > 0 && access(cmd, X_OK) != -1)
-	{
-		ft_free_tab((void **)paths);
 		return (cmd);
-	}
-	cmd = safe_ft_strjoin(ctx, "/", cmd, NULL);
+	paths = get_paths(ctx);
 	i = -1;
 	while (paths && paths[++i])
 	{
-		curr_path = safe_ft_strjoin(ctx, paths[i], cmd, cmd);
+		curr_path = safe_ft_double_strjoin(ctx, paths[i], "/", cmd);
 		if (access(curr_path, X_OK) != -1)
 		{
-			free(cmd);
 			ft_free_tab((void **)paths);
 			return (curr_path);
 		}
 		free(curr_path);
 	}
-	ft_fprintf(STDERR_FILENO, "command not found: %s\n", cmd + 1);
-	ctx->exit_code = 127;
-	free(cmd);
 	ft_free_tab((void **)paths);
-	exit_free(ctx);
 	return (NULL);
 }

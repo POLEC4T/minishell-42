@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/13 17:48:07 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 13:49:05 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ char				*ft_strndup(const char *s, size_t n);
 char				*ft_secure_strdup(t_context *ctx, char *s, char *err_title);
 int					ft_strchr_idx(const char *s, int c);
 char				*ft_strjoin(char *s1, char *s2);
+char				*ft_double_strjoin(char *s1, char *s2, char *s3);
 char				**ft_split_first(char const *s, char *delim);
 char				**ft_split(char const *s, char *delim);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
@@ -220,11 +221,11 @@ void				print_cmd(t_node *cmd);
 // exec
 void				ft_exec(t_context *ctx);
 
-// open_redirs
-int					open_redirs(t_node *node_cmd);
+// open_cmd_redirs
+int					open_cmd_redirs(t_node *node_cmd);
 
 // redirs
-void				dup_redirs(t_context *ctx, t_node *node_cmd);
+void				dup_cmd_redirs(t_context *ctx, t_node *node_cmd);
 
 // exec_cmd
 void				exec_cmd(t_context *ctx, t_node *node_cmd);

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 16:33:09 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 11:33:51 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,24 @@
 /**
  * @brief processes the command, but not always the same way
  * @details if the command is a builtin and there is no other commands,
- * it will be executed in the parent process. Else, it will be executed 
+ * it will be executed in the parent process. Else, it will be executed
  * in a child process
  */
-static void	process_cmd_if(t_context *ctx, t_node *curr_node)
+static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 {
-	t_cmd	*curr_cmd;
-	int		is_builtin_and_alone;
+	t_cmd	*cmd;
+	int		is_cmd_a_single_builtin;
 
-	curr_cmd = cast_to_cmd(curr_node->content);
-	is_builtin_and_alone = !curr_node->next && !curr_node->prev
-		&& is_builtin_cmd(curr_cmd->args[0]);
-	if (is_builtin_and_alone)
-		process_cmd(ctx, curr_node);
+	cmd = cast_to_cmd(cmd_node->content);
+	is_cmd_a_single_builtin = !cmd_node->next && !cmd_node->prev
+		&& is_builtin_cmd(cmd->args[0]);
+	if (is_cmd_a_single_builtin)
+		process_cmd(ctx, cmd_node);
 	else
 	{
-		secure_fork(&curr_cmd->pid, ctx);
-		if (!curr_cmd->pid)
-			process_cmd(ctx, curr_node);
+		secure_fork(&cmd->pid, ctx);
+		if (!cmd->pid)
+			process_cmd(ctx, cmd_node);
 	}
 }
 
@@ -56,7 +56,7 @@ void	start_children(t_context *ctx)
 	{
 		if (curr_node->next)
 			secure_pipe(ctx);
-		if (open_redirs(curr_node) == EXIT_SUCCESS)
+		if (open_cmd_redirs(curr_node) == EXIT_SUCCESS)
 			process_cmd_if(ctx, curr_node);
 		close_useless_pipes(ctx->exec_data, curr_node);
 		close_cmd_redirs(curr_node);

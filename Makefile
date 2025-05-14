@@ -113,15 +113,14 @@ PARS_FILES=\
 CHILDREN = $(addprefix $(CHILDREN_DIR)/, $(CHILDREN_FILES))
 CHILDREN_FILES=\
 	process_cmd.c \
-	dup_redirs.c \
+	dup_cmd_redirs.c \
 	exec_cmd.c \
 
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
 EXEC_FILES=\
 	close.c \
 	env_check.c \
-	output.c \
-	open_redirs.c \
+	open_cmd_redirs.c \
 	parent.c \
 	exec.c \
 	utils.c \
