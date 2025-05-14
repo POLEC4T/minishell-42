@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstaddback.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 14:52:47 by niemazm           #+#    #+#             */
-/*   Updated: 2025/04/16 17:26:58 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 14:54:22 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_lstadd_back(t_node **lst, t_node *new)
 {
-	t_node *last;
+	t_node	*last;
 
 	if (!lst)
 		return ;

@@ -58,6 +58,7 @@ ENV_UTILS_FILES=\
 FREE = $(addprefix $(FREE_DIR)/, $(FREE_FILES))
 FREE_FILES=\
 	free.c \
+	free_utils.c \
 
 
 GNL = $(addprefix $(GNL_DIR)/, $(GNL_FILES))
