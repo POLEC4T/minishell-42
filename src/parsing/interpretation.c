@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/12 11:34:28 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 13:44:37 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int	interlen(char *str, char *keyword)
 		len++;
 		i++;
 	}
-	len += ft_strlen(keyword);
+	if (keyword != NULL)
+		len += ft_strlen(keyword);
 	return (len);
 }
 
@@ -88,8 +89,9 @@ char	*replace(char *str, char *inter, int interlen)
 	replace = ft_calloc(interlen + 1, 1);
 	while (str[++i] != '$')
 		replace[i] = str[i];
-	while (inter[++j])
-		replace[i + j] = inter[j];
+	if (inter)
+		while (inter[++j])
+			replace[i + j] = inter[j];
 	while (str[h])
 	{
 		replace[i + j] = str[h];
@@ -113,7 +115,10 @@ char	*interpretation(char *str, t_context *ctx)
 	while (str[i] != '$')
 		i++;
 	keyword = get_key_word(str + i);
-	inter = ft_get_env_val(ctx, keyword);
+	if (ft_strncmp(keyword, "?", 2) == 0)
+		inter = ft_itoa(ctx->exit_code);
+	else
+		inter = ft_get_env_val(ctx, keyword);
 	len = interlen(str, inter);
 	repl = replace(str, inter, len);
 	free(keyword);
