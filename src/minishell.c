@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/12 18:02:04 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 14:58:32 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 void	clean_init_exec(t_context *ctx)
 {
@@ -80,50 +80,13 @@ t_redirect	**prep_fake_redirs(char **filenames, t_redir_type *types)
 	return (redirs);
 }
 
-void	prep_fake_cmds(t_context *ctx)
-{
-	prep_fake_cmd(ctx, "mkdir -p testdir/a/b/c/d", prep_fake_redirs((char *[]){NULL},
-			(t_redir_type[]){}));
-	prep_fake_cmd(ctx, "cd testdir/a/b/c/d", prep_fake_redirs((char *[]){NULL},
-			(t_redir_type[]){}));
-	prep_fake_cmd(ctx, "rm -r ../../../../a", prep_fake_redirs((char *[]){NULL},
-			(t_redir_type[]){}));
-	prep_fake_cmd(ctx, "cd ..", prep_fake_redirs((char *[]){NULL},
-			(t_redir_type[]){}));
-	// prep_fake_cmd(ctx, "export dfsaf4334ff", prep_fake_redirs((char *[]){NULL},
-	// 		(t_redir_type[]){}));
-	// prep_fake_cmd(ctx, "cd ..", prep_fake_redirs((char *[]){"Makefile",
-	// NULL},
-	// 		(t_redir_type[]){IN}));
-	// prep_fake_cmd(ctx, "cat test", prep_fake_redirs((char *[]){"test",
-	// 		NULL}, (t_redir_type[]){IN}));
-	// prep_fake_cmd(ctx, "ls", NULL);
-}
-
-void	print_cmd(t_node *cmd)
-{
-	t_cmd	*cmd_content;
-
-	cmd_content = cast_to_cmd(cmd->content);
-	if (!cmd_content)
-		return ;
-	printf("Command: ");
-	for (int i = 0; cmd_content->args && cmd_content->args[i]; i++)
-		printf("%s ", cmd_content->args[i]);
-	if (cmd_content->pid != -2)
-		printf("-> pid: %d", cmd_content->pid);
-	printf("\n");
-}
-
 void	minishell(char **envp)
 {
+	t_context	ctx;
+
 	(void)envp;
-	t_context ctx;
 	init_context(&ctx);
 	ft_export(&ctx, envp);
-	
 	read_token(&ctx);
-	//prep_fake_cmds(&ctx);
-	//ft_exec(&ctx);
 	exit_free(&ctx);
 }

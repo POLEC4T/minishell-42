@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_delimiter.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 13:36:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/12 11:41:24 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 15:06:51 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ int	quote_count(char *str, char quote)
 	{
 		if (str[i] == outquote)
 		{
-            i++;
+			i++;
 			while (str[i] != outquote && str[i])
 				i++;
 		}
 		if (str[i] == quote)
-        {
+		{
 			nbquote++;
-            i++;
-            while (str[i] != quote && str[i])
-                i++;
-            if(str[i] == quote)
-                nbquote++;
-        }
+			i++;
+			while (str[i] != quote && str[i])
+				i++;
+			if (str[i] == quote)
+				nbquote++;
+		}
 		i++;
 	}
 	return (nbquote % 2);
@@ -121,7 +121,7 @@ char	*quote_delimiter(char *str)
 		str = ft_strjoin(str, to_add);
 		return (quote_delimiter(str));
 	}
-	else if (ft_strchr(str , '|') && check_last_pipe(str) != 0)
+	else if (ft_strchr(str, '|') && check_last_pipe(str) != 0)
 	{
 		read = readline(">");
 		str = ft_strjoin(str, read);

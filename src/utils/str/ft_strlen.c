@@ -6,12 +6,11 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:09:28 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/18 16:09:50 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:51:16 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	ft_strlen(char *str)
 {
