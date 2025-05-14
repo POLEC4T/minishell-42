@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/13 13:32:34 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 10:01:27 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_context	*read_token(t_context *ctx)
 	}
 	while (read)
 	{
+		add_history(read);
 		read = quote_delimiter(read);
 		read = interpretation(read, ctx);
 		ctx->head_cmd = parsing_init(read);
