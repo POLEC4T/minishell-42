@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/13 11:58:19 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:24:35 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,31 @@ char	*args_define(char *str)
 {
 	char	*args;
 	size_t	i;
+	size_t	j;
+	int		in_quotes;
 
 	args = malloc(argslen(str) + 1);
 	if (!args)
 		return (NULL);
 	i = 0;
-	while (str[i] && str[i] != ' ' && str[i] != '<' && str[i] != '>')
+	j = 0;
+	in_quotes = 0;
+	while (str[i])
 	{
-		args[i] = str[i];
+		if (str[i] == '"' && !in_quotes) // Début des guillemets
+			in_quotes = 1;
+		else if (str[i] == '"' && in_quotes) // Fin des guillemets
+			in_quotes = 0;
+		else if (!in_quotes && (str[i] == ' ' || str[i] == '<' || str[i] == '>')) // Hors des guillemets, arrêter
+			break;
+		else // Copier le caractère
+		{
+			args[j] = str[i];
+			j++;
+		}
 		i++;
 	}
-	args[i] = '\0';
+	args[j] = '\0';
 	return (args);
 }
 
