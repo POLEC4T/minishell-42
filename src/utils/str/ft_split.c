@@ -6,13 +6,11 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:14:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/14 14:50:25 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:14:25 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "minishell.h"
 
 static void	free_tab(char **tab, int limit)
 {
