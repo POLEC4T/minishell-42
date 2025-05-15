@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 10:41:11 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:11:18 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	ft_exec(t_context *ctx)
 {
-	start_children(ctx);
-	wait_children(ctx);
+	if (ctx->head_cmd != NULL)
+	{
+		start_children(ctx);
+		wait_children(ctx);
+	}
 }
