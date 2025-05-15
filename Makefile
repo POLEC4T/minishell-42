@@ -33,6 +33,7 @@ STR_FILES=\
 	ft_secure_strdup.c \
 	ft_strndup.c \
 	ft_strjoin.c \
+	ft_double_strjoin.c \
 	ft_strlen.c \
 	ft_strlcpy.c \
 	ft_strchr_idx.c \
