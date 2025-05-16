@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/14 11:33:51 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/16 16:06:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 
 	cmd = cast_to_cmd(cmd_node->content);
 	is_cmd_a_single_builtin = !cmd_node->next && !cmd_node->prev
-		&& is_builtin_cmd(cmd->args[0]);
+		&& is_builtin_cmd(cmd->args[0]); 
 	if (is_cmd_a_single_builtin)
 		process_cmd(ctx, cmd_node);
 	else
@@ -47,6 +47,14 @@ static void	close_useless_pipes(t_exec *exec_data, t_node *curr_node)
 	}
 }
 
+/**
+ * if open_cmd_redirs fails
+ * - we don't want to process the command
+ * - we wait the previous children in order to not close the pipes before
+ * they are used
+ *   -> if we don't wait the children, this command throws a SIGPIPE : 
+ * 	 echo oui | echo bye > test_no_perm
+ */
 void	start_children(t_context *ctx)
 {
 	t_node	*curr_node;
@@ -58,6 +66,11 @@ void	start_children(t_context *ctx)
 			secure_pipe(ctx);
 		if (open_cmd_redirs(curr_node) == EXIT_SUCCESS)
 			process_cmd_if(ctx, curr_node);
+		else
+		{
+			wait_children(ctx);
+			(cast_to_cmd(curr_node->content))->exit_code = EXIT_FAILURE;
+		}
 		close_useless_pipes(ctx->exec_data, curr_node);
 		close_cmd_redirs(curr_node);
 		curr_node = curr_node->next;
@@ -70,6 +83,7 @@ void	wait_children(t_context *ctx)
 	t_node	*curr_node;
 	t_cmd	*cmd;
 
+	status = 0;
 	curr_node = *ctx->head_cmd;
 	while (curr_node)
 	{
@@ -80,6 +94,8 @@ void	wait_children(t_context *ctx)
 			if (WIFEXITED(status))
 				ctx->exit_code = WEXITSTATUS(status);
 		}
+		else if (cmd->exit_code)
+			ctx->exit_code = cmd->exit_code;
 		curr_node = curr_node->next;
 	}
 }

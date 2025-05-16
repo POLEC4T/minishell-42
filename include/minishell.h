@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/16 10:38:11 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/16 15:38:42 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,15 @@ typedef struct s_redirect
 	int				fd_out;
 }					t_redirect;
 
+/**
+ * cmd.exit_code is ONLY USED if the cmd failed to open a redir
+ */
 typedef struct s_cmd
 {
 	char			**args;
 	t_redirect		**redirects;
 	int				pid;
+	int				exit_code;
 }					t_cmd;
 
 typedef struct s_key_value
