@@ -6,23 +6,23 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:26 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/04/18 16:37:28 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:46:43 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_free_tab(void **tab)
+void	ft_free_tab(void **tab)
 {
-    int	i;
+	int	i;
 
-    if (!tab)
-        return ;
-    i = 0;
-    while (tab[i])
-    {
-        free(tab[i]);
-        i++;
-    }
-    free(tab);
+	if (!tab)
+		return ;
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
 }

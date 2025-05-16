@@ -6,27 +6,11 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:14:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/14 14:50:49 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/16 10:36:11 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-static int	is_char_in_str(char c, char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (c == str[i])
-			return (1);
-		i++;
-	}
-	return (0);
-}
+#include "minishell.h"
 
 static void	free_tab(char **tab, int limit)
 {
@@ -71,11 +55,9 @@ static int	alloc_n_write(char **res, char const *s, char *delim)
 	int	i;
 	int	old_i;
 	int	i_res;
-	int	counter;
 
 	i = 0;
 	i_res = 0;
-	counter = 0;
 	while (s[i])
 	{
 		while (s[i] && (is_char_in_str(s[i], delim)))
@@ -91,7 +73,6 @@ static int	alloc_n_write(char **res, char const *s, char *delim)
 			fill_word(res[i_res], s + old_i, delim);
 			i_res++;
 		}
-		counter++;
 	}
 	return (-1);
 }

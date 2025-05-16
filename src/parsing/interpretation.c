@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/14 13:44:37 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/14 14:16:04 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,18 @@ char	*replace(char *str, char *inter, int interlen)
 	size_t	h;
 
 	i = -1;
-	j = -1;
+	j = 0;
 	h = 0;
 	h = find_end_inter(str);
 	replace = ft_calloc(interlen + 1, 1);
 	while (str[++i] != '$')
 		replace[i] = str[i];
 	if (inter)
-		while (inter[++j])
+		while (inter[j])
+		{
 			replace[i + j] = inter[j];
+			j++;
+		}
 	while (str[h])
 	{
 		replace[i + j] = str[h];
@@ -115,7 +118,7 @@ char	*interpretation(char *str, t_context *ctx)
 	while (str[i] != '$')
 		i++;
 	keyword = get_key_word(str + i);
-	if (ft_strncmp(keyword, "?", 2) == 0)
+	if (str[i + 1] == '?')
 		inter = ft_itoa(ctx->exit_code);
 	else
 		inter = ft_get_env_val(ctx, keyword);
