@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:48:01 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 17:39:11 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/16 15:28:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static int	nb_option_n(char **args)
 
 static int	write_print_on_error(char *str)
 {
+	if (!str)
+		return (EXIT_SUCCESS);
 	if (write(STDOUT_FILENO, str, ft_strlen(str)) == -1)
 	{
 		ft_fprintf(STDERR_FILENO, "write: %s\n", strerror(errno));
@@ -48,6 +50,8 @@ static int	write_print_on_error(char *str)
 
 static int	print_word(char **args, int i)
 {
+	if (!args[i])
+		return (EXIT_SUCCESS);
 	if (write_print_on_error(args[i]) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (args[i + 1])

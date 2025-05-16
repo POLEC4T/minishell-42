@@ -9,3 +9,4 @@ readline.sup
 *test*/*
 *.txt
 heredoc*
+ls

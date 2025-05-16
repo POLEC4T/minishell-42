@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:48:08 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 14:11:08 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/15 11:39:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,24 @@ static void	exec_builtin(t_context *ctx, t_cmd *cmd)
 }
 
 /**
- * what I call a native cmd is all cmds except builtins
+ * What I call a native cmd is all cmds except builtins
  */
 static void	exec_native_cmd(t_context *ctx, t_cmd *cmd)
 {
 	char	*cmd_path;
 	char	**env_tab;
 
+	
 	cmd_path = get_cmd_path(ctx, cmd->args[0]);
+	if (!cmd_path)
+	{
+		ft_fprintf(STDERR_FILENO, "%s: command not found\n", cmd->args[0]);
+		exit_free(ctx);
+	}
 	env_tab = env_to_tabstr(ctx->head_env);
 	execve(cmd_path, cmd->args, env_tab);
-	ft_fprintf(STDERR_FILENO, "execve: %s\n", strerror(errno));
-	// free(cmd_path);
+	// todo : if (errno == ENOEXEC) -> exec le fichier ligne par ligne ? print une erreur ?
+	free(cmd_path);
 	ft_free_tab((void **)env_tab);
 	exit_free(ctx);
 }

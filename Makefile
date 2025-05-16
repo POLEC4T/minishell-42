@@ -16,7 +16,6 @@ UTILS_DIR = utils
 STR_DIR = str
 ENV_UTILS_DIR = env_utils
 FREE_DIR = free
-GNL_DIR = get_next_line
 LST_DIR = lst
 BUILTINS_DIR = builtins
 INC_DIR = include
@@ -33,6 +32,7 @@ STR_FILES=\
 	ft_secure_strdup.c \
 	ft_strndup.c \
 	ft_strjoin.c \
+	ft_double_strjoin.c \
 	ft_strlen.c \
 	ft_strlcpy.c \
 	ft_strchr_idx.c \
@@ -47,8 +47,10 @@ STR_FILES=\
 	ft_calloc.c \
 	ft_free_tab.c \
 	ft_strchr.c \
+	ft_fprintf.c \
 	ft_itoa.c \
 	ft_tablen.c \
+	get_next_line.c \
 
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
 ENV_UTILS_FILES=\
@@ -59,11 +61,6 @@ FREE = $(addprefix $(FREE_DIR)/, $(FREE_FILES))
 FREE_FILES=\
 	free.c \
 	free_utils.c \
-
-
-GNL = $(addprefix $(GNL_DIR)/, $(GNL_FILES))
-GNL_FILES=\
-	get_next_line.c \
 
 LST = $(addprefix $(LST_DIR)/, $(LST_FILES))
 LST_FILES=\
@@ -80,12 +77,10 @@ LST_FILES=\
 
 UTILS = $(addprefix $(UTILS_DIR)/, $(UTILS_FILES))
 UTILS_FILES=\
-	output.c \
 	$(STR) \
 	$(LST) \
 	$(ENV_UTILS) \
 	$(FREE) \
-	$(GNL) \
 
 BUILTINS = $(addprefix $(BUILTINS_DIR)/, $(BUILTINS_FILES))
 BUILTINS_FILES=\
@@ -114,15 +109,14 @@ PARS_FILES=\
 CHILDREN = $(addprefix $(CHILDREN_DIR)/, $(CHILDREN_FILES))
 CHILDREN_FILES=\
 	process_cmd.c \
-	dup_redirs.c \
+	dup_cmd_redirs.c \
 	exec_cmd.c \
 
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
 EXEC_FILES=\
 	close.c \
 	env_check.c \
-	output.c \
-	open_redirs.c \
+	open_cmd_redirs.c \
 	parent.c \
 	exec.c \
 	utils.c \
@@ -138,7 +132,6 @@ SRC_FILES=\
 	main.c \
 	minishell.c \
 	$(UTILS) \
-	$(ENV) \
 	$(BUILTINS) \
 	$(PARS) \
 	$(SYNTAX) \
