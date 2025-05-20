@@ -3,38 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   env_to_tabstr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:33:35 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/14 14:38:04 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:26:01 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**env_to_tabstr(t_node **head_env)
+char	**env_to_tabstr(t_context *ctx)
 {
 	char		**res;
 	t_node		*curr_node;
 	t_key_value	*curr_kv;
 	int			i;
-	char		*tmp;
 
-	if (!head_env)
+	if (!ctx->head_env)
 		return (NULL);
-	res = malloc((ft_lstsize(*head_env) + 1) * sizeof(char *));
-	curr_node = *head_env;
+	res = malloc((ft_lstsize(*ctx->head_env) + 1) * sizeof(char *));
+	if (!res)
+	{
+		ft_fprintf(STDERR_FILENO, "env_to_tabstr: %s\n", strerror(errno));
+		exit_free(ctx);
+	}
+	curr_node = *ctx->head_env;
 	i = 0;
 	while (curr_node)
 	{
 		curr_kv = cast_to_key_value(curr_node->content);
-		tmp = ft_strjoin(curr_kv->key, "=");
-		if (!tmp)
-			printf("TODO");
-		res[i] = ft_strjoin(tmp, curr_kv->value);
-		free(tmp);
+		res[i] = ft_double_strjoin(ctx, curr_kv->key, "=", curr_kv->value);
 		if (!res[i])
-			printf("TODO");
+		{
+			ft_fprintf(STDERR_FILENO, "env_to_tabstr: %s\n", strerror(errno));
+			exit_free(ctx);
+		}
 		curr_node = curr_node->next;
 		i++;
 	}

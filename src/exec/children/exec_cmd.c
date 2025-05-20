@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:48:08 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/15 11:39:33 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:26:55 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ static void	exec_native_cmd(t_context *ctx, t_cmd *cmd)
 		ft_fprintf(STDERR_FILENO, "%s: command not found\n", cmd->args[0]);
 		exit_free(ctx);
 	}
-	env_tab = env_to_tabstr(ctx->head_env);
+	env_tab = env_to_tabstr(ctx);
+	// signal(SIGINT, SIG_DFL);
 	execve(cmd_path, cmd->args, env_tab);
 	// todo : if (errno == ENOEXEC) -> exec le fichier ligne par ligne ? print une erreur ?
 	free(cmd_path);

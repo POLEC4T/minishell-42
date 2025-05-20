@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:10:36 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 17:39:29 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/19 16:15:51 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,27 @@
 
 void	ft_unset_one(t_context *ctx, char *key)
 {
-	t_node		*tmp;
+	t_node		*curr_node;
 	t_key_value	*kv;
 
 	if (!key)
 		return ;
-	tmp = *ctx->head_env;
-	while (tmp)
+	curr_node = *ctx->head_env;
+	while (curr_node)
 	{
-		kv = cast_to_key_value(tmp->content);
+		kv = cast_to_key_value(curr_node->content);
 		if (ft_strncmp(key, kv->key, ft_strlen(key) + 1) == 0)
 		{
-			if (tmp->prev)
-				tmp->prev->next = tmp->next;
+			if (curr_node->prev)
+				curr_node->prev->next = curr_node->next;
 			else
-				*ctx->head_env = tmp->next;
-			if (tmp->next)
-				tmp->next->prev = tmp->prev;
-			ft_lstdelone(tmp, ft_free_env_content);
+				*ctx->head_env = curr_node->next;
+			if (curr_node->next)
+				curr_node->next->prev = curr_node->prev;
+			ft_lstdelone(curr_node, ft_free_env_content);
 			return ;
 		}
-		tmp = tmp->next;
+		curr_node = curr_node->next;
 	}
 }
 
