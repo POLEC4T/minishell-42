@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/21 13:00:23 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:03:17 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ size_t	extract_redirection_filename(char *str, char *filename)
 	if (str[i] == '"' || str[i] == '\'')
 	{
 		i++;
-		if (str[i] == str[i - 1])
+		while (str[i] == str[i - 1])
 			i++;
 	}
 	while (str[i] && str[i] != ' ' && str[i] != '>' && str[i] != '<'
