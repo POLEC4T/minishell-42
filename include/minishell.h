@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/21 11:12:34 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:22:27 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char				*ft_strndup(const char *s, size_t n);
 char				*ft_secure_strdup(t_context *ctx, char *s, char *err_title);
 int					ft_strchr_idx(const char *s, int c);
 char				*ft_strjoin(char *s1, char *s2);
-char				*ft_double_strjoin(char *s1, char *s2, char *s3);
+char				*ft_double_strjoin(t_context *ctx, char *s1, char *s2, char *s3);
 char				**ft_split_first(char const *s, char *delim);
 char				**ft_split(char const *s, char *delim);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
@@ -154,7 +154,7 @@ void				ft_free_env_content(void *content);
 void				print_env_val(t_context *context, char *key);
 
 // env
-char				**env_to_tabstr(t_node **head_env);
+char				**env_to_tabstr(t_context *ctx);
 void				create_or_set_env_var(t_context *context, char *key,
 						char *value);
 // builtins

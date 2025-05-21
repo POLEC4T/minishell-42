@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:26:01 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 15:35:46 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/19 10:45:46 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	ft_pwd(char **args)
 {
 	char	*pwd;
 
-	if (args && args[0])
+	if (args == NULL)
 	{
-		ft_fprintf(STDERR_FILENO, "pwd: too many arguments\n");
+		ft_fprintf(STDERR_FILENO, "pwd: %s\n", strerror(EINVAL));
 		return (EXIT_FAILURE);
 	}
 	pwd = getcwd(NULL, 0);

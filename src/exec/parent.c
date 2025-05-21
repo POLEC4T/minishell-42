@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/16 16:06:33 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/21 10:38:24 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,19 @@ static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 
 	cmd = cast_to_cmd(cmd_node->content);
 	is_cmd_a_single_builtin = !cmd_node->next && !cmd_node->prev
-		&& is_builtin_cmd(cmd->args[0]); 
+		&& is_builtin_cmd(cmd->args[0]);
 	if (is_cmd_a_single_builtin)
 		process_cmd(ctx, cmd_node);
 	else
 	{
 		secure_fork(&cmd->pid, ctx);
 		if (!cmd->pid)
+		{
+			// todo: secure signals
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 			process_cmd(ctx, cmd_node);
+		}
 	}
 }
 
@@ -51,9 +56,9 @@ static void	close_useless_pipes(t_exec *exec_data, t_node *curr_node)
  * if open_cmd_redirs fails
  * - we don't want to process the command
  * - we wait the previous children in order to not close the pipes before
- * they are used
- *   -> if we don't wait the children, this command throws a SIGPIPE : 
- * 	 echo oui | echo bye > test_no_perm
+ * 		they are used
+ *   -> if we don't wait the children, this command throws a SIGPIPE :
+ * 		echo oui | echo bye > test_no_perm
  */
 void	start_children(t_context *ctx)
 {
@@ -77,13 +82,28 @@ void	start_children(t_context *ctx)
 	}
 }
 
+static void handle_signals(t_context *ctx, int status, int *already_printed)
+{
+	ctx->exit_code = WTERMSIG(status) + 128;
+    if (WIFSIGNALED(status))
+    {
+        if (WTERMSIG(status) == SIGQUIT && !(*already_printed))
+        {
+            *already_printed = 1;
+            if (WCOREDUMP(status))
+                printf("Quit (core dumped)\n");
+        }
+    }
+}
+
 void	wait_children(t_context *ctx)
 {
 	int		status;
 	t_node	*curr_node;
 	t_cmd	*cmd;
+	int		already_printed;
 
-	status = 0;
+	already_printed = 0;
 	curr_node = *ctx->head_cmd;
 	while (curr_node)
 	{
@@ -93,6 +113,8 @@ void	wait_children(t_context *ctx)
 			waitpid(cmd->pid, &status, 0);
 			if (WIFEXITED(status))
 				ctx->exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				handle_signals(ctx, status, &already_printed);
 		}
 		else if (cmd->exit_code)
 			ctx->exit_code = cmd->exit_code;

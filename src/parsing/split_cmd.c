@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/16 15:39:13 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/19 12:48:37 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_cmd	*cmd_initialize(size_t args_count, size_t redirects_count)
 		return (NULL);
 	}
 	cmd->pid = -2;
-	cmd->exit_code = 0;
+	cmd->exit_code = EXIT_SUCCESS;
 	return (cmd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/16 10:34:44 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:25:49 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*safe_ft_double_strjoin(t_context *ctx, char *s1, char *s2,
 {
 	char	*res;
 
-	res = ft_double_strjoin(s1, s2, s3);
+	res = ft_double_strjoin(ctx, s1, s2, s3);
 	if (!res)
 	{
 		ft_fprintf(STDERR_FILENO, "safe_ft_strjoin: %s\n", strerror(errno));
@@ -46,7 +46,7 @@ static char	*safe_ft_double_strjoin(t_context *ctx, char *s1, char *s2,
 	return (res);
 }
 
-int	is_directory(t_context *ctx, char *path)
+static int	is_directory(t_context *ctx, char *path)
 {
 	struct stat	st;
 
@@ -59,7 +59,7 @@ int	is_directory(t_context *ctx, char *path)
 	return (S_ISDIR(st.st_mode));
 }
 
-char	*find_cmd_in_path(t_context *ctx, char *cmd, char **paths)
+static char	*find_cmd_in_path(t_context *ctx, char *cmd, char **paths)
 {
 	char	*curr_path;
 	int		i;
@@ -91,7 +91,8 @@ char	*find_cmd_in_path(t_context *ctx, char *cmd, char **paths)
  * - it exists
  * - it is executable
  */
-char	*check_absolute_cmd(t_context *ctx, char *absolute_cmd, char **paths)
+static char	*get_absolute_cmd_path(t_context *ctx, char *absolute_cmd,
+		char **paths)
 {
 	if (paths != NULL)
 		ft_free_tab((void **)paths);
@@ -102,7 +103,7 @@ char	*check_absolute_cmd(t_context *ctx, char *absolute_cmd, char **paths)
 		exit_free(ctx);
 	}
 	if (access(absolute_cmd, X_OK) == 0)
-		return (ft_secure_strdup(ctx, absolute_cmd, "check_absolute_cmd"));
+		return (ft_secure_strdup(ctx, absolute_cmd, "get_absolute_cmd_path"));
 	else
 	{
 		ft_fprintf(STDERR_FILENO, "%s: %s\n", absolute_cmd, strerror(errno));
@@ -112,9 +113,6 @@ char	*check_absolute_cmd(t_context *ctx, char *absolute_cmd, char **paths)
 	return (NULL);
 }
 
-/**
- * @returns the path of the command if it exists in PATH, else NULL
- */
 char	*get_cmd_path(t_context *ctx, char *cmd)
 {
 	char	**paths;
@@ -123,7 +121,7 @@ char	*get_cmd_path(t_context *ctx, char *cmd)
 		return (NULL);
 	paths = get_paths(ctx);
 	if (paths == NULL || is_char_in_str('/', cmd))
-		return (check_absolute_cmd(ctx, cmd, paths));
+		return (get_absolute_cmd_path(ctx, cmd, paths));
 	else
 		return (find_cmd_in_path(ctx, cmd, paths));
 }
