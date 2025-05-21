@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/19 17:52:44 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/21 10:38:24 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,28 @@ void	start_children(t_context *ctx)
 	}
 }
 
+static void handle_signals(t_context *ctx, int status, int *already_printed)
+{
+	ctx->exit_code = WTERMSIG(status) + 128;
+    if (WIFSIGNALED(status))
+    {
+        if (WTERMSIG(status) == SIGQUIT && !(*already_printed))
+        {
+            *already_printed = 1;
+            if (WCOREDUMP(status))
+                printf("Quit (core dumped)\n");
+        }
+    }
+}
+
 void	wait_children(t_context *ctx)
 {
 	int		status;
 	t_node	*curr_node;
 	t_cmd	*cmd;
+	int		already_printed;
 
-	status = 0;
+	already_printed = 0;
 	curr_node = *ctx->head_cmd;
 	while (curr_node)
 	{
@@ -99,11 +114,7 @@ void	wait_children(t_context *ctx)
 			if (WIFEXITED(status))
 				ctx->exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-			{
-				ctx->exit_code = WTERMSIG(status) + 128;
-				printf("child exited by signal %d\n", WTERMSIG(status));
-				usleep(500000);
-			}
+				handle_signals(ctx, status, &already_printed);
 		}
 		else if (cmd->exit_code)
 			ctx->exit_code = cmd->exit_code;
