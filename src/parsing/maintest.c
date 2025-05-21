@@ -55,23 +55,22 @@ t_context	*read_token(t_context *ctx)
 			write(1, "exit\n", 6);
 			exit_free(ctx);
 		}
-		// if (varg != 0)
-		// { // Si SIGINT a été reçu
-		// 	varg = 0;
-		// 	add_history(read);
-		// 	free(read);
-		// 	printf("skip\n");
-		// 	continue ;
-		// }
-		add_history(read);
-		read = quote_delimiter(read);
-		read = interpretation(read, ctx);
-		ctx->head_cmd = parsing_init(read, ctx);
-		ft_exec(ctx);
-		ft_free_ctx_cmds(ctx);
-		free_exec(ctx->exec_data);
-		clean_init_exec(ctx);
-		free(read);
+    if(syntax(read) != -1)
+    {
+      add_history(read);
+      read = interpretation(read, ctx);
+      ctx->head_cmd = parsing_init(read, ctx);
+      ft_exec(ctx);
+      ft_free_ctx_cmds(ctx);
+      free_exec(ctx->exec_data);
+      clean_init_exec(ctx);
+      free(read);
+    }
+    else
+    {
+      clean_init_exec(ctx);
+      free(read);
+    }
 	}
 	free(read);
 	return (NULL);
