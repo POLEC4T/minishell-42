@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/21 12:48:36 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/21 13:01:37 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,11 @@ size_t	extract_redirection_filename(char *str, char *filename)
 	j = 0;
 	i = skip_spaces(str, i);
 	if (str[i] == '"' || str[i] == '\'')
+	{
 		i++;
+		if (str[i] == str[i - 1])
+			i++;
+	}
 	while (str[i] && str[i] != ' ' && str[i] != '>' && str[i] != '<'
 		&& str[i] != '"' && str[i] != '\'')
 	{
