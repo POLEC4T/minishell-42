@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/16 15:38:42 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:12:34 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <unistd.h>
-# include <signal.h>
 
 # define HD_FILENAME "heredoc_tmp_"
 
@@ -196,8 +196,8 @@ size_t				handle_redirection(char *str, size_t i, t_cmd *cmd,
 						size_t *redirect);
 
 // syntax
-int					syntax(t_node *head);
-char				*quote_delimiter(char *str);
+int					syntax(char *str);
+// char				*quote_delimiter(char *str);
 
 // free
 void				exit_free(t_context *context);

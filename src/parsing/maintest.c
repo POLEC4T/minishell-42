@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/16 10:38:25 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/21 11:16:40 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ t_context	*read_token(t_context *ctx)
 		}
 		else
 		{
+			if(syntax(read) != -1)
+			{
 			add_history(read);
-			read = quote_delimiter(read);
 			read = interpretation(read, ctx);
 			ctx->head_cmd = parsing_init(read, ctx);
 			ft_exec(ctx);
@@ -60,6 +61,12 @@ t_context	*read_token(t_context *ctx)
 			free_exec(ctx->exec_data);
 			clean_init_exec(ctx);
 			free(read);
+			}
+			else
+			{
+				clean_init_exec(ctx);
+				free(read);
+			}
 		}
 	}
 	free(read);
