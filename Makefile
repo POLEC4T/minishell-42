@@ -131,7 +131,6 @@ EXEC_FILES=\
 SYNTAX = $(addprefix $(SYNTAX_DIR)/, $(SYNTAX_FILES))
 SYNTAX_FILES=\
 	syntax.c \
-	quote_delimiter.c \
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES=\
