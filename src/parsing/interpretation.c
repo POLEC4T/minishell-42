@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpretation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/14 14:16:04 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:33:44 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int	interlen(char *str, char *keyword)
 
 	i = 0;
 	len = 0;
-	while (str[i] != '$' && str[i])
+	while (str[i] && str[i] != '$')
 	{
 		i++;
 		len++;
 	}
-	while (str[i] != ' ')
+	while (str[i] && str[i] != ' ')
 		i++;
 	while (str[i])
 	{
@@ -127,5 +127,5 @@ char	*interpretation(char *str, t_context *ctx)
 	free(keyword);
 	free(inter);
 	free(str);
-	return (interpretation(repl, ctx));
+	return (interpretation(repl, ctx)); 
 }

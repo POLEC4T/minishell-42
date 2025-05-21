@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 16:33:20 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 10:55:21 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
  */
 void	process_cmd(t_context *ctx, t_node *node_cmd)
 {
-	dup_redirs(ctx, node_cmd);
+	dup_cmd_redirs(ctx, node_cmd);
 	close_pipes(ctx->exec_data);
 	close_all_cmds_redirs(ctx->head_cmd);
 	exec_cmd(ctx, node_cmd);

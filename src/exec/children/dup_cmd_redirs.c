@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirs.c                                           :+:      :+:    :+:   */
+/*   dup_cmd_redirs.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:53:56 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 13:33:44 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/14 11:44:26 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /**
- * @brief get the input file descriptor of the command and save the current
- * stdin if the command is a in the parent process
+ * @brief get the input file descriptor of the command and save the
+ * stdin fd if the command is a in the parent process
  */
 int	get_redir_in(t_context *ctx, t_cmd *cmd)
 {
 	int	i;
-	int input;
+	int	input;
 
 	input = -2;
 	i = -1;
@@ -27,18 +27,25 @@ int	get_redir_in(t_context *ctx, t_cmd *cmd)
 		if (cmd->redirects[i]->fd_in >= 0)
 			input = cmd->redirects[i]->fd_in;
 	if (cmd->pid && input >= 0)
+	{
 		ctx->exec_data->saved_stdin = dup(STDIN_FILENO);
+		if (ctx->exec_data->saved_stdin == -1)
+		{
+			ft_fprintf(STDERR_FILENO, "dup: %s\n", strerror(errno));
+			exit_free(ctx);
+		}
+	}
 	return (input);
 }
 
 /**
- * @brief get the output file descriptor of the command and save the current
- * stdout if the command is a in the parent process
+ * @brief get the output file descriptor of the command and save the
+ * stdout fd if the command is a in the parent process
  */
 int	get_redir_out(t_context *ctx, t_cmd *cmd)
 {
 	int	i;
-	int output;
+	int	output;
 
 	output = -2;
 	i = -1;
@@ -46,23 +53,31 @@ int	get_redir_out(t_context *ctx, t_cmd *cmd)
 		if (cmd->redirects[i]->fd_out >= 0)
 			output = cmd->redirects[i]->fd_out;
 	if (cmd->pid && output >= 0)
+	{
 		ctx->exec_data->saved_stdout = dup(STDOUT_FILENO);
+		if (ctx->exec_data->saved_stdout == -1)
+		{
+			ft_fprintf(STDERR_FILENO, "dup: %s\n", strerror(errno));
+			exit_free(ctx);
+		}
+	}
 	return (output);
 }
 
 /**
- * @brief duplicate the input and output file descriptors of the command
+ * @brief duplicates the fd in and out of the command
+ * redirections and pipes
  */
-void	dup_redirs(t_context *ctx, t_node *node_cmd)
+void	dup_cmd_redirs(t_context *ctx, t_node *node_cmd)
 {
-	int		input;
-	int		output;
+	int	input;
+	int	output;
 
 	input = get_redir_in(ctx, cast_to_cmd(node_cmd->content));
 	output = get_redir_out(ctx, cast_to_cmd(node_cmd->content));
-	if (node_cmd->next && input == -2)
-		output = ctx->exec_data->pipe_fds[WRITE];
-	if (node_cmd->prev && input == -2)
+	if (input == -2 && ctx->exec_data->prev_pipe_read >= 0)
 		input = ctx->exec_data->prev_pipe_read;
+	if (output == -2 && ctx->exec_data->pipe_fds[WRITE] >= 0)
+		output = ctx->exec_data->pipe_fds[WRITE];
 	redirect(input, output, ctx);
 }

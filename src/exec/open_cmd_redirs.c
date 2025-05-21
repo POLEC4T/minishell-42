@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   open_redirs.c                                      :+:      :+:    :+:   */
+/*   open_cmd_redirs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -45,31 +45,42 @@ static int	open_outfile_append(char *filename)
 	return (fd);
 }
 
-int	open_redirs(t_node *node_cmd)
+static int	open_cmd_redir(t_redirect *redir)
 {
-	int			i;
-	t_cmd		*cmd;
-	t_redirect	*redir;
-	int exit_code;
-	
-	exit_code = EXIT_SUCCESS;
+	if (redir->redir_type == IN || redir->redir_type == HEREDOC)
+	{
+		redir->fd_in = open_infile(redir->filename);
+		if (redir->fd_in == -1)
+			return (EXIT_FAILURE);
+	}
+	else if (redir->redir_type == OUT)
+	{
+		redir->fd_out = open_outfile(redir->filename);
+		if (redir->fd_out == -1)
+			return (EXIT_FAILURE);
+	}
+	else if (redir->redir_type == OUT_TRUNC)
+	{
+		redir->fd_out = open_outfile_append(redir->filename);
+		if (redir->fd_out == -1)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+/**
+ * @returns EXIT_FAILURE if one of the redirs files cannot be opened
+ */
+int	open_cmd_redirs(t_node *node_cmd)
+{
+	int		i;
+	t_cmd	*cmd;
+
 	cmd = cast_to_cmd(node_cmd->content);
-	i = -1;
 	if (cmd->redirects == NULL)
 		return (EXIT_SUCCESS);
+	i = -1;
 	while (cmd->redirects[++i])
-	{
-		redir = cmd->redirects[i];
-		if (redir->redir_type == IN || redir->redir_type == HEREDOC)
-		{
-			redir->fd_in = open_infile(redir->filename);
-			if (redir->fd_in == -1 && exit_code == EXIT_SUCCESS)
-				exit_code = EXIT_FAILURE;
-		}
-		else if (redir->redir_type == OUT)
-			redir->fd_out = open_outfile(redir->filename);
-		else if (redir->redir_type == OUT_TRUNC)
-			redir->fd_out = open_outfile_append(redir->filename);
-	}
-	return (exit_code);
+		if (open_cmd_redir(cmd->redirects[i]) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
