@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/19 12:48:37 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 11:14:46 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,13 @@ t_cmd	*split_cmd(char *str, t_context *ctx)
 	size_t	args;
 	t_cmd	*cmd;
 
+	(void)ctx;
 	i = 0;
 	redirect = 0;
 	args = 0;
 	cmd = initialize_cmd_with_counts(str);
 	if (!cmd)
-		exit_free(ctx);
+		return (NULL);
 	while (str[i])
 	{
 		if (str[i] == '<' || str[i] == '>')
@@ -102,7 +103,12 @@ t_cmd	*split_cmd(char *str, t_context *ctx)
 		else
 			i++;
 		if ((int)i == -1)
-			exit_free(ctx);
+		{
+			ft_free_tab((void **)cmd->args);
+			free(cmd->redirects);
+			free(cmd);
+			return (NULL);
+		}
 	}
 	cmd->redirects[redirect] = NULL;
 	cmd->args[count_args(str)] = NULL;

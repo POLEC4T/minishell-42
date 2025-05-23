@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/21 13:23:19 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/23 10:49:59 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,33 @@ int	detect_redirection_type(char *str, size_t *i)
 	return (type);
 }
 
+// size_t	extract_redirection_filename(char *str, char *filename)
+// {
+// 	size_t	i;
+// 	size_t	j;
+// 	char	quote;
+
+// 	i = 0;
+// 	j = 0;
+// 	i = skip_spaces(str, i);
+// 	while (str[i] && str[i] != ' ' && str[i] != '>' && str[i] != '<')
+// 	{
+// 		if (str[i] == '"' || str[i] == '\'')
+// 		{
+// 			quote = str[i];
+// 			i++;
+// 			while (str[i] == quote)
+// 				i++;
+// 		}
+// 		else if (str[i] == quote)
+// 			i++;
+// 		else
+// 			filename[j++] = str[i++];
+// 	}
+// 	filename[j] = '\0';
+// 	return (i);
+// }
+
 size_t	extract_redirection_filename(char *str, char *filename)
 {
 	size_t	i;
@@ -70,18 +97,19 @@ size_t	extract_redirection_filename(char *str, char *filename)
 
 	i = 0;
 	j = 0;
+	quote = 0;
 	i = skip_spaces(str, i);
-	if (str[i] == '"' || str[i] == '\'')
+	while (str[i] && (str[i] != '>' && str[i] != '<'))
 	{
-		quote = str[i];
-		i++;
-		while (str[i] == quote)
+		if ((str[i] == '"' || str[i] == '\'') && !quote)
+			quote = str[i++];
+		else if (quote && str[i] == quote)
+		{
+			quote = 0;
 			i++;
-	}
-	while (str[i] && str[i] != ' ' && str[i] != '>' && str[i] != '<')
-	{
-		if (str[i] == quote)
-			i++;
+		}
+		else if (!quote && (str[i] == ' '))
+			break ;
 		else
 			filename[j++] = str[i++];
 	}
