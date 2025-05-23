@@ -6,31 +6,21 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/21 11:55:28 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/21 15:12:43 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int						varg = 0;
+int			g_exit_code = 0;
 
-volatile sig_atomic_t	g_readline_active = 0;
-
-void	handle_sigint(int sig)
+void	parent_sigint_handler(int sigint)
 {
-	(void)sig;
-	varg = 1;
-	if (g_readline_active)
-	{
-		write(STDOUT_FILENO, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	else
-	{
-		write(STDOUT_FILENO, "\n", 1);
-	}
+	write(STDOUT_FILENO, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	g_exit_code = 128 + sigint;
 }
 
 t_context	*read_token(t_context *ctx)
@@ -39,17 +29,10 @@ t_context	*read_token(t_context *ctx)
 
 	while (1)
 	{
-		varg = 0;
-		if (signal(SIGINT, handle_sigint) == SIG_ERR)
-		{
-			perror("Erreur lors de la configuration du signal");
-			exit(42);
-		}
 		// todo : secure signal
+		signal(SIGINT, parent_sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
-		// g_readline_active = 1;
 		read = readline("pitishell$ ");
-		g_readline_active = 0;
 		if (!read)
 		{
 			write(1, "exit\n", 6);

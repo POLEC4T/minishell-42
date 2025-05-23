@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/19 12:48:37 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/21 15:52:12 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_cmd	*split_cmd(char *str, t_context *ctx)
 	while (str[i])
 	{
 		if (str[i] == '<' || str[i] == '>')
-			i = handle_redirection(str, i, cmd, &redirect);
+			i = handle_redirection(ctx, str, i, cmd, &redirect);
 		else if (str[i] != ' ')
 			i = handle_argument(str, i, cmd, &args);
 		else

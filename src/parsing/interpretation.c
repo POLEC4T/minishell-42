@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/16 13:33:44 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/21 14:07:25 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,15 @@ char	*interpretation(char *str, t_context *ctx)
 		i++;
 	keyword = get_key_word(str + i);
 	if (str[i + 1] == '?')
-		inter = ft_itoa(ctx->exit_code);
+	{
+		if (g_exit_code)
+		{
+			inter = ft_itoa(g_exit_code);
+			g_exit_code = 0;
+		}
+		else
+			inter = ft_itoa(ctx->exit_code);
+	}
 	else
 		inter = ft_get_env_val(ctx, keyword);
 	len = interlen(str, inter);
@@ -127,5 +135,5 @@ char	*interpretation(char *str, t_context *ctx)
 	free(keyword);
 	free(inter);
 	free(str);
-	return (interpretation(repl, ctx)); 
+	return (interpretation(repl, ctx));
 }

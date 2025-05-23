@@ -6,11 +6,18 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/21 11:34:35 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/21 14:57:34 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	sigint_child_handler(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "\n", 1);
+	ft_fprintf(STDERR_FILENO, "coucouc");
+}
 
 /**
  * @brief processes the command, but not always the same way
@@ -31,6 +38,8 @@ static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 	else
 	{
 		secure_fork(&cmd->pid, ctx);
+		// todo: secure signals
+		signal(SIGINT, SIG_IGN);
 		if (!cmd->pid)
 		{
 			// todo: secure signals
@@ -82,18 +91,20 @@ void	start_children(t_context *ctx)
 	}
 }
 
-static void handle_signal(t_context *ctx, int status, int *already_printed)
+static void	handle_signal(t_context *ctx, int status, int *already_printed)
 {
 	ctx->exit_code = WTERMSIG(status) + 128;
-    if (WIFSIGNALED(status))
-    {
-        if (WTERMSIG(status) == SIGQUIT && !(*already_printed))
-        {
-            *already_printed = 1;
-            if (WCOREDUMP(status))
-                printf("Quit (core dumped)\n");
-        }
-    }
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT && !(*already_printed))
+		{
+			*already_printed = 1;
+			if (WCOREDUMP(status))
+				printf("Quit (core dumped)\n");
+		}
+		if (WTERMSIG(status) == SIGINT)
+			printf("\n");
+	}
 }
 
 void	wait_children(t_context *ctx)
