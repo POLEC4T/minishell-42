@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 11:13:59 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:50:08 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,12 @@ t_node	**parsing_init(char *str, t_context *ctx)
 	prev_cmd = NULL;
 	head_cmd = malloc(sizeof(t_node *));
 	*head_cmd = NULL;
-	if(!parsing(str, head_cmd, prev_cmd, ctx))
+
+	head_cmd = parsing(str, head_cmd, prev_cmd, ctx);
+	if(!head_cmd)
 	{
 		free(head_cmd);
 		exit_free(ctx);
 	}
-	return (parsing(str, head_cmd, prev_cmd, ctx));
+	return (head_cmd);
 }

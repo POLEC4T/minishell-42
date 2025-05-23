@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/19 15:22:27 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 11:21:11 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,27 +67,6 @@ typedef struct s_node
 	struct s_node	*prev;
 }					t_node;
 
-typedef enum
-{
-	COMMAND,
-	OPERATOR,
-	PIPE,
-	FLAG,
-	ARGUMENT,
-	FILES,
-	// IN,
-	// OUT,
-	// HEREDOC,
-	DELIMITER,
-	NUL
-}					token_type;
-
-typedef struct s_token
-{
-	token_type		type;
-	char			*data;
-}					t_token;
-
 typedef struct s_exec
 {
 	int				pipe_fds[2];
@@ -95,6 +74,12 @@ typedef struct s_exec
 	int				saved_stdout;
 	int				saved_stdin;
 }					t_exec;
+
+typedef struct s_cmdstr
+{
+	size_t			i;
+	char			*str;
+}					t_cmdstr;
 
 typedef struct s_context
 {
@@ -115,7 +100,8 @@ char				*ft_strndup(const char *s, size_t n);
 char				*ft_secure_strdup(t_context *ctx, char *s, char *err_title);
 int					ft_strchr_idx(const char *s, int c);
 char				*ft_strjoin(char *s1, char *s2);
-char				*ft_double_strjoin(t_context *ctx, char *s1, char *s2, char *s3);
+char				*ft_double_strjoin(t_context *ctx, char *s1, char *s2,
+						char *s3);
 char				**ft_split_first(char const *s, char *delim);
 char				**ft_split(char const *s, char *delim);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
@@ -141,7 +127,6 @@ void				ft_lstdelone(t_node *lst, void (*del)(void *));
 void				ft_lstclear(t_node **lst, void (*del)(void *));
 int					ft_lstsize(t_node *lst);
 t_key_value			*cast_to_key_value(void *to_cast);
-t_token				*cast_to_token(void *to_cast);
 t_cmd				*cast_to_cmd(void *to_cast);
 
 // env utils
@@ -178,6 +163,7 @@ int					define_token(t_node *node);
 void				print_token_list(t_node *head);
 t_cmd				*split_cmd(char *str, t_context *ctx);
 char				*interpretation(char *str, t_context *ctx);
+
 // utils pars
 size_t				argslen(char *str);
 size_t				redirlen(char *str);
