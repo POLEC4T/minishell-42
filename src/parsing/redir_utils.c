@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 13:36:23 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 18:09:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ int	handle_heredoc(int hd_fd, char *eof)
 {
 	char	*line;
 
-	while (1)
+	while (g_signal == 0)
 	{
 		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
@@ -191,9 +191,27 @@ int	handle_heredoc(int hd_fd, char *eof)
 	return (0);
 }
 
+/**
+ * done to allow gnl to be interrupted by a signal
+ */
+void	install_sigint_handler(void (*handler)(int))
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	// todo secure signal
+	sigaction(SIGINT, &sa, NULL);
+}
+
+void	sig_hd_handler(int sig)
+{
+	g_signal = sig;
+}
+
 int	start_heredoc_child(t_context *ctx, char *str, size_t *i, t_redirect *redir)
 {
-	int		pid;
 	int		hd_fd;
 	char	*eof;
 	int		status;
@@ -211,24 +229,31 @@ int	start_heredoc_child(t_context *ctx, char *str, size_t *i, t_redirect *redir)
 	*i += extract_redirection_filename(str + *i, eof);
 	// todo secure signal
 	signal(SIGINT, SIG_IGN);
-	secure_fork(&pid, ctx);
-	if (!pid)
+	secure_fork(&ctx->hd_pid, ctx);
+	if (!ctx->hd_pid)
 	{
-		signal(SIGINT, SIG_DFL);
+		install_sigint_handler(sig_hd_handler);
 		handle_heredoc(hd_fd, eof);
 		free(redir->filename);
 		return (EXIT_FAILURE);
 	}
-	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status))
+	status = 0;
+	waitpid(ctx->hd_pid, &status, 0);
+	if (WIFEXITED(status))
 	{
-		if (WTERMSIG(status) == SIGINT)
+		if (WEXITSTATUS(status))
 		{
-			// say this line is done
+			free(eof);
+			free(redir->filename);
+			close(hd_fd);
+			if (WEXITSTATUS(status) > 128)
+				g_signal = WEXITSTATUS(status) - 128;
+			ctx->exit_code = WEXITSTATUS(status);
 			return (EXIT_FAILURE);
 		}
 	}
 	free(eof);
+	close(hd_fd);
 	return (EXIT_SUCCESS);
 }
 

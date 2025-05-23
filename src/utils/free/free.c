@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:43:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/14 14:44:46 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/23 17:58:10 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 void	exit_free(t_context *context)
 {
 	free_context(context);
+	printf("exiting with code: %d\n", context->exit_code);
 	exit(context->exit_code);
 }

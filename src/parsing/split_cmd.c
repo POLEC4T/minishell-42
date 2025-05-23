@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 14:56:11 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 17:07:52 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_cmd	*cmd_initialize(size_t args_count, size_t redirects_count)
 		free(cmd);
 		return (NULL);
 	}
+	cmd->args[0] = NULL;
 	cmd->redirects = malloc((redirects_count + 1) * sizeof(t_redirect *));
 	if (!cmd->redirects)
 	{
@@ -104,7 +105,8 @@ t_cmd	*split_cmd(char *str, t_context *ctx)
 			i++;
 		if ((int)i == -1)
 		{
-			ft_free_tab((void **)cmd->args);
+			if (cmd->args != NULL)
+				ft_free_tab((void **)cmd->args);
 			free(cmd->redirects);
 			free(cmd);
 			return (NULL);

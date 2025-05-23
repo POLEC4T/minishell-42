@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 14:56:18 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 17:29:40 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@
 
 # define HD_FILENAME ".heredoc_tmp_"
 
-extern int			g_exit_code;
+
+extern int			g_signal;
 
 typedef enum e_redir_type
 {
@@ -89,6 +90,7 @@ typedef struct s_context
 	t_node			**head_cmd;
 	t_exec			*exec_data;
 	int				exit_code;
+	int				hd_pid;
 }					t_context;
 
 void				minishell(char **envp);
@@ -158,11 +160,7 @@ int					is_builtin_cmd(char *cmd);
 
 // parsing
 t_context			*read_token(t_context *ctx);
-void				put_exec(char *str, t_node *token, char stop);
-t_node				**parsing_init(char *str, t_context *ctx);
-size_t				strcount(char *str, char stop);
-int					define_token(t_node *node);
-void				print_token_list(t_node *head);
+int					parsing_init(char *str, t_context *ctx);
 t_cmd				*split_cmd(char *str, t_context *ctx);
 char				*interpretation(char *str, t_context *ctx);
 

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:01:44 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/23 14:48:44 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 15:10:25 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,10 @@ static int	set_to_oldpwd(t_context *context, char **newpwd)
 	return (EXIT_SUCCESS);
 }
 
-void	create_or_set_env_pwd(t_context *context, char *key, char *value)
+static void	create_or_set_pwds_env(t_context *context, char *key, char *value)
 {
 	t_node		*node;
 	t_key_value	*existing_kv;
-	char		*old_value;
 
 	if (!key)
 		return ;
@@ -70,7 +69,7 @@ void	create_or_set_env_pwd(t_context *context, char *key, char *value)
 		node = ft_envnew(key, value);
 		if (!node)
 		{
-			ft_fprintf(STDERR_FILENO, "create_or_set_env_var: %s\n",
+			ft_fprintf(STDERR_FILENO, "create_or_set_pwds_env: %s\n",
 				strerror(errno));
 			exit_free(context);
 		}
@@ -79,16 +78,17 @@ void	create_or_set_env_pwd(t_context *context, char *key, char *value)
 	else
 	{
 		existing_kv = cast_to_key_value(node->content);
-		old_value = existing_kv->value;
-		if (old_value != NULL)
-			free(old_value);
+		if (existing_kv->value != NULL)
+			free(existing_kv->value);
 		existing_kv->value = ft_strdup(value);
 	}
 }
 
-
 /**
- * @brief Set the PWD and OLDPWD environment variables.
+ * @brief 
+ * - Chdir to the new pwd
+ * - Create or set the PWD and OLDPWD environment variables.
+ * 
  */
 static int	set_pwds(t_context *ctx, char **newpwd)
 {
@@ -108,8 +108,8 @@ static int	set_pwds(t_context *ctx, char **newpwd)
 	*newpwd = getcwd(NULL, 0);
 	if (*newpwd == NULL)
 		return (cwd_error(oldpwd));
-	create_or_set_env_pwd(ctx, "PWD", *newpwd);
-	create_or_set_env_pwd(ctx, "OLDPWD", oldpwd);
+	create_or_set_pwds_env(ctx, "PWD", *newpwd);
+	create_or_set_pwds_env(ctx, "OLDPWD", oldpwd);
 	free(oldpwd);
 	free(*newpwd);
 	return (EXIT_SUCCESS);

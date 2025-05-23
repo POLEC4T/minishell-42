@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/23 14:34:45 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 15:01:36 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	create_or_set_env_var(t_context *context, char **kv)
 {
 	t_node		*node;
 	t_key_value	*existing_kv;
-	char		*old_value;
 
 	if (!kv[0])
 		return ;
@@ -40,12 +39,10 @@ void	create_or_set_env_var(t_context *context, char **kv)
 	else
 	{
 		existing_kv = cast_to_key_value(node->content);
-		old_value = existing_kv->value;
-		if (old_value != NULL)
-			free(old_value);
+		if (existing_kv->value)
+			free(existing_kv->value);
 		existing_kv->value = ft_strdup(kv[1]);
 	}
-	ft_free_tab((void **)kv);
 }
 
 /**
