@@ -10,4 +10,4 @@ readline.sup
 *.txt
 heredoc*
 ls
-valgrind*
+valgrind_breaker
