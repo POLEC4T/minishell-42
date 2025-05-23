@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/21 18:20:54 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 13:36:23 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,24 +62,56 @@ int	detect_redirection_type(char *str, size_t *i)
 	return (type);
 }
 
+// size_t	extract_redirection_filename(char *str, char *filename)
+// {
+// 	size_t	i;
+// 	size_t	j;
+// 	char	quote;
+
+// 	i = 0;
+// 	j = 0;
+// 	i = skip_spaces(str, i);
+// 	while (str[i] && str[i] != ' ' && str[i] != '>' && str[i] != '<')
+// 	{
+// 		if (str[i] == '"' || str[i] == '\'')
+// 		{
+// 			quote = str[i];
+// 			i++;
+// 			while (str[i] == quote)
+// 				i++;
+// 		}
+// 		else if (str[i] == quote)
+// 			i++;
+// 		else
+// 			filename[j++] = str[i++];
+// 	}
+// 	filename[j] = '\0';
+// 	return (i);
+// }
+
 size_t	extract_redirection_filename(char *str, char *filename)
 {
 	size_t	i;
 	size_t	j;
+	char	quote;
 
 	i = 0;
 	j = 0;
+	quote = 0;
 	i = skip_spaces(str, i);
-	if (str[i] == '"' || str[i] == '\'')
+	while (str[i] && (str[i] != '>' && str[i] != '<'))
 	{
-		i++;
-		while (str[i] == str[i - 1])
+		if ((str[i] == '"' || str[i] == '\'') && !quote)
+			quote = str[i++];
+		else if (quote && str[i] == quote)
+		{
+			quote = 0;
 			i++;
-	}
-	while (str[i] && str[i] != ' ' && str[i] != '>' && str[i] != '<'
-		&& str[i] != '"' && str[i] != '\'')
-	{
-		filename[j++] = str[i++];
+		}
+		else if (!quote && (str[i] == ' '))
+			break ;
+		else
+			filename[j++] = str[i++];
 	}
 	filename[j] = '\0';
 	return (i);
