@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/21 15:52:16 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:29:26 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define HD_FILENAME ".heredoc_tmp_"
 
-extern int				g_exit_code;
+extern int			g_exit_code;
 
 typedef enum e_redir_type
 {
@@ -117,7 +117,8 @@ char				*ft_strndup(const char *s, size_t n);
 char				*ft_secure_strdup(t_context *ctx, char *s, char *err_title);
 int					ft_strchr_idx(const char *s, int c);
 char				*ft_strjoin(char *s1, char *s2);
-char				*ft_double_strjoin(t_context *ctx, char *s1, char *s2, char *s3);
+char				*ft_double_strjoin(t_context *ctx, char *s1, char *s2,
+						char *s3);
 char				**ft_split_first(char const *s, char *delim);
 char				**ft_split(char const *s, char *delim);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
@@ -157,8 +158,8 @@ void				print_env_val(t_context *context, char *key);
 
 // env
 char				**env_to_tabstr(t_context *ctx);
-void				create_or_set_env_var(t_context *context, char *key,
-						char *value);
+void				create_or_set_env_var(t_context *context, char **kv);
+
 // builtins
 int					ft_export(t_context *ctx, char **args);
 void				ft_unset(t_context *ctx, char **args);
@@ -194,8 +195,8 @@ t_cmd				*cmd_initialize(size_t args_count, size_t redirects_count);
 t_cmd				*initialize_cmd_with_counts(char *str);
 size_t				handle_argument(char *str, size_t i, t_cmd *cmd,
 						size_t *args);
-size_t				handle_redirection(t_context *ctx, char *str, size_t i, t_cmd *cmd,
-						size_t *redirect);
+size_t				handle_redirection(t_context *ctx, char *str, size_t i,
+						t_cmd *cmd, size_t *redirect);
 
 // syntax
 int					syntax(char *str);

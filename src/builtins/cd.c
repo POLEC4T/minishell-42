@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:01:44 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 09:58:50 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:48:44 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,37 @@ static int	set_to_oldpwd(t_context *context, char **newpwd)
 	return (EXIT_SUCCESS);
 }
 
+void	create_or_set_env_pwd(t_context *context, char *key, char *value)
+{
+	t_node		*node;
+	t_key_value	*existing_kv;
+	char		*old_value;
+
+	if (!key)
+		return ;
+	node = ft_get_env_node(context->head_env, key);
+	if (node == NULL)
+	{
+		node = ft_envnew(key, value);
+		if (!node)
+		{
+			ft_fprintf(STDERR_FILENO, "create_or_set_env_var: %s\n",
+				strerror(errno));
+			exit_free(context);
+		}
+		ft_lstadd_back(context->head_env, node);
+	}
+	else
+	{
+		existing_kv = cast_to_key_value(node->content);
+		old_value = existing_kv->value;
+		if (old_value != NULL)
+			free(old_value);
+		existing_kv->value = ft_strdup(value);
+	}
+}
+
+
 /**
  * @brief Set the PWD and OLDPWD environment variables.
  */
@@ -77,8 +108,8 @@ static int	set_pwds(t_context *ctx, char **newpwd)
 	*newpwd = getcwd(NULL, 0);
 	if (*newpwd == NULL)
 		return (cwd_error(oldpwd));
-	create_or_set_env_var(ctx, "PWD", *newpwd);
-	create_or_set_env_var(ctx, "OLDPWD", oldpwd);
+	create_or_set_env_pwd(ctx, "PWD", *newpwd);
+	create_or_set_env_pwd(ctx, "OLDPWD", oldpwd);
 	free(oldpwd);
 	free(*newpwd);
 	return (EXIT_SUCCESS);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/14 14:53:53 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:34:45 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,38 @@
 
 /**
  * @brief create a new env variable or set the value of an existing one
- * @param key must be allocated
- * @param value must be allocated, or NULL
+ * @param kv: kv[0] = key, kv[1] = value
  */
-void	create_or_set_env_var(t_context *context, char *key, char *value)
+void	create_or_set_env_var(t_context *context, char **kv)
 {
 	t_node		*node;
-	t_key_value	*kv;
+	t_key_value	*existing_kv;
 	char		*old_value;
 
-	if (!key)
+	if (!kv[0])
 		return ;
-	node = ft_get_env_node(context->head_env, key);
+	node = ft_get_env_node(context->head_env, kv[0]);
 	if (node == NULL)
 	{
-		node = ft_envnew(key, value);
+		node = ft_envnew(kv[0], kv[1]);
+		if (!node)
+		{
+			ft_free_tab((void **)kv);
+			ft_fprintf(STDERR_FILENO, "create_or_set_env_var: %s\n",
+				strerror(errno));
+			exit_free(context);
+		}
 		ft_lstadd_back(context->head_env, node);
 	}
 	else
 	{
-		kv = cast_to_key_value(node->content);
-		old_value = kv->value;
+		existing_kv = cast_to_key_value(node->content);
+		old_value = existing_kv->value;
 		if (old_value != NULL)
 			free(old_value);
-		kv->value = ft_strdup(value);
+		existing_kv->value = ft_strdup(kv[1]);
 	}
+	ft_free_tab((void **)kv);
 }
 
 /**
@@ -49,8 +56,6 @@ t_node	*ft_envnew(char *key, char *value)
 	t_node		*new;
 	t_key_value	*content;
 
-	if (!key)
-		return (NULL);
 	content = malloc(sizeof(t_key_value));
 	if (!content)
 		return (NULL);

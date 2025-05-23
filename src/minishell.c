@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/21 10:54:17 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/23 13:51:29 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ void	init_context(t_context *context)
 {
 	context->head_env = malloc(sizeof(t_node *));
 	if (!context->head_env)
+	{
+		ft_fprintf(STDERR_FILENO, "init_context: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
+	}
 	(*(context->head_env)) = NULL;
 	context->head_cmd = NULL;
 	context->exit_code = 0;
