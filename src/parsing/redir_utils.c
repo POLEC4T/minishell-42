@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 11:52:08 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 12:48:00 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ static char	*shorter(char *str)
 	return (str);
 }
 
-int	write_in_file(int hd_fd, char *eof)
+int	write_in_file(int hd_fd, char *eof, t_context *ctx)
 {
 	char	*line;
 
@@ -186,6 +186,7 @@ int	write_in_file(int hd_fd, char *eof)
 delimited by end-of-file (wanted `%s')\n", eof);
 			break ;
 		}
+		line = interpretation(line, ctx);
 		if (!line || !ft_strncmp(shorter(line), eof, ft_strlen(eof) + 1))
 			break ;
 		write(hd_fd, line, ft_strlen(line));
@@ -262,7 +263,7 @@ int	handle_heredoc(t_context *ctx, char *str, size_t *i, t_redirect *redir)
 	if (!ctx->hd_pid)
 	{
 		install_sigint_handler(sig_hd_handler);
-		write_in_file(hd_fd, eof);
+		write_in_file(hd_fd, eof, ctx);
 		free(redir->filename);
 		return (EXIT_FAILURE);
 	}
