@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 14:13:09 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:35:38 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,14 @@ typedef enum e_redir_type
 	HEREDOC,   // <<
 	OUT_TRUNC, // >>
 	OUT,       // >
-	NONE
 }					t_redir_type;
+
+typedef enum e_inter_type
+{
+	CMD,
+	HERE_DOC,
+	HERE_DOC_NO_INTER
+}					t_inter_type;
 
 typedef struct s_redirect
 {
@@ -163,7 +169,7 @@ t_context			*read_token(t_context *ctx);
 int					parsing_init(char *str, t_context *ctx);
 int					set_cmd_node_content(char *str, t_context *ctx,
 						t_node *cmd_node);
-char				*interpretation(char *str, t_context *ctx);
+char				*interpretation(char *str, t_context *ctx, int type);
 
 // utils pars
 size_t				argslen(char *str);

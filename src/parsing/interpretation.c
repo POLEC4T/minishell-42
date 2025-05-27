@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 13:28:25 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:33:51 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,14 @@ char	*replace(char *str, char *inter, int interlen)
 	return (replace);
 }
 
-char	*interpretation(char *str, t_context *ctx)
+
+/*
+heredoc
+cmd
+heredoc no inter
+*/
+
+char	*interpretation(char *str, t_context *ctx, int type)
 {
 	size_t	i;
 	char	*keyword;
@@ -131,5 +138,5 @@ char	*interpretation(char *str, t_context *ctx)
 	free(keyword);
 	free(inter);
 	free(str);
-	return (interpretation(repl, ctx));
+	return (interpretation(repl, ctx, type));
 }

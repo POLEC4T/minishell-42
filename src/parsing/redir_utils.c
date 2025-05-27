@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 12:48:00 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 14:34:18 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ int	write_in_file(int hd_fd, char *eof, t_context *ctx)
 delimited by end-of-file (wanted `%s')\n", eof);
 			break ;
 		}
-		line = interpretation(line, ctx);
+		line = interpretation(line, ctx, HEREDOC);
 		if (!line || !ft_strncmp(shorter(line), eof, ft_strlen(eof) + 1))
 			break ;
 		write(hd_fd, line, ft_strlen(line));
