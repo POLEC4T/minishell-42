@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 10:48:27 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 14:13:09 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strchr(const char *string, int c);
 size_t				ft_tablen(void **tab);
 char				*ft_itoa(int n);
+char				**ft_split_quote(char const *s, char *delim);
 
 // output
 int					ft_fprintf(int fd, const char *fmt, ...);
@@ -160,7 +161,8 @@ int					is_builtin_cmd(char *cmd);
 // parsing
 t_context			*read_token(t_context *ctx);
 int					parsing_init(char *str, t_context *ctx);
-int					set_cmd_node_content(char *str, t_context *ctx, t_node *cmd_node);
+int					set_cmd_node_content(char *str, t_context *ctx,
+						t_node *cmd_node);
 char				*interpretation(char *str, t_context *ctx);
 
 // utils pars
