@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 11:21:11 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/27 09:22:19 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@
 # include <sys/types.h>
 # include <unistd.h>
 
-# define HD_FILENAME "heredoc_tmp_"
+# define HD_FILENAME ".heredoc_tmp_"
+
+extern int			g_signal;
 
 typedef enum e_redir_type
 {
@@ -87,6 +89,7 @@ typedef struct s_context
 	t_node			**head_cmd;
 	t_exec			*exec_data;
 	int				exit_code;
+	int				hd_pid;
 }					t_context;
 
 void				minishell(char **envp);
@@ -140,8 +143,8 @@ void				print_env_val(t_context *context, char *key);
 
 // env
 char				**env_to_tabstr(t_context *ctx);
-void				create_or_set_env_var(t_context *context, char *key,
-						char *value);
+void				create_or_set_env_var(t_context *context, char **kv);
+
 // builtins
 int					ft_export(t_context *ctx, char **args);
 void				ft_unset(t_context *ctx, char **args);
@@ -156,12 +159,8 @@ int					is_builtin_cmd(char *cmd);
 
 // parsing
 t_context			*read_token(t_context *ctx);
-void				put_exec(char *str, t_node *token, char stop);
-t_node				**parsing_init(char *str, t_context *ctx);
-size_t				strcount(char *str, char stop);
-int					define_token(t_node *node);
-void				print_token_list(t_node *head);
-t_cmd				*split_cmd(char *str, t_context *ctx);
+int					parsing_init(char *str, t_context *ctx);
+int					set_cmd_node_content(char *str, t_context *ctx, t_node *cmd_node);
 char				*interpretation(char *str, t_context *ctx);
 
 // utils pars
@@ -172,14 +171,14 @@ size_t				skip_redirection(char *str, size_t i);
 size_t				skip_spaces(char *str, size_t i);
 int					count_args(char *str);
 int					count_redirect(char *str);
-t_redirect			*redirect_define(char *str);
+t_redirect			*redirect_define(t_context *ctx, char *str);
 char				*args_define(char *str);
 t_cmd				*cmd_initialize(size_t args_count, size_t redirects_count);
 t_cmd				*initialize_cmd_with_counts(char *str);
 size_t				handle_argument(char *str, size_t i, t_cmd *cmd,
 						size_t *args);
-size_t				handle_redirection(char *str, size_t i, t_cmd *cmd,
-						size_t *redirect);
+size_t				handle_redirection(t_context *ctx, char *str, size_t i,
+						t_cmd *cmd, size_t *redirect);
 
 // syntax
 int					syntax(char *str);
@@ -190,6 +189,8 @@ void				exit_free(t_context *context);
 void				free_context(t_context *context);
 void				ft_free_ctx_cmds(t_context *context);
 void				free_exec(t_exec *data);
+void				ft_free_redirects(t_redirect **redirects);
+void				ft_free_cmd_content(void *content);
 
 // get_next_line
 char				*get_next_line(int fd);
