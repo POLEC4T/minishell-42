@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:48:01 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/21 11:42:42 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/26 21:18:55 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ static int	nb_option_n(char **args)
 {
 	int	i;
 	int	j;
+	int counter;
 	int	is_option_n;
 
 	i = 0;
+	counter = 0;
 	is_option_n = 1;
 	while (args[i] && is_option_n)
 	{
@@ -31,9 +33,10 @@ static int	nb_option_n(char **args)
 		while (args[i][j] == 'n')
 			j++;
 		is_option_n = (args[i][j] == '\0');
+		counter += is_option_n;
 		i++;
 	}
-	return (i - 1);
+	return (counter);
 }
 
 static int	write_print_on_error(char *str)

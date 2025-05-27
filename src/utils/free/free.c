@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 14:43:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 17:58:10 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:14:51 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,5 @@
 void	exit_free(t_context *context)
 {
 	free_context(context);
-	printf("exiting with code: %d\n", context->exit_code);
 	exit(context->exit_code);
 }

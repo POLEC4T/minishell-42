@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_cmd.c                                        :+:      :+:    :+:   */
+/*   set_cmd_node_content.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 17:07:52 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/26 19:05:48 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,12 @@ t_cmd	*cmd_initialize(size_t args_count, size_t redirects_count)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->args = malloc((args_count + 1) * sizeof(char *));
+	cmd->args = ft_calloc((args_count + 1), sizeof(char *));
 	if (!cmd->args)
 	{
 		free(cmd);
 		return (NULL);
 	}
-	cmd->args[0] = NULL;
 	cmd->redirects = malloc((redirects_count + 1) * sizeof(t_redirect *));
 	if (!cmd->redirects)
 	{
@@ -81,20 +80,20 @@ t_cmd	*cmd_initialize(size_t args_count, size_t redirects_count)
 	return (cmd);
 }
 
-t_cmd	*split_cmd(char *str, t_context *ctx)
+int	set_cmd_node_content(char *str, t_context *ctx, t_node *cmd_node)
 {
 	size_t	i;
 	size_t	redirect;
 	size_t	args;
 	t_cmd	*cmd;
 
-	(void)ctx;
 	i = 0;
 	redirect = 0;
 	args = 0;
 	cmd = initialize_cmd_with_counts(str);
+	cmd_node->content = (void *)cmd;
 	if (!cmd)
-		return (NULL);
+		return (EXIT_FAILURE);
 	while (str[i])
 	{
 		if (str[i] == '<' || str[i] == '>')
@@ -104,15 +103,9 @@ t_cmd	*split_cmd(char *str, t_context *ctx)
 		else
 			i++;
 		if ((int)i == -1)
-		{
-			if (cmd->args != NULL)
-				ft_free_tab((void **)cmd->args);
-			free(cmd->redirects);
-			free(cmd);
-			return (NULL);
-		}
+			return (EXIT_FAILURE);
 	}
 	cmd->redirects[redirect] = NULL;
 	cmd->args[count_args(str)] = NULL;
-	return (cmd);
+	return (EXIT_SUCCESS);
 }

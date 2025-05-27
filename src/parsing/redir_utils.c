@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 18:09:33 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 09:58:46 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ static char	*shorter(char *str)
 	return (str);
 }
 
-int	handle_heredoc(int hd_fd, char *eof)
+int	write_in_file(int hd_fd, char *eof)
 {
 	char	*line;
 
@@ -179,7 +179,16 @@ int	handle_heredoc(int hd_fd, char *eof)
 	{
 		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
-		if (!line || !ft_strncmp(shorter(line), eof, ft_strlen(eof) + 1))
+		if (!line)
+		{
+			write(STDERR_FILENO, "\n", 1);
+			ft_fprintf(STDERR_FILENO,
+						"warning: here-document atline 1 \
+delimited by end-of-file (wanted `%s')\n",
+						eof);
+			break ;
+		}
+		if (!ft_strncmp(shorter(line), eof, ft_strlen(eof) + 1))
 			break ;
 		write(hd_fd, line, ft_strlen(line));
 		write(hd_fd, "\n", 1);
@@ -192,7 +201,8 @@ int	handle_heredoc(int hd_fd, char *eof)
 }
 
 /**
- * done to allow gnl to be interrupted by a signal
+ * using sigaction to allow gnl to be interrupted by a signal,
+ * thanks to the sa_flags = 0
  */
 void	install_sigint_handler(void (*handler)(int))
 {
@@ -210,11 +220,32 @@ void	sig_hd_handler(int sig)
 	g_signal = sig;
 }
 
-int	start_heredoc_child(t_context *ctx, char *str, size_t *i, t_redirect *redir)
+int	wait_hd_child(t_context *ctx)
+{
+	int	status;
+
+	status = 0;
+	waitpid(ctx->hd_pid, &status, 0);
+	if (WIFEXITED(status))
+	{
+		if (WEXITSTATUS(status))
+		{
+			if (WEXITSTATUS(status) > 128)
+			{
+				write(STDERR_FILENO, "\n", 1);
+				g_signal = WEXITSTATUS(status) - 128;
+			}
+			ctx->exit_code = WEXITSTATUS(status);
+			return (EXIT_FAILURE);
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	handle_heredoc(t_context *ctx, char *str, size_t *i, t_redirect *redir)
 {
 	int		hd_fd;
 	char	*eof;
-	int		status;
 
 	redir->filename = get_hd_name();
 	hd_fd = open(redir->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -233,27 +264,18 @@ int	start_heredoc_child(t_context *ctx, char *str, size_t *i, t_redirect *redir)
 	if (!ctx->hd_pid)
 	{
 		install_sigint_handler(sig_hd_handler);
-		handle_heredoc(hd_fd, eof);
+		write_in_file(hd_fd, eof);
 		free(redir->filename);
 		return (EXIT_FAILURE);
 	}
-	status = 0;
-	waitpid(ctx->hd_pid, &status, 0);
-	if (WIFEXITED(status))
-	{
-		if (WEXITSTATUS(status))
-		{
-			free(eof);
-			free(redir->filename);
-			close(hd_fd);
-			if (WEXITSTATUS(status) > 128)
-				g_signal = WEXITSTATUS(status) - 128;
-			ctx->exit_code = WEXITSTATUS(status);
-			return (EXIT_FAILURE);
-		}
-	}
-	free(eof);
 	close(hd_fd);
+	free(eof);
+	if (wait_hd_child(ctx) == EXIT_FAILURE)
+	{
+		unlink(redir->filename);
+		free(redir->filename);
+		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -269,7 +291,7 @@ t_redirect	*redirect_define(t_context *ctx, char *str)
 	redir->redir_type = detect_redirection_type(str, &i);
 	if (redir->redir_type == HEREDOC)
 	{
-		if (start_heredoc_child(ctx, str, &i, redir) == EXIT_FAILURE)
+		if (handle_heredoc(ctx, str, &i, redir) == EXIT_FAILURE)
 		{
 			free(redir);
 			return (NULL);

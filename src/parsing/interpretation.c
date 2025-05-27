@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 18:05:14 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/26 19:45:38 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_key_word(char *str)
 		len++;
 	key_word = ft_calloc(len + 1, 1);
 	len = 0;
-	while (str[i + len] != ' ' && str[i + len])
+	while (str[i + len] != ' ' && str[i + len] && str[i + len] != '\'' && str[i + len] != '\"')
 	{
 		key_word[len] = str[i + len];
 		len++;
@@ -86,7 +86,7 @@ char	*replace(char *str, char *inter, int interlen)
 	j = 0;
 	h = 0;
 	h = find_end_inter(str);
-	replace = ft_calloc(interlen + 1, 1);
+	replace = ft_calloc(interlen + 1, sizeof(char));
 	while (str[++i] != '$')
 		replace[i] = str[i];
 	if (inter)

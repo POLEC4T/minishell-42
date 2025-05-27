@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 17:29:40 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 09:22:19 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include <unistd.h>
 
 # define HD_FILENAME ".heredoc_tmp_"
-
 
 extern int			g_signal;
 
@@ -161,7 +160,7 @@ int					is_builtin_cmd(char *cmd);
 // parsing
 t_context			*read_token(t_context *ctx);
 int					parsing_init(char *str, t_context *ctx);
-t_cmd				*split_cmd(char *str, t_context *ctx);
+int					set_cmd_node_content(char *str, t_context *ctx, t_node *cmd_node);
 char				*interpretation(char *str, t_context *ctx);
 
 // utils pars
@@ -190,6 +189,8 @@ void				exit_free(t_context *context);
 void				free_context(t_context *context);
 void				ft_free_ctx_cmds(t_context *context);
 void				free_exec(t_exec *data);
+void				ft_free_redirects(t_redirect **redirects);
+void				ft_free_cmd_content(void *content);
 
 // get_next_line
 char				*get_next_line(int fd);

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 18:04:38 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/26 19:39:07 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@ t_context	*read_token(t_context *ctx)
 
 	while (1)
 	{
-		// todo : secure signal
+		g_signal = 0;
 		signal(SIGINT, parent_sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
 		read = readline("pitishell$ ");
+		if (g_signal == SIGINT)
+			ctx->exit_code = 128 + g_signal;
 		if (!read)
 		{
 			write(1, "exit\n", 6);
@@ -44,25 +46,27 @@ t_context	*read_token(t_context *ctx)
 			read = interpretation(read, ctx);
 			if (parsing_init(read, ctx) == EXIT_FAILURE)
 			{
-				if (g_signal == 0)
+				if (ctx->hd_pid)
 				{
-					printf("exit_free, pid: %d\n", ctx->hd_pid);
-					ctx->exit_code = EXIT_FAILURE;
+					if (g_signal > 0)
+					{
+						ft_free_ctx_cmds(ctx);
+						continue ;
+					}
 					exit_free(ctx);
 				}
 				else if (ctx->hd_pid == 0)
 				{
-					ctx->exit_code = 128 + g_signal;
+					// todo, handle: g_signal == 0 peut vouloir dire que eof
+					// a marche mais aussi qu'une erreur est survenue (malloc..)
+					if (g_signal == 0)
+						ctx->exit_code = EXIT_SUCCESS;
+					else
+						ctx->exit_code = 128 + g_signal;
 					exit_free(ctx);
-				}
-				else
-				{
-					printf("continuing\n");
-					continue ;
 				}
 			}
 			ft_exec(ctx);
-			g_signal = 0;
 			ft_free_ctx_cmds(ctx);
 			free_exec(ctx->exec_data);
 			clean_init_exec(ctx);
@@ -70,7 +74,6 @@ t_context	*read_token(t_context *ctx)
 		}
 		else
 		{
-			g_signal = 0;
 			clean_init_exec(ctx);
 			free(read);
 		}

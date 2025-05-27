@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/23 14:54:08 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/26 21:19:41 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,12 @@ void	free_exec(t_exec *data)
  */
 void	ft_free_ctx_cmds(t_context *context)
 {
-	t_node	**head_cmd;
-
-	head_cmd = context->head_cmd;
-	if (head_cmd == NULL)
+	if (context->head_cmd == NULL)
 		return ;
-	close_all_cmds_redirs(head_cmd);
-	if (*head_cmd)
-		ft_lstclear(head_cmd, ft_free_cmd_content);
-	free(head_cmd);
+	close_all_cmds_redirs(context->head_cmd);
+	if (*context->head_cmd)
+		ft_lstclear(context->head_cmd, ft_free_cmd_content);
+	free(context->head_cmd);
 	context->head_cmd = NULL;
 }
 

@@ -6,38 +6,36 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/23 17:04:52 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 10:17:01 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parsing(char *str, t_node *prev_cmd, t_context *ctx)
+int	parsing(char *str, t_context *ctx)
 {
 	size_t	i;
 	char	**spipe;
-	t_node	*new_node;
+	t_node	*cmd_node;
 
 	i = 0;
-	new_node = NULL;
 	spipe = ft_split(str, "|");
 	if (!spipe)
 		return (EXIT_FAILURE);
 	while (spipe[i])
 	{
-		new_node = ft_lstnew((void *)split_cmd(spipe[i], ctx));
-		if (!new_node->content)
+		cmd_node = ft_lstnew(NULL);
+		if (!cmd_node)
 		{
 			ft_free_tab((void **)spipe);
-			free(new_node);
 			return (EXIT_FAILURE);
 		}
-		new_node->prev = prev_cmd;
-		if (prev_cmd)
-			prev_cmd->next = new_node;
-		prev_cmd = new_node;
-		if (!*ctx->head_cmd)
-			*ctx->head_cmd = new_node;
+		ft_lstadd_back(ctx->head_cmd, cmd_node);
+		if (set_cmd_node_content(spipe[i], ctx, cmd_node) == EXIT_FAILURE)
+		{
+			ft_free_tab((void **)spipe);
+			return (EXIT_FAILURE);
+		}
 		i++;
 	}
 	ft_free_tab((void **)spipe);
@@ -46,9 +44,6 @@ int	parsing(char *str, t_node *prev_cmd, t_context *ctx)
 
 int	parsing_init(char *str, t_context *ctx)
 {
-	t_node	*prev_cmd;
-
-	prev_cmd = NULL;
 	ctx->head_cmd = malloc(sizeof(t_node *));
 	if (!ctx->head_cmd)
 	{
@@ -56,5 +51,5 @@ int	parsing_init(char *str, t_context *ctx)
 		exit_free(ctx);
 	}
 	*(ctx->head_cmd) = NULL;
-	return (parsing(str, prev_cmd, ctx));
+	return (parsing(str, ctx));
 }

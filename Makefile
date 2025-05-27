@@ -99,7 +99,7 @@ PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\
 	maintest.c \
 	parsing.c \
-	split_cmd.c \
+	set_cmd_node_content.c \
 	interpretation.c \
 	parsing_utils.c \
 	count_utils.c \

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 16:10:36 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/19 16:15:51 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/26 19:19:12 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	ft_unset_one(t_context *ctx, char *key)
 	}
 }
 
+// unset abc def hij
 void	ft_unset(t_context *ctx, char **args)
 {
 	int	i;

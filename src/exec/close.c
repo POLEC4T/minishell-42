@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:37:03 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 16:33:31 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/26 18:46:12 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	close_cmd_redirs(t_node *cmd_node)
 	int		i;
 
 	cmd = cast_to_cmd(cmd_node->content);
-	i = 0;
-	if (cmd->redirects == NULL)
+	if (cmd == NULL || cmd->redirects == NULL)
 		return ;
+	i = 0;
 	while (cmd->redirects[i])
 	{
 		my_close(&cmd->redirects[i]->fd_in);

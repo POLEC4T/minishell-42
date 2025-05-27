@@ -6,13 +6,14 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:52:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/21 15:51:35 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:51:07 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	handle_redirection(t_context *ctx, char *str, size_t i, t_cmd *cmd, size_t *redirect)
+size_t	handle_redirection(t_context *ctx, char *str, size_t i, t_cmd *cmd,
+		size_t *redirect)
 {
 	cmd->redirects[*redirect] = redirect_define(ctx, str + i);
 	if (!cmd->redirects[*redirect])
