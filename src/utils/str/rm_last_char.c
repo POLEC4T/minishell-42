@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   rm_last_char.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:06:46 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 14:41:47 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/05/27 15:24:31 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/05/27 15:26:15 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+/**
+ * @brief removes the last character of the string
+ * @details made to remove the '\n' character at the end of the ret of gnl
+ */
+char	*rm_last_char(char *str)
 {
-	char		*d;
-	const char	*s = src;
+	int	str_len;
 
-	d = dest;
-	while (n--)
-		*d++ = *s++;
-	return (dest);
+	str_len = ft_strlen(str);
+	if (str_len > 0)
+		str[str_len - 1] = '\0';
+	return (str);
 }

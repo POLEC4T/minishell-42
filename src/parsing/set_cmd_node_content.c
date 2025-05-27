@@ -68,7 +68,7 @@ t_cmd	*cmd_initialize(size_t args_count, size_t redirects_count)
 		free(cmd);
 		return (NULL);
 	}
-	cmd->redirects = malloc((redirects_count + 1) * sizeof(t_redirect *));
+	cmd->redirects = ft_calloc((redirects_count + 1), sizeof(t_redirect *));
 	if (!cmd->redirects)
 	{
 		free(cmd->args);
@@ -105,7 +105,6 @@ int	set_cmd_node_content(char *str, t_context *ctx, t_node *cmd_node)
 		if ((int)i == -1)
 			return (EXIT_FAILURE);
 	}
-	cmd->redirects[redirect] = NULL;
 	cmd->args[count_args(str)] = NULL;
 	return (EXIT_SUCCESS);
 }
