@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 09:58:46 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 11:18:53 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ static char	*shorter(char *str)
 	return (str);
 }
 
-int	write_in_file(int hd_fd, char *eof)
+int	write_in_file(int hd_fd, char *eof, t_context *ctx)
 {
 	char	*line;
 
@@ -188,6 +188,7 @@ delimited by end-of-file (wanted `%s')\n",
 						eof);
 			break ;
 		}
+		line = interpretation(line, ctx);
 		if (!ft_strncmp(shorter(line), eof, ft_strlen(eof) + 1))
 			break ;
 		write(hd_fd, line, ft_strlen(line));
@@ -264,7 +265,7 @@ int	handle_heredoc(t_context *ctx, char *str, size_t *i, t_redirect *redir)
 	if (!ctx->hd_pid)
 	{
 		install_sigint_handler(sig_hd_handler);
-		write_in_file(hd_fd, eof);
+		write_in_file(hd_fd, eof, ctx);
 		free(redir->filename);
 		return (EXIT_FAILURE);
 	}

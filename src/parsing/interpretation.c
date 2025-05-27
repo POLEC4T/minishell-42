@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpretation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/26 19:45:38 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 11:24:43 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ char	*get_key_word(char *str)
 	if (str[i] != '$' || str[i + 1] == ' ')
 		return (NULL);
 	i++;
-	while (str[i + len] != ' ' && str[i + len])
+	while (str[i + len] != ' ' && str[i + len] != '\n' && str[i + len])
 		len++;
 	key_word = ft_calloc(len + 1, 1);
 	len = 0;
-	while (str[i + len] != ' ' && str[i + len] && str[i + len] != '\'' && str[i + len] != '\"')
+	while (str[i + len] != ' ' && str[i + len] != '\n' && str[i + len] && str[i
+		+ len] != '\'' && str[i + len] != '\"')
 	{
 		key_word[len] = str[i + len];
 		len++;
@@ -70,7 +71,7 @@ int	find_end_inter(char *str)
 	h++;
 	while (str[h] == ' ')
 		h++;
-	while (str[h] != ' ' && str[h])
+	while (str[h] != ' ' && str[h] != '\n' && str[h])
 		h++;
 	return (h);
 }
