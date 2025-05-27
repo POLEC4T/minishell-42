@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpretation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 11:24:43 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/27 12:56:58 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ char	*interpretation(char *str, t_context *ctx)
 	int		len;
 	char	*repl;
 
+	if (str == NULL)
+		return (str);
 	i = 0;
 	if (ft_strchr(str, '$') == 0)
 		return (str);

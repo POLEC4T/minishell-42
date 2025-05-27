@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 09:22:19 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 10:48:27 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,8 +189,6 @@ void				exit_free(t_context *context);
 void				free_context(t_context *context);
 void				ft_free_ctx_cmds(t_context *context);
 void				free_exec(t_exec *data);
-void				ft_free_redirects(t_redirect **redirects);
-void				ft_free_cmd_content(void *content);
 
 // get_next_line
 char				*get_next_line(int fd);
