@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
 /*   Updated: 2025/05/27 15:57:58 by mniemaz          ###   ########.fr       */
@@ -34,8 +34,14 @@ typedef enum e_redir_type
 	HEREDOC,   // <<
 	OUT_TRUNC, // >>
 	OUT,       // >
-	NONE
 }					t_redir_type;
+
+typedef enum e_inter_type
+{
+	CMD,
+	HERE_DOC,
+	HERE_DOC_NO_INTER
+}					t_inter_type;
 
 typedef struct s_redirect
 {
@@ -119,6 +125,7 @@ char				*ft_strchr(const char *string, int c);
 size_t				ft_tablen(void **tab);
 char				*ft_itoa(int n);
 char				*rm_last_char(char *str);
+char				**ft_split_quote(char const *s, char *delim);
 
 // output
 int					ft_fprintf(int fd, const char *fmt, ...);
@@ -163,10 +170,10 @@ t_context			*read_token(t_context *ctx);
 int					parsing_init(char *str, t_context *ctx);
 int					set_cmd_node_content(char *str, t_context *ctx,
 						t_node *cmd_node);
-char				*interpretation(char *str, t_context *ctx);
 size_t				extract_redirection_filename(char *str, char *filename);
 int					handle_heredoc(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
+char				*interpretation(char *str, t_context *ctx, int type);
 // utils pars
 size_t				argslen(char *str);
 size_t				redirlen(char *str);

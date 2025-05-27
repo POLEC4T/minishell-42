@@ -39,6 +39,7 @@ STR_FILES=\
 	ft_strchr_idx.c \
 	putstr_fd.c \
 	ft_split_first.c \
+	ft_split_quotes.c \
 	ft_split.c \
 	ft_isalnum.c \
 	ft_isalpha.c \

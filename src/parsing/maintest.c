@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 15:13:32 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 14:34:05 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_context	*read_token(t_context *ctx)
 		if (syntax(read) != -1)
 		{
 			add_history(read);
-			read = interpretation(read, ctx);
+			read = interpretation(read, ctx, CMD);
 			if (parsing_init(read, ctx) == EXIT_FAILURE)
 			{
 				if (ctx->hd_pid)

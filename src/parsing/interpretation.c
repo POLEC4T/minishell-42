@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpretation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 12:56:58 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 14:33:51 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	interlen(char *str, char *keyword)
 		i++;
 		len++;
 	}
-	while (str[i] && str[i] != ' ')
+	while (str[i] && str[i] != ' ' && str[i] != '\n')
 		i++;
 	while (str[i])
 	{
@@ -102,10 +102,18 @@ char	*replace(char *str, char *inter, int interlen)
 		j++;
 		h++;
 	}
+	replace[i + j] = '\0';
 	return (replace);
 }
 
-char	*interpretation(char *str, t_context *ctx)
+
+/*
+heredoc
+cmd
+heredoc no inter
+*/
+
+char	*interpretation(char *str, t_context *ctx, int type)
 {
 	size_t	i;
 	char	*keyword;
@@ -130,5 +138,5 @@ char	*interpretation(char *str, t_context *ctx)
 	free(keyword);
 	free(inter);
 	free(str);
-	return (interpretation(repl, ctx));
+	return (interpretation(repl, ctx, type));
 }
