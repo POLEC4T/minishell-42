@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 10:17:01 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 14:13:58 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	parsing(char *str, t_context *ctx)
 	t_node	*cmd_node;
 
 	i = 0;
-	spipe = ft_split(str, "|");
+	spipe = ft_split_quote(str, "|");
 	if (!spipe)
 		return (EXIT_FAILURE);
 	while (spipe[i])
