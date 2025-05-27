@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:21:53 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/27 15:46:11 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 16:03:41 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	write_in_file(int hd_fd, char *eof, t_context *ctx)
 delimited by end-of-file (wanted `%s')\n", eof);
 			break ;
 		}
-		line = interpretation(line, ctx);
+		line = interpretation(line, ctx, HERE_DOC);
 		if (!line || !ft_strncmp(rm_last_char(line), eof, ft_strlen(eof) + 1))
 			break ;
 		write(hd_fd, line, ft_strlen(line));
