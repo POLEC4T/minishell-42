@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 09:58:46 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 11:52:08 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,16 +179,14 @@ int	write_in_file(int hd_fd, char *eof)
 	{
 		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
-		if (!line)
+		if (!line && g_signal == 0)
 		{
 			write(STDERR_FILENO, "\n", 1);
-			ft_fprintf(STDERR_FILENO,
-						"warning: here-document atline 1 \
-delimited by end-of-file (wanted `%s')\n",
-						eof);
+				ft_fprintf(STDERR_FILENO, "warning: here-document atline 1 \
+delimited by end-of-file (wanted `%s')\n", eof);
 			break ;
 		}
-		if (!ft_strncmp(shorter(line), eof, ft_strlen(eof) + 1))
+		if (!line || !ft_strncmp(shorter(line), eof, ft_strlen(eof) + 1))
 			break ;
 		write(hd_fd, line, ft_strlen(line));
 		write(hd_fd, "\n", 1);
