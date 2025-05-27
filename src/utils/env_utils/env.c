@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/23 15:01:36 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 13:14:17 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	create_or_set_env_var(t_context *context, char **kv)
 		node = ft_envnew(kv[0], kv[1]);
 		if (!node)
 		{
-			ft_free_tab((void **)kv);
 			ft_fprintf(STDERR_FILENO, "create_or_set_env_var: %s\n",
 				strerror(errno));
 			exit_free(context);
@@ -38,6 +37,8 @@ void	create_or_set_env_var(t_context *context, char **kv)
 	}
 	else
 	{
+		if (!kv[1])
+			return ;
 		existing_kv = cast_to_key_value(node->content);
 		if (existing_kv->value)
 			free(existing_kv->value);

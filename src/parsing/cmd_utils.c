@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:52:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/26 16:51:07 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 15:58:52 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 size_t	handle_redirection(t_context *ctx, char *str, size_t i, t_cmd *cmd,
 		size_t *redirect)
 {
-	cmd->redirects[*redirect] = redirect_define(ctx, str + i);
-	if (!cmd->redirects[*redirect])
+	if (redirect_define(ctx, str + i, &cmd->redirects[*redirect]) == EXIT_FAILURE)
 		return (-1);
 	(*redirect)++;
 	i = skip_redirection(str, i);

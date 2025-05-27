@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 14:35:38 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:57:58 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strchr(const char *string, int c);
 size_t				ft_tablen(void **tab);
 char				*ft_itoa(int n);
+char				*rm_last_char(char *str);
 char				**ft_split_quote(char const *s, char *delim);
 
 // output
@@ -169,8 +170,10 @@ t_context			*read_token(t_context *ctx);
 int					parsing_init(char *str, t_context *ctx);
 int					set_cmd_node_content(char *str, t_context *ctx,
 						t_node *cmd_node);
+size_t				extract_redirection_filename(char *str, char *filename);
+int					handle_heredoc(t_context *ctx, char *str, size_t *i,
+						t_redirect **redir);
 char				*interpretation(char *str, t_context *ctx, int type);
-
 // utils pars
 size_t				argslen(char *str);
 size_t				redirlen(char *str);
@@ -179,7 +182,8 @@ size_t				skip_redirection(char *str, size_t i);
 size_t				skip_spaces(char *str, size_t i);
 int					count_args(char *str);
 int					count_redirect(char *str);
-t_redirect			*redirect_define(t_context *ctx, char *str);
+int					redirect_define(t_context *ctx, char *str,
+						t_redirect **redir);
 char				*args_define(char *str);
 t_cmd				*cmd_initialize(size_t args_count, size_t redirects_count);
 t_cmd				*initialize_cmd_with_counts(char *str);
@@ -200,6 +204,11 @@ void				free_exec(t_exec *data);
 
 // get_next_line
 char				*get_next_line(int fd);
+
+// signals
+void				parent_sigint_handler(int sigint);
+void				install_sigint_handler(void (*handler)(int));
+void				hd_sigint_handler(int sig);
 
 // TODO: delete
 void				print_cmd(t_node *cmd);

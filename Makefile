@@ -18,6 +18,7 @@ ENV_UTILS_DIR = env_utils
 FREE_DIR = free
 LST_DIR = lst
 BUILTINS_DIR = builtins
+SIG_DIR = signals
 INC_DIR = include
 PARS_DIR = parsing
 EXEC_DIR = exec
@@ -52,6 +53,7 @@ STR_FILES=\
 	ft_itoa.c \
 	ft_tablen.c \
 	get_next_line.c \
+	rm_last_char.c \
 
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
 ENV_UTILS_FILES=\
@@ -106,6 +108,7 @@ PARS_FILES=\
 	count_utils.c \
 	redir_utils.c \
 	cmd_utils.c \
+	handle_heredoc.c \
 
 CHILDREN = $(addprefix $(CHILDREN_DIR)/, $(CHILDREN_FILES))
 CHILDREN_FILES=\
@@ -127,6 +130,10 @@ SYNTAX = $(addprefix $(SYNTAX_DIR)/, $(SYNTAX_FILES))
 SYNTAX_FILES=\
 	syntax.c \
 
+SIGNALS = $(addprefix $(SIG_DIR)/, $(SIGNALS_FILES))
+SIGNALS_FILES=\
+	signals.c \
+
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES=\
 	main.c \
@@ -136,6 +143,7 @@ SRC_FILES=\
 	$(PARS) \
 	$(SYNTAX) \
 	$(EXEC) \
+	$(SIGNALS) \
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 DEPS = $(patsubst $(SRC_DIR)/%.c, $(DEP_DIR)/%.d, $(SRCS))

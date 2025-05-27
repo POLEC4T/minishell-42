@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   maintest.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
 /*   Updated: 2025/05/27 14:34:05 by nle-gued         ###   ########.fr       */
@@ -13,15 +13,6 @@
 #include "minishell.h"
 
 int			g_signal = 0;
-
-void	parent_sigint_handler(int sigint)
-{
-	write(STDOUT_FILENO, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	g_signal = sigint;
-}
 
 t_context	*read_token(t_context *ctx)
 {

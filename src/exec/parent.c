@@ -6,18 +6,11 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/23 17:44:34 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/27 15:13:58 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	sigint_child_handler(int sig)
-{
-	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
-	ft_fprintf(STDERR_FILENO, "coucouc");
-}
 
 /**
  * @brief processes the command, but not always the same way
