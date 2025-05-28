@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:21:53 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/27 16:03:41 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/28 15:59:49 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*get_hd_name(void)
 	return (hd_name);
 }
 
-void	write_in_file(int hd_fd, char *eof, t_context *ctx)
+void	write_in_file(int hd_fd, char *eof, t_context *ctx, t_redir_type redir_type)
 {
 	char		*line;
 
@@ -67,7 +67,8 @@ void	write_in_file(int hd_fd, char *eof, t_context *ctx)
 delimited by end-of-file (wanted `%s')\n", eof);
 			break ;
 		}
-		line = interpretation(line, ctx, HERE_DOC);
+		if(redir_type != HEREDOC_NO_INTER)
+			line = interpretation(line, ctx, HEREDOC);
 		if (!line || !ft_strncmp(rm_last_char(line), eof, ft_strlen(eof) + 1))
 			break ;
 		write(hd_fd, line, ft_strlen(line));
@@ -127,7 +128,7 @@ int	handle_heredoc(t_context *ctx, char *str, size_t *i, t_redirect **redir_addr
 	if (!ctx->hd_pid)
 	{
 		install_sigint_handler(hd_sigint_handler);
-		write_in_file(hd_fd, eof, ctx);
+		write_in_file(hd_fd, eof, ctx, redir->redir_type);
 		// free(redir->filename);
 		return (EXIT_FAILURE);
 	}

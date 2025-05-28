@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maintest.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 14:34:05 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:10:16 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_context	*read_token(t_context *ctx)
 		if (syntax(read) != -1)
 		{
 			add_history(read);
-			read = interpretation(read, ctx, CMD);
+			read = interpretation(read, ctx, 1);
 			if (parsing_init(read, ctx) == EXIT_FAILURE)
 			{
 				if (ctx->hd_pid)

@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 15:58:37 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/28 15:57:55 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,20 @@ int	handle_output_redirection(char *str, size_t *i)
 
 int	handle_input_redirection(char *str, size_t *i)
 {
-	int	type;
+	int		type;
+	size_t	j;
 
 	(*i)++;
 	if (str[*i] == '<')
 	{
-		type = HEREDOC;
 		(*i)++;
+		j = (*i);
+		while (str[j] && str[j] == ' ')
+			j++;
+		if (str[j] == '"' || str[j] == '\'')
+			type = HEREDOC_NO_INTER;
+		else
+			type = HEREDOC;
 	}
 	else
 	{
@@ -104,7 +111,7 @@ int	redirect_define(t_context *ctx, char *str, t_redirect **redir_addr)
 	redir->fd_in = -2;
 	redir->fd_out = -2;
 	redir->filename = NULL;
-	if (redir->redir_type == HEREDOC)
+	if (redir->redir_type == HEREDOC || redir->redir_type == HEREDOC_NO_INTER)
 	{
 		if (handle_heredoc(ctx, str, &i, redir_addr) == EXIT_FAILURE)
 			return (EXIT_FAILURE);

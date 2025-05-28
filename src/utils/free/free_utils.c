@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/27 11:42:14 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/28 15:58:29 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@
 // 	free(cmd);
 // }
 
-
 void	ft_free_redirects(t_context *ctx, t_redirect **redirects)
 {
 	int	i;
@@ -55,7 +54,9 @@ void	ft_free_redirects(t_context *ctx, t_redirect **redirects)
 	i = 0;
 	while (redirects[i])
 	{
-		if (redirects[i]->redir_type == HEREDOC && ctx->hd_pid > 0)
+		if ((redirects[i]->redir_type == HEREDOC
+				|| redirects[i]->redir_type == HEREDOC_NO_INTER)
+			&& ctx->hd_pid > 0)
 			unlink(redirects[i]->filename);
 		if (redirects[i]->filename != NULL)
 			free(redirects[i]->filename);
@@ -79,13 +80,13 @@ void	ft_free_cmd_content_ctx(t_context *ctx, void *content)
 	free(cmd);
 }
 
-void ft_free_cmds_content_ctx(t_context *ctx)
+void	ft_free_cmds_content_ctx(t_context *ctx)
 {
-	t_node *curr;
-	t_node *next;
+	t_node	*curr;
+	t_node	*next;
 
 	curr = *ctx->head_cmd;
-	while(curr)
+	while (curr)
 	{
 		next = curr->next;
 		ft_free_cmd_content_ctx(ctx, curr->content);

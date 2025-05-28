@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 15:57:58 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/28 15:55:51 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,8 @@ typedef enum e_redir_type
 	HEREDOC,   // <<
 	OUT_TRUNC, // >>
 	OUT,       // >
+	HEREDOC_NO_INTER  // << ""
 }					t_redir_type;
-
-typedef enum e_inter_type
-{
-	CMD,
-	HERE_DOC,
-	HERE_DOC_NO_INTER
-}					t_inter_type;
 
 typedef struct s_redirect
 {
