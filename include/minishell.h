@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/28 15:55:51 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/28 20:53:02 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ extern int			g_signal;
 
 typedef enum e_redir_type
 {
-	IN,        // <
-	HEREDOC,   // <<
-	OUT_TRUNC, // >>
-	OUT,       // >
-	HEREDOC_NO_INTER  // << ""
+	IN,              // <
+	HEREDOC,         // <<
+	OUT_TRUNC,       // >>
+	OUT,             // >
+	HEREDOC_NO_INTER // << ""
 }					t_redir_type;
 
 typedef struct s_redirect
@@ -96,6 +96,7 @@ void				minishell(char **envp);
 
 // str
 int					ft_putstr_fd(char *s, int fd);
+int					ft_putendl_fd(char *s, int fd);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 int					ft_strlen(char *str);
 char				*ft_strdup(char *s1);
@@ -144,7 +145,7 @@ void				ft_free_env_content(void *content);
 void				print_env_val(t_context *context, char *key);
 
 // env
-char				**env_to_tabstr(t_context *ctx);
+char				**env_to_tabstr(t_context *ctx, char *to_free);
 void				create_or_set_env_var(t_context *context, char **kv);
 
 // builtins
@@ -160,7 +161,7 @@ long long			ft_atoi_exit(const char *str_exit_code, int *error);
 int					is_builtin_cmd(char *cmd);
 
 // parsing
-t_context			*read_token(t_context *ctx);
+t_context			*read_cmds(t_context *ctx);
 int					parsing_init(char *str, t_context *ctx);
 int					set_cmd_node_content(char *str, t_context *ctx,
 						t_node *cmd_node);
@@ -201,7 +202,7 @@ char				*get_next_line(int fd);
 
 // signals
 void				parent_sigint_handler(int sigint);
-void				install_sigint_handler(void (*handler)(int));
+int					set_hd_sigint_handler(void (*handler)(int));
 void				hd_sigint_handler(int sig);
 
 // TODO: delete

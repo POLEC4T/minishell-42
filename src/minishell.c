@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/23 17:03:30 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/28 18:25:44 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ void	minishell(char **envp)
 
 	init_context(&ctx);
 	ft_export(&ctx, envp);
-	read_token(&ctx);
+	read_cmds(&ctx);
 	exit_free(&ctx);
 }

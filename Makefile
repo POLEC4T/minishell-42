@@ -38,6 +38,7 @@ STR_FILES=\
 	ft_strlcpy.c \
 	ft_strchr_idx.c \
 	putstr_fd.c \
+	putendl_fd.c \
 	ft_split_first.c \
 	ft_split_quotes.c \
 	ft_split.c \

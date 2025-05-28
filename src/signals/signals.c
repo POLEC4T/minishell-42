@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:12:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/27 15:16:30 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/28 19:29:16 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,16 @@ void	parent_sigint_handler(int sigint)
  * using sigaction to allow gnl to be interrupted by a signal,
  * thanks to the sa_flags = 0
  */
-void	install_sigint_handler(void (*handler)(int))
+int	set_hd_sigint_handler(void (*handler)(int))
 {
 	struct sigaction	sa;
 
 	sa.sa_handler = handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
-	// todo secure signal
-	sigaction(SIGINT, &sa, NULL);
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 void	hd_sigint_handler(int sig)
