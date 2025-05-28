@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/27 14:13:58 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/28 20:10:52 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	err_parsing(void **to_free)
+{
+	ft_fprintf(STDERR_FILENO, "parsing: %s\n", strerror(errno));
+	if (to_free)
+		ft_free_tab(to_free);
+	return (EXIT_FAILURE);
+}
 
 int	parsing(char *str, t_context *ctx)
 {
@@ -19,17 +27,15 @@ int	parsing(char *str, t_context *ctx)
 	t_node	*cmd_node;
 
 	i = 0;
+	(void)str;
 	spipe = ft_split_quote(str, "|");
 	if (!spipe)
-		return (EXIT_FAILURE);
+		return (err_parsing(NULL));
 	while (spipe[i])
 	{
 		cmd_node = ft_lstnew(NULL);
 		if (!cmd_node)
-		{
-			ft_free_tab((void **)spipe);
-			return (EXIT_FAILURE);
-		}
+			return (err_parsing((void **)spipe));
 		ft_lstadd_back(ctx->head_cmd, cmd_node);
 		if (set_cmd_node_content(spipe[i], ctx, cmd_node) == EXIT_FAILURE)
 		{

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   open_cmd_redirs.c                                      :+:      :+:    :+:   */
+/*   open_cmd_redirs.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 19:10:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 17:26:12 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/28 21:05:04 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static int	open_outfile_append(char *filename)
 
 static int	open_cmd_redir(t_redirect *redir)
 {
-	if (redir->redir_type == IN || redir->redir_type == HEREDOC)
+	if (redir->redir_type == IN || redir->redir_type == HEREDOC
+		|| redir->redir_type == HEREDOC_NO_INTER)
 	{
 		redir->fd_in = open_infile(redir->filename);
 		if (redir->fd_in == -1)
@@ -67,6 +68,7 @@ static int	open_cmd_redir(t_redirect *redir)
 	}
 	return (EXIT_SUCCESS);
 }
+
 /**
  * @returns EXIT_FAILURE if one of the redirs files cannot be opened
  */

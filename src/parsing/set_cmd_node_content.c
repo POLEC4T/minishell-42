@@ -19,9 +19,12 @@ char	*args_define(char *str)
 	size_t	j;
 	char	in_quotes;
 
-	args = malloc(argslen(str) + 1);
+	args = malloc((argslen(str) + 1) * sizeof(char));
 	if (!args)
+	{
+		ft_fprintf(STDERR_FILENO, "args_define: %s\n", strerror(errno));
 		return (NULL);
+	}
 	i = -1;
 	j = 0;
 	in_quotes = 0;
@@ -91,9 +94,12 @@ int	set_cmd_node_content(char *str, t_context *ctx, t_node *cmd_node)
 	redirect = 0;
 	args = 0;
 	cmd = initialize_cmd_with_counts(str);
-	cmd_node->content = (void *)cmd;
 	if (!cmd)
+	{
+		ft_fprintf(STDERR_FILENO, "cmd_initialize: %s\n", strerror(errno));
 		return (EXIT_FAILURE);
+	}
+	cmd_node->content = (void *)cmd;
 	while (str[i])
 	{
 		if (str[i] == '<' || str[i] == '>')

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   maintest.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/28 16:10:16 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/28 20:56:51 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,30 @@
 
 int			g_signal = 0;
 
-t_context	*read_token(t_context *ctx)
+void	setup_parent_signals(t_context *ctx)
+{
+	if (signal(SIGINT, parent_sigint_handler) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
+	}
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
+	}
+}
+
+t_context	*read_cmds(t_context *ctx)
 {
 	char	*read;
 
 	while (1)
 	{
 		g_signal = 0;
-		signal(SIGINT, parent_sigint_handler);
-		signal(SIGQUIT, SIG_IGN);
+		setup_parent_signals(ctx);
 		read = readline("pitishell$ ");
 		if (g_signal == SIGINT)
 			ctx->exit_code = 128 + g_signal;
@@ -35,6 +50,7 @@ t_context	*read_token(t_context *ctx)
 		{
 			add_history(read);
 			read = interpretation(read, ctx, 1);
+			ctx->exit_code = EXIT_SUCCESS;
 			if (parsing_init(read, ctx) == EXIT_FAILURE)
 			{
 				if (ctx->hd_pid)
@@ -44,15 +60,12 @@ t_context	*read_token(t_context *ctx)
 						ft_free_ctx_cmds(ctx);
 						continue ;
 					}
+					ctx->exit_code = EXIT_FAILURE;
 					exit_free(ctx);
 				}
 				else if (ctx->hd_pid == 0)
 				{
-					// todo, handle: g_signal == 0 peut vouloir dire que eof
-					// a marche mais aussi qu'une erreur est survenue (malloc..)
-					if (g_signal == 0)
-						ctx->exit_code = EXIT_SUCCESS;
-					else
+					if (g_signal > 0 && ctx->exit_code == EXIT_SUCCESS)
 						ctx->exit_code = 128 + g_signal;
 					exit_free(ctx);
 				}
@@ -65,6 +78,7 @@ t_context	*read_token(t_context *ctx)
 		}
 		else
 		{
+			free_exec(ctx->exec_data);
 			clean_init_exec(ctx);
 			free(read);
 		}

@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   putendl_fd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/28 20:32:25 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/04/18 16:10:12 by nle-gued          #+#    #+#             */
+/*   Updated: 2025/05/14 14:52:11 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+int	ft_putendl_fd(char *s, int fd)
 {
-	(void)argv;
-	if (argc != 1)
-	{
-		ft_fprintf(STDERR_FILENO, "Usage: %s\n", argv[0]);
-		return (EXIT_FAILURE);
-	}
-	minishell(envp);
-	return (EXIT_SUCCESS);
+	int counter;
+
+	counter = 0;
+	if (!s)
+		return (-2);
+	counter += write(fd, s, ft_strlen(s));
+	counter += write(fd, "\n", 1);
+	if (counter < 0)
+		return (-1);
+	return (counter);
 }

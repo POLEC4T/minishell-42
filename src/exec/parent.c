@@ -6,11 +6,25 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/27 15:13:58 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/28 20:36:35 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	setup_child_signals(t_context *ctx)
+{
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
+		exit_free(ctx);
+	}
+	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
+		exit_free(ctx);
+	}
+}
 
 /**
  * @brief processes the command, but not always the same way
@@ -30,14 +44,15 @@ static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 		process_cmd(ctx, cmd_node);
 	else
 	{
+		if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+		{
+			ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
+			exit_free(ctx);
+		}
 		secure_fork(&cmd->pid, ctx);
-		// todo: secure signals
-		signal(SIGINT, SIG_IGN);
 		if (!cmd->pid)
 		{
-			// todo: secure signals
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
+			setup_child_signals(ctx);
 			process_cmd(ctx, cmd_node);
 		}
 	}
