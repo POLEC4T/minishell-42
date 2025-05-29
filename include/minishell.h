@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/28 20:53:02 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 11:02:54 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ int					set_cmd_node_content(char *str, t_context *ctx,
 size_t				extract_redirection_filename(char *str, char *filename);
 int					handle_heredoc(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
-char				*interpretation(char *str, t_context *ctx, int type);
+char				*expand_line(char *str, t_context *ctx, int type);
 // utils pars
 size_t				argslen(char *str);
 size_t				redirlen(char *str);
@@ -188,7 +188,7 @@ size_t				handle_redirection(t_context *ctx, char *str, size_t i,
 						t_cmd *cmd, size_t *redirect);
 
 // syntax
-int					syntax(char *str);
+int					is_syntax_valid(char *str);
 // char				*quote_delimiter(char *str);
 
 // free

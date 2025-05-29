@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:31:32 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/21 11:16:10 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/29 10:49:07 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,23 +123,23 @@ int	brackets_check(char *str)
 	return (0);
 }
 
-int	syntax(char *str)
+int	is_syntax_valid(char *str)
 {
 	if (check_quotes_parity(str) != 0)
 	{
 		ft_fprintf(STDERR_FILENO, "syntax: quote parity issue\n");
-		return (-1);
+		return (EXIT_FAILURE);
 	}
 	if (strchr(str, '|') && pipe_check(str) != 0)
 	{
 		ft_fprintf(STDERR_FILENO, "syntax: pipe issue\n");
-		return (-1);
+		return (EXIT_FAILURE);
 	}
 	if (brackets_check(str) != 0)
 	{
 		ft_fprintf(STDERR_FILENO, "syntax: angle bracket issue\n");
-		return (-1);
+		return (EXIT_FAILURE);
 	}
-	return(0);
+	return(EXIT_SUCCESS);
 }
 
