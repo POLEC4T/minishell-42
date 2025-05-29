@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpretation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:58:01 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/28 17:18:00 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 10:38:19 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,12 @@ char	*interpretation(char *str, t_context *ctx, int type)
 		inter = ft_itoa(ctx->exit_code);
 	else
 		inter = ft_get_env_val(ctx, keyword);
+	if(!inter)
+	{
+		free(keyword);
+		free(str);
+		return(NULL);
+	}
 	len = interlen(str, inter);
 	repl = replace(str, inter, len);
 	free(keyword);

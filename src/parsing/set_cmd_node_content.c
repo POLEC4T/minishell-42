@@ -104,7 +104,7 @@ int	set_cmd_node_content(char *str, t_context *ctx, t_node *cmd_node)
 	{
 		if (str[i] == '<' || str[i] == '>')
 			i = handle_redirection(ctx, str, i, cmd, &redirect);
-		else if (str[i] != ' ')
+		else if (str[i] != ' ' && str[i] != ';')
 			i = handle_argument(str, i, cmd, &args);
 		else
 			i++;
