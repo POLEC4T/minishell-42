@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 13:01:12 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:13:13 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_context	*read_cmds(t_context *ctx)
 			free(read);
 		else
 		{
-			read = expand_line(read, ctx, 1);
+			read = expand_line(read, ctx, CMD);
 			if (parsing_init(read, ctx) == EXIT_FAILURE)
 			{
 				if (ctx->hd_pid)
