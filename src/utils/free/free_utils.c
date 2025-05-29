@@ -6,11 +6,23 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 13:01:12 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:31:05 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_free_env_content(void *content)
+{
+	t_key_value	*kv;
+
+	if (!content)
+		return ;
+	kv = cast_to_key_value(content);
+	free(kv->key);
+	free(kv->value);
+	free(kv);
+}
 
 void	free_exec(t_exec *data)
 {

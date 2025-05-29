@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 12:42:28 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:40:15 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	process_cmd(t_context *ctx, t_node *node_cmd)
 {
 	if (cast_to_cmd(node_cmd->content)->args[0] == NULL)
 		exit_free(ctx);
+	setup_child_signals(ctx);
 	dup_cmd_redirs(ctx, node_cmd);
 	close_pipes(ctx->exec_data);
 	close_all_cmds_redirs(ctx->head_cmd);

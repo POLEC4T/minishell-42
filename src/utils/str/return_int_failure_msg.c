@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   putstr_fd.c                                        :+:      :+:    :+:   */
+/*   return_int_failure_msg.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:10:12 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 18:34:16 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/05/29 18:53:28 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/05/29 19:45:00 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_putstr_fd(char *s, int fd)
+int	return_int_failure_msg(char *msg)
 {
-	if (!s)
-		return (-2);
-	return (write(fd, s, ft_strlen(s)));
+	ft_fprintf(STDERR_FILENO, "%s: %s\n", msg, strerror(errno));
+	return (EXIT_FAILURE);
 }

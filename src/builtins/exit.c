@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:43:03 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/13 14:43:10 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:35:34 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static void	format_exit_code(t_context *context)
 		code = code % 256;
 	context->exit_code = code;
 }
-
 
 void	ft_exit(t_context *context, char **args)
 {

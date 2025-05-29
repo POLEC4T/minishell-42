@@ -6,13 +6,13 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 11:36:41 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:42:08 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_paths(t_context *ctx)
+static char	**get_paths(t_context *ctx)
 {
 	char	**res;
 	char	*path;
@@ -31,21 +31,6 @@ char	**get_paths(t_context *ctx)
 		return (res);
 	}
 	return (NULL);
-}
-
-static char	*safe_ft_double_strjoin(t_context *ctx, char *s1, char *s2,
-		char *s3)
-{
-	char	*res;
-
-	res = ft_double_strjoin(ctx, s1, s2, s3);
-	if (!res)
-	{
-		ft_fprintf(STDERR_FILENO, "safe_ft_strjoin: %s\n", strerror(errno));
-		ctx->exit_code = EXIT_FAILURE;
-		exit_free(ctx);
-	}
-	return (res);
 }
 
 static int	is_directory(t_context *ctx, char *path)

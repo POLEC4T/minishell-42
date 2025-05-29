@@ -6,27 +6,11 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 11:40:13 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:37:37 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	setup_child_signals(t_context *ctx)
-{
-	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
-	{
-		ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
-		ctx->exit_code = EXIT_FAILURE;
-		exit_free(ctx);
-	}
-	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
-	{
-		ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
-		ctx->exit_code = EXIT_FAILURE;
-		exit_free(ctx);
-	}
-}
 
 /**
  * @brief processes the command, but not always the same way
@@ -54,10 +38,7 @@ static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 		}
 		secure_fork(&cmd->pid, ctx);
 		if (!cmd->pid)
-		{
-			setup_child_signals(ctx);
 			process_cmd(ctx, cmd_node);
-		}
 	}
 }
 
@@ -77,7 +58,7 @@ static void	close_useless_pipes(t_exec *exec_data, t_node *curr_node)
  * - we don't want to process the command
  * - we wait the previous children in order to not close the pipes before
  * 		they are used
- *   -> if we don't wait the children, this command throws a SIGPIPE :
+ *   -> if we don't wait the prev children, this command throws a SIGPIPE :
  * 		echo oui | echo bye > test_no_perm
  */
 void	start_children(t_context *ctx)
