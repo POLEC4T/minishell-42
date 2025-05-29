@@ -55,6 +55,7 @@ static int	wait_hd_child(t_context *ctx)
 				write(STDERR_FILENO, "\n", 1);
 				g_signal = WEXITSTATUS(status) - 128;
 			}
+			// todo: est ce que ca fait exit vu qu'on a pas eu de signaux ?
 			ctx->exit_code = WEXITSTATUS(status);
 			return (EXIT_FAILURE);
 		}

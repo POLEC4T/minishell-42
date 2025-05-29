@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 19:44:28 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:56:13 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,7 @@ void				close_pipes(t_exec *d);
 void				my_close(int *fd);
 void				close_all_cmds_redirs(t_node **head_cmd);
 void				close_cmd_redirs(t_node *cmd_node);
+void				close_exec_fds(t_exec *data);
 
 // env check
 char				*get_cmd_path(t_context *ctx, char *cmd);

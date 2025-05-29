@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 18:31:05 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:56:01 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,18 @@ void	ft_free_env_content(void *content)
 	free(kv);
 }
 
+void	close_exec_fds(t_exec *data)
+{
+	close_pipes(data);
+	my_close(&data->saved_stdin);
+	my_close(&data->saved_stdout);
+}
+
 void	free_exec(t_exec *data)
 {
 	if (data)
 	{
-		close_pipes(data);
-		my_close(&data->saved_stdin);
-		my_close(&data->saved_stdout);
+		close_exec_fds(data);
 		free(data);
 	}
 }
