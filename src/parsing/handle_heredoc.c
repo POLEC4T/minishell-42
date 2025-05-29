@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:21:53 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 11:02:54 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 13:06:39 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ delimited by end-of-file (wanted `%s')\n",
 						eof);
 			break ;
 		}
-		if (redir_type != HEREDOC_NO_INTER)
-			line = expand_line(line, ctx, HEREDOC);
 		if (!line || !ft_strncmp(rm_last_char(line), eof, ft_strlen(eof) + 1))
 			break ;
+		if (redir_type != HEREDOC_NO_INTER)
+			line = expand_line(line, ctx, HD);
 		ft_putendl_fd(line, hd_fd);
 		free(line);
 	}

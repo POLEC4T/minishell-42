@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 11:02:54 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 14:27:16 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@ typedef enum e_redir_type
 	OUT,             // >
 	HEREDOC_NO_INTER // << ""
 }					t_redir_type;
+
+typedef enum e_inter_type
+{
+	HD,
+	CMD
+}					t_inter_type;
 
 typedef struct s_redirect
 {
@@ -169,6 +175,8 @@ size_t				extract_redirection_filename(char *str, char *filename);
 int					handle_heredoc(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
 char				*expand_line(char *str, t_context *ctx, int type);
+int					count_dollar(const char *str);
+int	has_dollar_preceded_by_redir(char *str, int i);
 // utils pars
 size_t				argslen(char *str);
 size_t				redirlen(char *str);

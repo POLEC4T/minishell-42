@@ -105,6 +105,7 @@ PARS_FILES=\
 	parsing.c \
 	set_cmd_node_content.c \
 	expand_line.c \
+	expand_utils.c \
 	parsing_utils.c \
 	count_utils.c \
 	redir_utils.c \
