@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 11:02:54 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:11:38 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef enum e_redir_type
 	HEREDOC,         // <<
 	OUT_TRUNC,       // >>
 	OUT,             // >
-	HEREDOC_NO_INTER // << ""
+	HEREDOC_NO_INTER // << "eof"
 }					t_redir_type;
 
 typedef struct s_redirect
@@ -194,7 +194,7 @@ int					is_syntax_valid(char *str);
 // free
 void				exit_free(t_context *context);
 void				free_context(t_context *context);
-void				ft_free_ctx_cmds(t_context *context);
+void				free_ctx_cmds(t_context *context);
 void				free_exec(t_exec *data);
 
 // get_next_line

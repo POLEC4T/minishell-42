@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 11:02:54 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 13:01:12 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_context	*read_cmds(t_context *ctx)
 				{
 					if (g_signal > 0)
 					{
-						ft_free_ctx_cmds(ctx);
+						free_ctx_cmds(ctx);
 						continue ;
 					}
 					ctx->exit_code = EXIT_FAILURE;
@@ -74,7 +74,7 @@ t_context	*read_cmds(t_context *ctx)
 				}
 			}
 			ft_exec(ctx);
-			ft_free_ctx_cmds(ctx);
+			free_ctx_cmds(ctx);
 			free_exec(ctx->exec_data);
 			clean_init_exec(ctx);
 			free(read);

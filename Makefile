@@ -65,6 +65,7 @@ FREE = $(addprefix $(FREE_DIR)/, $(FREE_FILES))
 FREE_FILES=\
 	free.c \
 	free_utils.c \
+	free_ctx_cmds.c \
 
 LST = $(addprefix $(LST_DIR)/, $(LST_FILES))
 LST_FILES=\

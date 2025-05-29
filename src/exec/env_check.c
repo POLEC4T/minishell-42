@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/19 15:25:49 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 11:36:41 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	**get_paths(t_context *ctx)
 		if (!res)
 		{
 			ft_fprintf(STDERR_FILENO, "get_paths: %s\n", strerror(errno));
+			ctx->exit_code = EXIT_FAILURE;
 			exit_free(ctx);
 		}
 		return (res);
@@ -41,6 +42,7 @@ static char	*safe_ft_double_strjoin(t_context *ctx, char *s1, char *s2,
 	if (!res)
 	{
 		ft_fprintf(STDERR_FILENO, "safe_ft_strjoin: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
 	return (res);

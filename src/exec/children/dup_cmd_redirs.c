@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:53:56 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/14 11:44:26 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 11:42:13 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	get_redir_in(t_context *ctx, t_cmd *cmd)
 		if (ctx->exec_data->saved_stdin == -1)
 		{
 			ft_fprintf(STDERR_FILENO, "dup: %s\n", strerror(errno));
+			ctx->exit_code = EXIT_FAILURE;
 			exit_free(ctx);
 		}
 	}
@@ -58,6 +59,7 @@ int	get_redir_out(t_context *ctx, t_cmd *cmd)
 		if (ctx->exec_data->saved_stdout == -1)
 		{
 			ft_fprintf(STDERR_FILENO, "dup: %s\n", strerror(errno));
+			ctx->exit_code = EXIT_FAILURE;
 			exit_free(ctx);
 		}
 	}

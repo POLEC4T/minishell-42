@@ -83,6 +83,8 @@ t_cmd	*cmd_initialize(size_t args_count, size_t redirects_count)
 	return (cmd);
 }
 
+
+
 int	set_cmd_node_content(char *str, t_context *ctx, t_node *cmd_node)
 {
 	size_t	i;
