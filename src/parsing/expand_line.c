@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   interpretation.c                                   :+:      :+:    :+:   */
+/*   expand_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*get_key_word(char *str)
+static char	*get_key_word(char *str)
 {
 	size_t	i;
 	size_t	len;
@@ -37,7 +37,7 @@ char	*get_key_word(char *str)
 	return (key_word);
 }
 
-int	interlen(char *str, char *keyword)
+static int	get_final_len(char *str, char *keyword)
 {
 	size_t	i;
 	size_t	len;
@@ -61,7 +61,7 @@ int	interlen(char *str, char *keyword)
 	return (len);
 }
 
-int	find_end_inter(char *str)
+static int	find_end_inter(char *str)
 {
 	int	h;
 
@@ -76,50 +76,42 @@ int	find_end_inter(char *str)
 	return (h);
 }
 
-char	*replace(char *str, char *inter, int interlen)
+static char	*get_expanded_str(char *str, char *inter, int final_len)
 {
-	char	*replace;
+	char	*expanded;
 	size_t	i;
 	size_t	j;
 	size_t	h;
 
 	i = -1;
 	j = 0;
-	h = 0;
 	h = find_end_inter(str);
-	replace = ft_calloc(interlen + 1, sizeof(char));
+	expanded = ft_calloc(final_len + 1, sizeof(char));
 	while (str[++i] != '$')
-		replace[i] = str[i];
-	if (inter)
-		while (inter[j])
-		{
-			replace[i + j] = inter[j];
-			j++;
-		}
+		expanded[i] = str[i];
+	while (inter && inter[j])
+	{
+		expanded[i + j] = inter[j];
+		j++;
+	}
 	while (str[h])
 	{
-		replace[i + j] = str[h];
+		expanded[i + j] = str[h];
 		j++;
 		h++;
 	}
-	replace[i + j] = '\0';
-	return (replace);
+	return (expanded);
 }
 
-
-/*
-heredoc
-cmd
-heredoc no inter
-*/
-
-char	*interpretation(char *str, t_context *ctx, int type)
+/**
+ * Expands the line by replacing environment variables, one word by one word
+ */
+char	*expand_line(char *str, t_context *ctx, int type)
 {
 	size_t	i;
 	char	*keyword;
-	char	*inter;
-	int		len;
-	char	*repl;
+	char	*expanded_word;
+	char	*expanded_str;
 
 	if (str == NULL)
 		return (str);
@@ -129,14 +121,14 @@ char	*interpretation(char *str, t_context *ctx, int type)
 	while (str[i] != '$')
 		i++;
 	keyword = get_key_word(str + i);
-	if (str[i + 1] == '?')
-		inter = ft_itoa(ctx->exit_code);
+	if (str[i + 1] == '?'){
+		expanded_word = ft_itoa(ctx->exit_code);}
 	else
-		inter = ft_get_env_val(ctx, keyword);
-	len = interlen(str, inter);
-	repl = replace(str, inter, len);
+		expanded_word = ft_get_env_val(ctx, keyword);
+	expanded_str = get_expanded_str(str, expanded_word, get_final_len(str,
+				expanded_word));
 	free(keyword);
-	free(inter);
+	free(expanded_word);
 	free(str);
-	return (interpretation(repl, ctx, type));
+	return (expand_line(expanded_str, ctx, type));
 }

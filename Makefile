@@ -104,7 +104,7 @@ PARS_FILES=\
 	maintest.c \
 	parsing.c \
 	set_cmd_node_content.c \
-	interpretation.c \
+	expand_line.c \
 	parsing_utils.c \
 	count_utils.c \
 	redir_utils.c \

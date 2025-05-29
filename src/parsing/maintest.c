@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/28 20:56:51 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 11:02:54 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,15 @@ void	setup_parent_signals(t_context *ctx)
 {
 	if (signal(SIGINT, parent_sigint_handler) == SIG_ERR)
 	{
-		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n", strerror(errno));
+		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n",
+			strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 	{
-		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n", strerror(errno));
+		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n",
+			strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
@@ -46,11 +48,12 @@ t_context	*read_cmds(t_context *ctx)
 			write(1, "exit\n", 6);
 			exit_free(ctx);
 		}
-		if (syntax(read) != -1)
+		add_history(read);
+		if (is_syntax_valid(read) == EXIT_FAILURE)
+			free(read);
+		else
 		{
-			add_history(read);
-			read = interpretation(read, ctx, 1);
-			ctx->exit_code = EXIT_SUCCESS;
+			read = expand_line(read, ctx, 1);
 			if (parsing_init(read, ctx) == EXIT_FAILURE)
 			{
 				if (ctx->hd_pid)
@@ -72,12 +75,6 @@ t_context	*read_cmds(t_context *ctx)
 			}
 			ft_exec(ctx);
 			ft_free_ctx_cmds(ctx);
-			free_exec(ctx->exec_data);
-			clean_init_exec(ctx);
-			free(read);
-		}
-		else
-		{
 			free_exec(ctx->exec_data);
 			clean_init_exec(ctx);
 			free(read);
