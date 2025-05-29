@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   putendl_fd.c                                       :+:      :+:    :+:   */
+/*   setup_child_signals.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:10:12 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 12:47:35 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/05/29 19:37:56 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/05/29 19:44:41 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_putendl_fd(char *s, int fd)
+void	setup_child_signals(t_context *ctx)
 {
-	int	counter;
-
-	counter = 0;
-	if (!s)
-		return (-2);
-	counter += write(fd, s, ft_strlen(s));
-	counter += write(fd, "\n", 1);
-	if (counter < 0)
-		return (-1);
-	return (counter);
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
+	}
+	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:48:08 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/28 21:06:13 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 11:43:03 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	exec_native_cmd(t_context *ctx, t_cmd *cmd)
 	execve(cmd_path, cmd->args, env_tab);
 	free(cmd_path);
 	ft_free_tab((void **)env_tab);
+	ctx->exit_code = EXIT_FAILURE;
 	exit_free(ctx);
 }
 

@@ -6,11 +6,17 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/27 13:14:17 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:30:37 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	err_create_or_set_env_var(t_context *context)
+{
+	ft_fprintf(STDERR_FILENO, "create_or_set_env_var: %s\n", strerror(errno));
+	exit_free(context);
+}
 
 /**
  * @brief create a new env variable or set the value of an existing one
@@ -28,11 +34,7 @@ void	create_or_set_env_var(t_context *context, char **kv)
 	{
 		node = ft_envnew(kv[0], kv[1]);
 		if (!node)
-		{
-			ft_fprintf(STDERR_FILENO, "create_or_set_env_var: %s\n",
-				strerror(errno));
-			exit_free(context);
-		}
+			err_create_or_set_env_var(context);
 		ft_lstadd_back(context->head_env, node);
 	}
 	else
@@ -43,6 +45,8 @@ void	create_or_set_env_var(t_context *context, char **kv)
 		if (existing_kv->value)
 			free(existing_kv->value);
 		existing_kv->value = ft_strdup(kv[1]);
+		if (!existing_kv->value)
+			err_create_or_set_env_var(context);
 	}
 }
 
@@ -59,30 +63,18 @@ t_node	*ft_envnew(char *key, char *value)
 		return (NULL);
 	content->key = ft_strdup(key);
 	if (!content->key)
-	{
-		free(content);
-		return (NULL);
-	}
+		return_free(content, NULL, NULL);
 	if (!value)
 		content->value = NULL;
 	else
 	{
 		content->value = ft_strdup(value);
 		if (!content->value)
-		{
-			free(content->key);
-			free(content);
-			return (NULL);
-		}
+			return_free(content->key, content, NULL);
 	}
-	new = ft_lstnew(content); // idee : mettre ca au debut de la fonction
+	new = ft_lstnew(content);
 	if (!new)
-	{
-		free(content->value);
-		free(content->key);
-		free(content);
-		return (NULL);
-	}
+		return_free(content->key, content->value, content);
 	return (new);
 }
 
@@ -132,56 +124,4 @@ char	*ft_get_env_val(t_context *ctx, char *key)
 		return (dup);
 	}
 	return (NULL);
-}
-
-/**
- * @brief sets the value of the node in the list that matches the key
- */
-int	ft_set_env_val(t_node **head, char *key, char *value)
-{
-	t_node		*tmp;
-	t_key_value	*kv;
-
-	if (!key || !head)
-		return (EXIT_SUCCESS);
-	tmp = *head;
-	while (tmp)
-	{
-		kv = cast_to_key_value(tmp->content);
-		// TODO: why + 1 + 1 ???
-		if (ft_strncmp(kv->key, key, (size_t)ft_strlen(key) + 1 + 1) == 0)
-		{
-			free(kv->value);
-			kv->value = ft_strdup(value);
-			if (!kv->value)
-				return (EXIT_FAILURE);
-			return (EXIT_SUCCESS);
-		}
-		tmp = tmp->next;
-	}
-	return (EXIT_SUCCESS);
-}
-
-void	print_env_val(t_context *ctx, char *key)
-{
-	char	*value;
-
-	value = ft_get_env_val(ctx, key);
-	if (value)
-	{
-		printf("%s\n", value);
-		free(value);
-	}
-}
-
-void	ft_free_env_content(void *content)
-{
-	t_key_value	*kv;
-
-	if (!content)
-		return ;
-	kv = cast_to_key_value(content);
-	free(kv->key);
-	free(kv->value);
-	free(kv);
 }

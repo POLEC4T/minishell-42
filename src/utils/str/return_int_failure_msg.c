@@ -1,27 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   putendl_fd.c                                       :+:      :+:    :+:   */
+/*   return_int_failure_msg.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:10:12 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 12:47:35 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/05/29 18:53:28 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/05/29 19:45:00 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_putendl_fd(char *s, int fd)
+int	return_int_failure_msg(char *msg)
 {
-	int	counter;
-
-	counter = 0;
-	if (!s)
-		return (-2);
-	counter += write(fd, s, ft_strlen(s));
-	counter += write(fd, "\n", 1);
-	if (counter < 0)
-		return (-1);
-	return (counter);
+	ft_fprintf(STDERR_FILENO, "%s: %s\n", msg, strerror(errno));
+	return (EXIT_FAILURE);
 }

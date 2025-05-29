@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:48:01 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/26 21:18:55 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:35:31 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	nb_option_n(char **args)
 {
 	int	i;
 	int	j;
-	int counter;
+	int	counter;
 	int	is_option_n;
 
 	i = 0;

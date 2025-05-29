@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/28 21:03:40 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 19:34:36 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,40 +97,29 @@ size_t	extract_redirection_filename(char *str, char *filename)
 	return (i);
 }
 
-void	clean_init_redirect(t_redirect **redir, size_t *i, char *str)
-{
-	(*redir)->redir_type = detect_redirection_type(str, i);
-	(*redir)->fd_in = -2;
-	(*redir)->fd_out = -2;
-	(*redir)->filename = NULL;
-}
-
-int	err_redirect_define(void)
-{
-	ft_fprintf(STDERR_FILENO, "redirect_define: %s\n", strerror(errno));
-	return (EXIT_FAILURE);
-}
-
 int	redirect_define(t_context *ctx, char *str, t_redirect **redir)
 {
 	size_t	i;
 
 	*redir = malloc(sizeof(t_redirect));
 	if (!*redir)
-		return (err_redirect_define());
+		return (return_int_failure_msg("redirect_define:"));
 	i = 0;
-	clean_init_redirect(redir, &i, str);
+	(*redir)->redir_type = detect_redirection_type(str, &i);
+	(*redir)->fd_in = -2;
+	(*redir)->fd_out = -2;
+	(*redir)->filename = NULL;
 	if ((*redir)->redir_type == HEREDOC
 		|| (*redir)->redir_type == HEREDOC_NO_INTER)
 	{
-		if (handle_heredoc(ctx, str, &i, redir) == EXIT_FAILURE)
+		if (handle_hd(ctx, str, &i, redir) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}
 	else
 	{
 		(*redir)->filename = malloc(redirlen(str) + 1 * sizeof(char));
 		if (!(*redir)->filename)
-			return (err_redirect_define());
+			return (return_int_failure_msg("redirect_define:"));
 		i += extract_redirection_filename(str + i, (*redir)->filename);
 	}
 	return (EXIT_SUCCESS);
