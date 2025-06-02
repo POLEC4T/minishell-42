@@ -156,16 +156,21 @@ char	*expand_line(char *str, t_context *ctx, int type)
 		return (str);
 	while (str[i] != '$')
 		i++;
-	while (1)
+	while (str[i])
 	{
 		if (type == CMD && has_dollar_preceded_by_redir(str, i) == 1
 			&& count_dollar(str) == 1)
 			return (str);
-		else if (has_dollar_preceded_by_redir(str, i) == 1)
+		else if (type == CMD && has_dollar_preceded_by_redir(str, i) == 1)
 		{
-			i++;
 			while (str[i] && str[i] != '$')
 				i++;
+		}
+		else if (type != CMD)
+		{
+			while (str[i] && str[i] != '$')
+				i++;
+			i++;
 		}
 		else
 			break ;
