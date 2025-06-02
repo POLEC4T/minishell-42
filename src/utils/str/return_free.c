@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   putendl_fd.c                                       :+:      :+:    :+:   */
+/*   return_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:10:12 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 12:47:35 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/05/29 18:24:50 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/05/29 18:35:03 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stdlib.h>
 
-int	ft_putendl_fd(char *s, int fd)
+void	*return_free(void *to_free1, void *to_free2, void *to_free3)
 {
-	int	counter;
-
-	counter = 0;
-	if (!s)
-		return (-2);
-	counter += write(fd, s, ft_strlen(s));
-	counter += write(fd, "\n", 1);
-	if (counter < 0)
-		return (-1);
-	return (counter);
+	if (to_free1)
+		free(to_free1);
+	if (to_free2)
+		free(to_free2);
+	if (to_free3)
+		free(to_free3);
+	return (NULL);
 }

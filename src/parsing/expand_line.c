@@ -123,11 +123,7 @@ static char	*get_expanded_str(char *str, char *inter, int final_len)
 				j++;
 			}
 			while (str[h])
-			{
-				expanded[i + j] = str[h];
-				j++;
-				h++;
-			}
+				expanded[i + j++] = str[h++];
 			break ;
 		}
 		else

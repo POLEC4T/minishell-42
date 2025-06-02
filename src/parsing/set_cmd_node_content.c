@@ -1,16 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_cmd_node_content.c                                        :+:      :+:    :+:   */
+/*   set_cmd_node_content.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/04 10:56:30 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/26 19:05:48 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/05/29 18:36:28 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/05/29 19:26:15 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	*err_args_define(void)
+{
+	ft_fprintf(STDERR_FILENO, "args_define: %s\n", strerror(errno));
+	return (NULL);
+}
 
 char	*args_define(char *str)
 {
@@ -21,10 +27,7 @@ char	*args_define(char *str)
 
 	args = malloc((argslen(str) + 1) * sizeof(char));
 	if (!args)
-	{
-		ft_fprintf(STDERR_FILENO, "args_define: %s\n", strerror(errno));
-		return (NULL);
-	}
+		return (err_args_define());
 	i = -1;
 	j = 0;
 	in_quotes = 0;
@@ -44,21 +47,7 @@ char	*args_define(char *str)
 	return (args);
 }
 
-int	space_check(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != ' ')
-			return (i);
-		i++;
-	}
-	return (0);
-}
-
-t_cmd	*cmd_initialize(size_t args_count, size_t redirects_count)
+t_cmd	*init_cmd(size_t args_count, size_t redirects_count)
 {
 	t_cmd	*cmd;
 
@@ -67,43 +56,37 @@ t_cmd	*cmd_initialize(size_t args_count, size_t redirects_count)
 		return (NULL);
 	cmd->args = ft_calloc((args_count + 1), sizeof(char *));
 	if (!cmd->args)
-	{
-		free(cmd);
-		return (NULL);
-	}
+		return (return_free(cmd, NULL, NULL));
 	cmd->redirects = ft_calloc((redirects_count + 1), sizeof(t_redirect *));
 	if (!cmd->redirects)
-	{
-		free(cmd->args);
-		free(cmd);
-		return (NULL);
-	}
+		return (return_free(cmd, NULL, NULL));
 	cmd->pid = -2;
 	cmd->exit_code = EXIT_SUCCESS;
 	return (cmd);
 }
 
+static int	err_set_cmd_node_content(void)
+{
+	ft_fprintf(STDERR_FILENO, "init_cmd: %s\n", strerror(errno));
+	return (EXIT_FAILURE);
+}
+
 int	set_cmd_node_content(char *str, t_context *ctx, t_node *cmd_node)
 {
 	size_t	i;
-	size_t	redirect;
 	size_t	args;
 	t_cmd	*cmd;
 
 	i = 0;
-	redirect = 0;
 	args = 0;
 	cmd = initialize_cmd_with_counts(str);
 	if (!cmd)
-	{
-		ft_fprintf(STDERR_FILENO, "cmd_initialize: %s\n", strerror(errno));
-		return (EXIT_FAILURE);
-	}
+		return (err_set_cmd_node_content());
 	cmd_node->content = (void *)cmd;
 	while (str[i])
 	{
 		if (str[i] == '<' || str[i] == '>')
-			i = handle_redirection(ctx, str, i, cmd, &redirect);
+			i = handle_redirection(ctx, str, i, cmd);
 		else if (str[i] != ' ' && str[i] != ';' && str[i] != '\\')
 			i = handle_argument(str, i, cmd, &args);
 		else

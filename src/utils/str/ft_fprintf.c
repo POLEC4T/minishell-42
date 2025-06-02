@@ -6,18 +6,11 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/27 15:03:33 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/05/29 17:01:23 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	copy_word(char *buf, int pos, int max, const char *src)
-{
-	while (*src && pos < max)
-		buf[pos++] = *src++;
-	return (pos);
-}
 
 static int	handle_string(char *buf, int pos, const char **fmt, va_list args)
 {
@@ -27,7 +20,8 @@ static int	handle_string(char *buf, int pos, const char **fmt, va_list args)
 	s = va_arg(args, char *);
 	if (!s)
 		s = "(null)";
-	pos = copy_word(buf, pos, 1023, s);
+	while (*s && pos < 1023)
+		buf[pos++] = *s++;
 	return (pos);
 }
 

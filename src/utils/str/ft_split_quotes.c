@@ -1,30 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split_quotes.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/29 12:53:34 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/05/29 12:53:35 by mniemaz          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 
 static int	is_char_in_str(char c, char *s)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (s[i])
 		if (c == s[i++])
 			return (1);
 	return (0);
 }
 
-// Gère l'état des quotes, retourne le nouveau quote ou 0 si hors quote
+/**
+ * @brief Updates the quote state based on the current character.
+ */
 static char	update_quote_state(char current, char quote)
 {
 	if ((current == '\'' || current == '\"'))
 	{
 		if (quote == 0)
-			return current;
+			return (current);
 		else if (quote == current)
-			return 0;
+			return (0);
 	}
-	return quote;
+	return (quote);
 }
 
 static void	free_tab(char **tab, int limit)
 {
-	int	i = -1;
+	int	i;
+
+	i = -1;
 	while (++i < limit)
 		free(tab[i]);
 	free(tab);
@@ -32,16 +50,19 @@ static void	free_tab(char **tab, int limit)
 
 static int	calc_nb_words(char const *s, char *delim)
 {
-	int	i = 0;
-	int	counter = 0;
-	char	quote = 0;
+	int		i;
+	int		counter;
+	char	quote;
 
+	i = 0;
+	counter = 0;
+	quote = 0;
 	while (s[i])
 	{
 		quote = update_quote_state(s[i], quote);
-		if (!quote && !is_char_in_str(s[i], delim)
-			&& ((is_char_in_str(s[i + 1], delim) && !update_quote_state(s[i + 1], quote))
-				|| s[i + 1] == '\0'))
+		if (!quote && !is_char_in_str(s[i], delim) && ((is_char_in_str(s[i + 1],
+						delim) && !update_quote_state(s[i + 1], quote)) || s[i
+				+ 1] == '\0'))
 			counter++;
 		i++;
 	}
@@ -50,14 +71,16 @@ static int	calc_nb_words(char const *s, char *delim)
 
 static char	*fill_word(char *word, char const *s, char *delim)
 {
-	int	i = 0;
-	char	quote = 0;
+	int		i;
+	char	quote;
 
+	i = 0;
+	quote = 0;
 	while (s[i])
 	{
 		quote = update_quote_state(s[i], quote);
 		if (!quote && is_char_in_str(s[i], delim))
-			break;
+			break ;
 		word[i] = s[i];
 		i++;
 	}
@@ -67,9 +90,14 @@ static char	*fill_word(char *word, char const *s, char *delim)
 
 static int	alloc_n_write(char **res, char const *s, char *delim)
 {
-	int	i = 0, old_i, i_res = 0;
-	char	quote = 0;
+	int		i;
+	int		i_res;
+	int		old_i;
+	char	quote;
 
+	i = 0;
+	i_res = 0;
+	quote = 0;
 	while (s[i])
 	{
 		while (s[i] && ((is_char_in_str(s[i], delim) && !quote)))
@@ -97,9 +125,9 @@ static int	alloc_n_write(char **res, char const *s, char *delim)
 
 char	**ft_split_quote(char const *s, char *delim)
 {
-	char	**res;
-	int		nb_words;
-	int		i_alloc_res;
+	char **res;
+	int nb_words;
+	int i_alloc_res;
 
 	if (!s)
 		return (NULL);

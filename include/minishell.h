@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 14:27:16 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:56:13 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef enum e_redir_type
 	HEREDOC,         // <<
 	OUT_TRUNC,       // >>
 	OUT,             // >
-	HEREDOC_NO_INTER // << ""
+	HEREDOC_NO_INTER // << "eof"
 }					t_redir_type;
 
 typedef enum e_inter_type
@@ -112,6 +112,8 @@ int					ft_strchr_idx(const char *s, int c);
 char				*ft_strjoin(char *s1, char *s2);
 char				*ft_double_strjoin(t_context *ctx, char *s1, char *s2,
 						char *s3);
+char				*safe_ft_double_strjoin(t_context *ctx, char *s1, char *s2,
+						char *s3);
 char				**ft_split_first(char const *s, char *delim);
 char				**ft_split(char const *s, char *delim);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
@@ -127,6 +129,9 @@ size_t				ft_tablen(void **tab);
 char				*ft_itoa(int n);
 char				*rm_last_char(char *str);
 char				**ft_split_quote(char const *s, char *delim);
+void				*return_free(void *to_free1, void *to_free2,
+						void *to_free3);
+int					return_int_failure_msg(char *msg);
 
 // output
 int					ft_fprintf(int fd, const char *fmt, ...);
@@ -146,9 +151,7 @@ t_key_value			*cast_to_key_value(void *to_cast);
 t_node				*ft_envnew(char *key, char *value);
 t_node				*ft_get_env_node(t_node **head, char *key);
 char				*ft_get_env_val(t_context *ctx, char *key);
-int					ft_set_env_val(t_node **head, char *key, char *value);
 void				ft_free_env_content(void *content);
-void				print_env_val(t_context *context, char *key);
 
 // env
 char				**env_to_tabstr(t_context *ctx, char *to_free);
@@ -172,11 +175,13 @@ int					parsing_init(char *str, t_context *ctx);
 int					set_cmd_node_content(char *str, t_context *ctx,
 						t_node *cmd_node);
 size_t				extract_redirection_filename(char *str, char *filename);
-int					handle_heredoc(t_context *ctx, char *str, size_t *i,
+int					handle_hd(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
 char				*expand_line(char *str, t_context *ctx, int type);
 int					count_dollar(const char *str);
-int	has_dollar_preceded_by_redir(char *str, int i);
+int					has_dollar_preceded_by_redir(char *str, int i);
+char				*get_unique_hd_filename(void);
+
 // utils pars
 size_t				argslen(char *str);
 size_t				redirlen(char *str);
@@ -188,12 +193,12 @@ int					count_redirect(char *str);
 int					redirect_define(t_context *ctx, char *str,
 						t_redirect **redir);
 char				*args_define(char *str);
-t_cmd				*cmd_initialize(size_t args_count, size_t redirects_count);
+t_cmd				*init_cmd(size_t args_count, size_t redirects_count);
 t_cmd				*initialize_cmd_with_counts(char *str);
 size_t				handle_argument(char *str, size_t i, t_cmd *cmd,
 						size_t *args);
 size_t				handle_redirection(t_context *ctx, char *str, size_t i,
-						t_cmd *cmd, size_t *redirect);
+						t_cmd *cmd);
 
 // syntax
 int					is_syntax_valid(char *str);
@@ -202,7 +207,7 @@ int					is_syntax_valid(char *str);
 // free
 void				exit_free(t_context *context);
 void				free_context(t_context *context);
-void				ft_free_ctx_cmds(t_context *context);
+void				free_ctx_cmds(t_context *context);
 void				free_exec(t_exec *data);
 
 // get_next_line
@@ -212,9 +217,6 @@ char				*get_next_line(int fd);
 void				parent_sigint_handler(int sigint);
 int					set_hd_sigint_handler(void (*handler)(int));
 void				hd_sigint_handler(int sig);
-
-// TODO: delete
-void				print_cmd(t_node *cmd);
 
 ////// pipex
 
@@ -245,18 +247,18 @@ void				exec_cmd(t_context *ctx, t_node *node_cmd);
 // init
 void				clean_init_exec(t_context *ctx);
 
-// output
-void				msg(char *str1, char *str2, char *str3, int fd);
+// signals
+void				setup_child_signals(t_context *ctx);
 
 // close
 void				close_pipes(t_exec *d);
 void				my_close(int *fd);
 void				close_all_cmds_redirs(t_node **head_cmd);
 void				close_cmd_redirs(t_node *cmd_node);
+void				close_exec_fds(t_exec *data);
 
 // env check
 char				*get_cmd_path(t_context *ctx, char *cmd);
-char				**get_paths(t_context *ctx);
 
 // utils
 void				secure_fork(int *pid, t_context *ctx);

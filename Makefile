@@ -34,6 +34,7 @@ STR_FILES=\
 	ft_strndup.c \
 	ft_strjoin.c \
 	ft_double_strjoin.c \
+	safe_double_strjoin.c \
 	ft_strlen.c \
 	ft_strlcpy.c \
 	ft_strchr_idx.c \
@@ -55,6 +56,8 @@ STR_FILES=\
 	ft_tablen.c \
 	get_next_line.c \
 	rm_last_char.c \
+	return_free.c \
+	return_int_failure_msg.c \
 
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
 ENV_UTILS_FILES=\
@@ -65,6 +68,7 @@ FREE = $(addprefix $(FREE_DIR)/, $(FREE_FILES))
 FREE_FILES=\
 	free.c \
 	free_utils.c \
+	free_ctx_cmds.c \
 
 LST = $(addprefix $(LST_DIR)/, $(LST_FILES))
 LST_FILES=\
@@ -110,13 +114,15 @@ PARS_FILES=\
 	count_utils.c \
 	redir_utils.c \
 	cmd_utils.c \
-	handle_heredoc.c \
+	handle_hd.c \
+	get_unique_hd_filename.c \
 
 CHILDREN = $(addprefix $(CHILDREN_DIR)/, $(CHILDREN_FILES))
 CHILDREN_FILES=\
 	process_cmd.c \
 	dup_cmd_redirs.c \
 	exec_cmd.c \
+	setup_child_signals.c \
 
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
 EXEC_FILES=\
