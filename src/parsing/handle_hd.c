@@ -52,6 +52,7 @@ static int	wait_hd_child(t_context *ctx)
 		{
 			if (WEXITSTATUS(status) > 128)
 			{
+				printf("apres paaaarsing: %d", g_signal);
 				write(STDERR_FILENO, "\n", 1);
 				g_signal = WEXITSTATUS(status) - 128;
 			}
@@ -80,6 +81,7 @@ static int	start_hd_child(t_context *ctx, t_redirect **redir, char *eof)
 {
 	int	hd_fd;
 
+	ctx->exit_code = EXIT_SUCCESS;
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 		return (err_start_hd_child(ctx, eof, 0));
 	ctx->hd_pid = fork();
@@ -112,7 +114,7 @@ int	handle_hd(t_context *ctx, char *str, size_t *i, t_redirect **redir)
 	*i += extract_redirection_filename(str + *i, eof);
 	if (start_hd_child(ctx, redir, eof) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (wait_hd_child(ctx) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+	if (wait_hd_child(ctx) == EXIT_FAILURE){
+		return (EXIT_FAILURE);}
 	return (EXIT_SUCCESS);
 }

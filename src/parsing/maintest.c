@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/02 13:47:05 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 16:37:10 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	setup_parent_signals(t_context *ctx)
  * 	WHAT IS NOT WRITTEN : if an error occured (still in the child), the
  * 	exit_code is already set
  */
-int	handle_error_feedback(t_context *ctx)
+int	handle_pars_error_feedback(t_context *ctx)
 {
 	if (ctx->hd_pid)
 	{
@@ -72,7 +72,7 @@ t_context	*read_cmds(t_context *ctx)
 	{
 		g_signal = 0;
 		setup_parent_signals(ctx);
-		ctx->rl_str = readline("pitishell$ ");
+		ctx->rl_str = readline("\033[1;35m➜  pitishell$ \033[0m");
 		if (g_signal == SIGINT)
 			ctx->exit_code = 128 + g_signal;
 		if (!ctx->rl_str)
@@ -85,7 +85,7 @@ t_context	*read_cmds(t_context *ctx)
 			continue ;
 		ctx->rl_str = expand_line(ctx->rl_str, ctx, CMD);
 		if (parsing(ctx->rl_str, ctx) == EXIT_FAILURE)
-			if (handle_error_feedback(ctx) == EXIT_SUCCESS)
+			if (handle_pars_error_feedback(ctx) == EXIT_SUCCESS)
 				continue ;
 		ft_exec(ctx);
 		free_ctx_cmds(ctx);

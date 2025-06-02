@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/02 10:17:54 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 14:27:56 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	clean_init_exec(t_context *ctx)
 	if (!ctx->exec_data)
 	{
 		ft_fprintf(STDERR_FILENO, "clean_init_exec: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
 	ctx->exec_data->prev_pipe_read = -2;
@@ -27,31 +28,36 @@ void	clean_init_exec(t_context *ctx)
 	ctx->exec_data->saved_stdout = -2;
 }
 
-void init_ctx_cmds(t_context *context)
+void	init_ctx_cmds(t_context *ctx)
 {
-	context->head_cmd = malloc(sizeof(t_node *));
-	if (!context->head_cmd)
+	ctx->head_cmd = malloc(sizeof(t_node *));
+	if (!ctx->head_cmd)
 	{
 		ft_fprintf(STDERR_FILENO, "init_ctx_cmds: %s\n", strerror(errno));
-		exit_free(context);
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
 	}
-	*(context->head_cmd) = NULL;
+	*(ctx->head_cmd) = NULL;
 }
 
-void	init_context(t_context *context)
+void	init_context(t_context *ctx)
 {
-	context->head_env = malloc(sizeof(t_node *));
-	if (!context->head_env)
+	ctx->exit_code = EXIT_SUCCESS;
+	ctx->hd_pid = -2;
+	ctx->rl_str = NULL;
+	ctx->exec_data = NULL;
+	ctx->head_cmd = NULL;
+	ctx->head_env = NULL;
+	ctx->head_env = malloc(sizeof(t_node *));
+	if (!ctx->head_env)
 	{
 		ft_fprintf(STDERR_FILENO, "init_context: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
-	(*(context->head_env)) = NULL;
-	init_ctx_cmds(context);
-	context->exit_code = 0;
-	context->hd_pid = -2;
-	context->rl_str = NULL;
-	clean_init_exec(context);
+	(*(ctx->head_env)) = NULL;
+	init_ctx_cmds(ctx);
+	clean_init_exec(ctx);
 }
 
 void	minishell(char **envp)

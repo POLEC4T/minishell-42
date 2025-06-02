@@ -6,14 +6,16 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 18:30:37 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 14:44:19 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	err_create_or_set_env_var(t_context *context)
+static void	err_create_or_set_env_var(t_context *context, char **to_free)
 {
+	if (to_free)
+		ft_free_tab((void **)to_free);
 	ft_fprintf(STDERR_FILENO, "create_or_set_env_var: %s\n", strerror(errno));
 	exit_free(context);
 }
@@ -34,7 +36,7 @@ void	create_or_set_env_var(t_context *context, char **kv)
 	{
 		node = ft_envnew(kv[0], kv[1]);
 		if (!node)
-			err_create_or_set_env_var(context);
+			err_create_or_set_env_var(context, kv);
 		ft_lstadd_back(context->head_env, node);
 	}
 	else
@@ -46,7 +48,7 @@ void	create_or_set_env_var(t_context *context, char **kv)
 			free(existing_kv->value);
 		existing_kv->value = ft_strdup(kv[1]);
 		if (!existing_kv->value)
-			err_create_or_set_env_var(context);
+			err_create_or_set_env_var(context, NULL);
 	}
 }
 
@@ -63,18 +65,18 @@ t_node	*ft_envnew(char *key, char *value)
 		return (NULL);
 	content->key = ft_strdup(key);
 	if (!content->key)
-		return_free(content, NULL, NULL);
+		return(return_free(content, NULL, NULL));
 	if (!value)
 		content->value = NULL;
 	else
 	{
 		content->value = ft_strdup(value);
 		if (!content->value)
-			return_free(content->key, content, NULL);
+			return (return_free(content->key, content, NULL));
 	}
 	new = ft_lstnew(content);
 	if (!new)
-		return_free(content->key, content->value, content);
+		return (return_free(content->key, content->value, content));
 	return (new);
 }
 

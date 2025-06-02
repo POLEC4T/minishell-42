@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:12:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 18:35:23 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 16:36:53 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	set_hd_sigint_handler(void (*handler)(int))
 {
 	struct sigaction	sa;
 
+	g_signal = 0;
 	sa.sa_handler = handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
