@@ -190,14 +190,11 @@ char	*expand_line(char *str, t_context *ctx, int type)
 				{
 					while (str[i] && str[i] != '$')
 						i++;
-					continue ;
 				}
 				else if (type != CMD)
 				{
 					while (str[i] && str[i] != '$')
 						i++;
-					i++;
-					continue ;
 				}
 				// On a trouvé un $ à expand
 				keyword = get_key_word(str + i);
