@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/02 13:47:05 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 15:07:06 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ char				*safe_ft_double_strjoin(t_context *ctx, char *s1, char *s2,
 						char *s3);
 char				**ft_split_first(char const *s, char *delim);
 char				**ft_split(char const *s, char *delim);
-size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 int					is_char_in_str(char c, char *str);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_isalpha(int c);
@@ -126,6 +125,7 @@ int					ft_isdigit(int c);
 void				ft_free_tab(void **tab);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strchr(const char *string, int c);
+size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 size_t				ft_tablen(void **tab);
 char				*ft_itoa(int n);
 char				*rm_last_char(char *str);
