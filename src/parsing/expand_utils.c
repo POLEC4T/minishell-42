@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:42:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 18:50:30 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 13:57:45 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	count_dollar(const char *str)
 	{
 		if (str[i] == '$')
 			count++;
+		i++;
 	}
 	return (count);
 }
