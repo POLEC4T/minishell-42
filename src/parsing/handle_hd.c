@@ -52,7 +52,6 @@ static int	wait_hd_child(t_context *ctx)
 		{
 			if (WEXITSTATUS(status) > 128)
 			{
-				printf("apres paaaarsing: %d", g_signal);
 				write(STDERR_FILENO, "\n", 1);
 				g_signal = WEXITSTATUS(status) - 128;
 			}
