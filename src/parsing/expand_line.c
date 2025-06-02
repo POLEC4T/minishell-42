@@ -20,10 +20,11 @@ static char	*get_key_word(char *str)
 
 	len = 0;
 	i = 0;
-	if (str[i] != '$' || str[i + 1] == ' ')
+	if (str[i] != '$' || str[i + 1] == ' ' || !str[i + 1])
 		return (NULL);
 	i++;
-	while (str[i + len] != ' ' && str[i + len] != '\n' && str[i + len])
+	while (str[i + len] != ' ' && str[i + len] != '\n' && str[i + len] && str[i
+		+ len] != '\'' && str[i + len] != '\"')
 		len++;
 	key_word = ft_calloc(len + 1, 1);
 	len = 0;
@@ -87,7 +88,7 @@ static int	find_end_inter(char *str)
 			h++;
 			while (str[h] == ' ')
 				h++;
-			while (str[h] != ' ' && str[h] != '\n' && str[h])
+			while (str[h] != ' ' && str[h] != '"' && str[h] != '\n' && str[h])
 				h++;
 			break ;
 		}
@@ -139,53 +140,82 @@ static char	*get_expanded_str(char *str, char *inter, int final_len)
 	return (expanded);
 }
 
-/**
- * Expands the line by replacing environment variables, one word by one word
- */
 char	*expand_line(char *str, t_context *ctx, int type)
 {
-	size_t	i;
-	char	*keyword;
-	char	*expanded_word;
-	char	*expanded_str;
+	size_t i;
+	int in_single_quote;
+	int in_double_quote;
+	char *keyword;
+	char *expanded_word;
+	char *expanded_str;
+	int expanded;
 
 	if (str == NULL)
 		return (str);
-	i = 0;
 	if (ft_strchr(str, '$') == 0)
 		return (str);
-	while (str[i] != '$')
-		i++;
-	while (str[i])
+
+	expanded = 1;
+	while (expanded)
 	{
-		if (type == CMD && has_dollar_preceded_by_redir(str, i) == 1
-			&& count_dollar(str) == 1)
-			return (str);
-		else if (type == CMD && has_dollar_preceded_by_redir(str, i) == 1)
+		expanded = 0;
+		i = 0;
+		in_single_quote = 0;
+		in_double_quote = 0;
+		while (str[i])
 		{
-			while (str[i] && str[i] != '$')
+			if (str[i] == '\'' && !in_double_quote)
+			{
+				in_single_quote = !in_single_quote;
 				i++;
-		}
-		else if (type != CMD)
-		{
-			while (str[i] && str[i] != '$')
+				continue ;
+			}
+			else if (str[i] == '"' && !in_single_quote)
+			{
+				in_double_quote = !in_double_quote;
 				i++;
+				continue ;
+			}
+
+			// Expansion si PAS dans quote simple
+			if (!in_single_quote && str[i] == '$' && str[i + 1] != ' ' && str[i
+				+ 1] != '\0')
+			{
+				// cas spéciaux à traiter selon ton code original
+				if (type == CMD && has_dollar_preceded_by_redir(str, i) == 1
+					&& count_dollar(str) == 1)
+					return (str);
+				else if (type == CMD && has_dollar_preceded_by_redir(str,
+						i) == 1)
+				{
+					while (str[i] && str[i] != '$')
+						i++;
+					continue ;
+				}
+				else if (type != CMD)
+				{
+					while (str[i] && str[i] != '$')
+						i++;
+					i++;
+					continue ;
+				}
+				// On a trouvé un $ à expand
+				keyword = get_key_word(str + i);
+				if (str[i + 1] == '?')
+					expanded_word = ft_itoa(ctx->exit_code);
+				else
+					expanded_word = ft_get_env_val(ctx, keyword);
+				expanded_str = get_expanded_str(str, expanded_word,
+						get_final_len(str, expanded_word));
+				free(keyword);
+				free(expanded_word);
+				free(str);
+				str = expanded_str;
+				expanded = 1;
+				break ; // recommencer avec la nouvelle chaîne
+			}
 			i++;
 		}
-		else
-			break ;
 	}
-	keyword = get_key_word(str + i);
-	if (str[i + 1] == '?')
-	{
-		expanded_word = ft_itoa(ctx->exit_code);
-	}
-	else
-		expanded_word = ft_get_env_val(ctx, keyword);
-	expanded_str = get_expanded_str(str, expanded_word, get_final_len(str,
-				expanded_word));
-	free(keyword);
-	free(expanded_word);
-	free(str);
-	return (expand_line(expanded_str, ctx, type));
+	return (str);
 }
