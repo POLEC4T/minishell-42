@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/02 14:11:14 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 15:11:21 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_context	*read_cmds(t_context *ctx)
 	{
 		g_signal = 0;
 		setup_parent_signals(ctx);
-		ctx->rl_str = readline("\033[1;35mpitishell$ \033[0m");
+		ctx->rl_str = readline("\033[1;35m➜  pitishell$ \033[0m");
 		if (g_signal == SIGINT)
 			ctx->exit_code = 128 + g_signal;
 		if (!ctx->rl_str)
