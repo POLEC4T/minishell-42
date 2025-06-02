@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/28 20:10:52 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 09:42:55 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,11 @@ int	parsing(char *str, t_context *ctx)
 	char	**spipe;
 	t_node	*cmd_node;
 
-	i = 0;
-	(void)str;
+	i = -1;
 	spipe = ft_split_quote(str, "|");
 	if (!spipe)
 		return (err_parsing(NULL));
-	while (spipe[i])
+	while (spipe[++i])
 	{
 		cmd_node = ft_lstnew(NULL);
 		if (!cmd_node)
@@ -42,20 +41,7 @@ int	parsing(char *str, t_context *ctx)
 			ft_free_tab((void **)spipe);
 			return (EXIT_FAILURE);
 		}
-		i++;
 	}
 	ft_free_tab((void **)spipe);
 	return (EXIT_SUCCESS);
-}
-
-int	parsing_init(char *str, t_context *ctx)
-{
-	ctx->head_cmd = malloc(sizeof(t_node *));
-	if (!ctx->head_cmd)
-	{
-		ft_fprintf(STDERR_FILENO, "parsing_init: %s\n", strerror(errno));
-		exit_free(ctx);
-	}
-	*(ctx->head_cmd) = NULL;
-	return (parsing(str, ctx));
 }

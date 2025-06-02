@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 19:56:13 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 13:47:05 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_context
 	t_exec			*exec_data;
 	int				exit_code;
 	int				hd_pid;
+	char			*rl_str;
 }					t_context;
 
 void				minishell(char **envp);
@@ -170,13 +171,14 @@ long long			ft_atoi_exit(const char *str_exit_code, int *error);
 int					is_builtin_cmd(char *cmd);
 
 // parsing
+int					parsing(char *str, t_context *ctx);
 t_context			*read_cmds(t_context *ctx);
-int					parsing_init(char *str, t_context *ctx);
 int					set_cmd_node_content(char *str, t_context *ctx,
 						t_node *cmd_node);
 size_t				extract_redirection_filename(char *str, char *filename);
 int					handle_hd(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
+char				*expand_line_recursive(char *str, t_context *ctx, int type);
 char				*expand_line(char *str, t_context *ctx, int type);
 int					count_dollar(const char *str);
 int					has_dollar_preceded_by_redir(char *str, int i);
@@ -246,6 +248,7 @@ void				exec_cmd(t_context *ctx, t_node *node_cmd);
 
 // init
 void				clean_init_exec(t_context *ctx);
+void				init_ctx_cmds(t_context *context);
 
 // signals
 void				setup_child_signals(t_context *ctx);

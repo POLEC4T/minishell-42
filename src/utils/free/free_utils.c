@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 19:56:01 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 10:20:31 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,15 @@ void	free_exec(t_exec *data)
 	}
 }
 
-void	free_context(t_context *context)
+void	free_context(t_context *ctx)
 {
-	if (context->head_env != NULL)
+	if (ctx->head_env != NULL)
 	{
-		ft_lstclear(context->head_env, ft_free_env_content);
-		free(context->head_env);
+		ft_lstclear(ctx->head_env, ft_free_env_content);
+		free(ctx->head_env);
 	}
-	free_ctx_cmds(context);
-	free_exec(context->exec_data);
+	free_ctx_cmds(ctx);
+	free_exec(ctx->exec_data);
+	if (ctx->rl_str != NULL)
+		free(ctx->rl_str);
 }

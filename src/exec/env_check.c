@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 19:42:08 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 09:34:15 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,15 @@ static char	*find_cmd_in_path(t_context *ctx, char *cmd, char **paths)
 	int		i;
 
 	i = -1;
-	if (!paths)
+	if (paths == NULL)
+		return (NULL);
+	if (cmd[0] == '\0')
 	{
 		ctx->exit_code = 127;
+		ft_free_tab((void **)paths);
 		return (NULL);
 	}
-	while (paths && paths[++i])
+	while (paths[++i])
 	{
 		curr_path = safe_ft_double_strjoin(ctx, paths[i], "/", cmd);
 		if (access(curr_path, X_OK) == 0)

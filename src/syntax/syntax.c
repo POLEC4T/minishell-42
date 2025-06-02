@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:31:32 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 19:47:49 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/02 13:14:25 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,18 +128,18 @@ int	is_syntax_valid(char *str)
 	if (check_quotes_parity(str) != 0)
 	{
 		ft_fprintf(STDERR_FILENO, "syntax: quote parity issue\n");
-		return (EXIT_FAILURE);
+		return (0);
 	}
 	if (strchr(str, '|') && pipe_check(str) != 0)
 	{
 		ft_fprintf(STDERR_FILENO, "syntax: pipe issue\n");
-		return (EXIT_FAILURE);
+		return (0);
 	}
 	if (brackets_check(str) != 0)
 	{
 		ft_fprintf(STDERR_FILENO, "syntax: angle bracket issue\n");
-		return (EXIT_FAILURE);
+		return (0);
 	}
-	return(EXIT_SUCCESS);
+	return(1);
 }
 
