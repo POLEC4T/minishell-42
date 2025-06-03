@@ -24,7 +24,7 @@ static char	*get_key_word(char *str)
 		return (NULL);
 	i++;
 	while (str[i + len] != ' ' && str[i + len] != '\n' && str[i + len] && str[i
-		+ len] != '\'' && str[i + len] != '\"')
+			+ len] != '\'' && str[i + len] != '\"')
 		len++;
 	key_word = ft_calloc(len + 1, 1);
 	len = 0;

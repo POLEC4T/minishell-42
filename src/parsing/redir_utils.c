@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 19:34:36 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 13:37:58 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	redirect_define(t_context *ctx, char *str, t_redirect **redir)
 	}
 	else
 	{
-		(*redir)->filename = malloc(redirlen(str) + 1 * sizeof(char));
+		(*redir)->filename = malloc((redirlen(str) + 1) * sizeof(char));
 		if (!(*redir)->filename)
 			return (return_int_failure_msg("redirect_define:"));
 		i += extract_redirection_filename(str + i, (*redir)->filename);
