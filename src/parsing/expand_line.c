@@ -38,7 +38,7 @@ static char	*get_key_word(char *str)
 	return (key_word);
 }
 
-static int	get_final_len(char *str, char *keyword)
+static int	get_final_len(char *str, char *keyword, int type)
 {
 	size_t	i;
 	size_t	len;
@@ -52,9 +52,9 @@ static int	get_final_len(char *str, char *keyword)
 			i++;
 			len++;
 		}
-		if (has_dollar_preceded_by_redir(str, i) != 1)
+		if ((type == CMD && has_dollar_preceded_by_redir(str, i) != 1) || type != CMD)
 		{
-			while (str[i] && str[i] != ' ' && str[i] != '\n')
+			while (str[i] && str[i] != ' ' && str[i] != '\n' && str[i] != '"')
 				i++;
 			while (str[i])
 			{
@@ -74,7 +74,45 @@ static int	get_final_len(char *str, char *keyword)
 	return (len);
 }
 
-static int	find_end_inter(char *str)
+// static void	skip_redir_word(const char *str, size_t *i, size_t *len)
+// {
+// 	while (str[*i] && str[*i] != ' ' && str[*i] != '\n')
+// 		(*i)++;
+// 	while (str[*i])
+// 	{
+// 		(*len)++;
+// 		(*i)++;
+// 	}
+// }
+
+// static int	get_final_len(char *str, char *keyword)
+// {
+// 	size_t	i;
+// 	size_t	len;
+
+// 	i = 0;
+// 	len = 0;
+// 	while (1)
+// 	{
+// 		while (str[i] && str[i] != '$')
+// 		{
+// 			i++;
+// 			len++;
+// 		}
+// 		if (has_dollar_preceded_by_redir(str, i) != 1)
+// 		{
+// 			skip_redir_word(str, &i, &len);
+// 			break ;
+// 		}
+// 		len++;
+// 		i++;
+// 	}
+// 	if (keyword != NULL)
+// 		len += ft_strlen(keyword);
+// 	return (len);
+// }
+
+int	find_end_inter(char *str, int type)
 {
 	int	h;
 
@@ -83,7 +121,8 @@ static int	find_end_inter(char *str)
 	{
 		while (str[h] != '$')
 			h++;
-		if (has_dollar_preceded_by_redir(str, h) != 1)
+		if ((type == CMD && has_dollar_preceded_by_redir(str, h) != 1)
+			|| type != CMD)
 		{
 			h++;
 			while (str[h] == ' ')
@@ -97,8 +136,7 @@ static int	find_end_inter(char *str)
 	}
 	return (h);
 }
-
-static char	*get_expanded_str(char *str, char *inter, int final_len)
+static char	*get_expanded_str(char *str, char *inter, int final_len, int type)
 {
 	char	*expanded;
 	size_t	i;
@@ -107,7 +145,7 @@ static char	*get_expanded_str(char *str, char *inter, int final_len)
 
 	i = 0;
 	j = 0;
-	h = find_end_inter(str);
+	h = find_end_inter(str, type);
 	expanded = ft_calloc(final_len + 1, sizeof(char));
 	while (1)
 	{
@@ -116,7 +154,8 @@ static char	*get_expanded_str(char *str, char *inter, int final_len)
 			expanded[i] = str[i];
 			i++;
 		}
-		if (has_dollar_preceded_by_redir(str, i) != 1)
+		if ((type == CMD && has_dollar_preceded_by_redir(str, i) != 1)
+			|| type != CMD)
 		{
 			while (inter && inter[j])
 			{
@@ -181,7 +220,6 @@ char	*expand_line(char *str, t_context *ctx, int type)
 			if (!in_single_quote && str[i] == '$' && str[i + 1] != ' ' && str[i
 				+ 1] != '\0')
 			{
-				// cas spéciaux à traiter selon ton code original
 				if (type == CMD && has_dollar_preceded_by_redir(str, i) == 1
 					&& count_dollar(str) == 1)
 					return (str);
@@ -196,14 +234,13 @@ char	*expand_line(char *str, t_context *ctx, int type)
 					while (str[i] && str[i] != '$')
 						i++;
 				}
-				// On a trouvé un $ à expand
 				keyword = get_key_word(str + i);
 				if (str[i + 1] == '?')
 					expanded_word = ft_itoa(ctx->exit_code);
 				else
 					expanded_word = ft_get_env_val(ctx, keyword);
 				expanded_str = get_expanded_str(str, expanded_word,
-						get_final_len(str, expanded_word));
+						get_final_len(str, expanded_word, type), type);
 				free(keyword);
 				free(expanded_word);
 				free(str);
