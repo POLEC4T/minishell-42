@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/02 14:27:56 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:26:53 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	clean_init_exec(t_context *ctx)
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
-	ctx->exec_data->prev_pipe_read = -2;
-	ctx->exec_data->pipe_fds[READ] = -2;
-	ctx->exec_data->pipe_fds[WRITE] = -2;
-	ctx->exec_data->saved_stdin = -2;
-	ctx->exec_data->saved_stdout = -2;
+	ctx->exec_data->prev_pipe_read = UNDEFINED_INT;
+	ctx->exec_data->pipe_fds[READ] = UNDEFINED_INT;
+	ctx->exec_data->pipe_fds[WRITE] = UNDEFINED_INT;
+	ctx->exec_data->saved_stdin = UNDEFINED_INT;
+	ctx->exec_data->saved_stdout = UNDEFINED_INT;
 }
 
 void	init_ctx_cmds(t_context *ctx)
@@ -43,7 +43,7 @@ void	init_ctx_cmds(t_context *ctx)
 void	init_context(t_context *ctx)
 {
 	ctx->exit_code = EXIT_SUCCESS;
-	ctx->hd_pid = -2;
+	ctx->hd_pid = UNDEFINED_INT;
 	ctx->rl_str = NULL;
 	ctx->exec_data = NULL;
 	ctx->head_cmd = NULL;

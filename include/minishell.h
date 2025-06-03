@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 17:22:52 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:28:27 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,18 @@
 # define READ 0
 # define WRITE 1
 # define BUFFER_SIZE 1024
+# define UNDEFINED_INT -2
+# define CHILD 0
 
 extern int			g_signal;
 
 typedef enum e_redir_type
 {
-	IN,					// <
-	HEREDOC,			// <<
-	OUT_TRUNC,			// >>
-	OUT,				// >
-	HEREDOC_NO_INTER,	// << "eof"
+	IN,               // <
+	HEREDOC,          // <<
+	OUT_TRUNC,        // >>
+	OUT,              // >
+	HEREDOC_NO_INTER, // << "eof"
 }					t_redir_type;
 
 typedef enum e_inter_type
@@ -65,7 +67,6 @@ typedef struct s_cmd
 	char			**args;
 	t_redirect		**redirects;
 	int				pid;
-	int				exit_code;
 }					t_cmd;
 
 typedef struct s_key_value
@@ -184,7 +185,6 @@ int					set_cmd_node_content(char *str, t_context *ctx,
 size_t				extract_redirection_filename(char *str, char *filename);
 int					handle_hd(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
-char				*expand_line_recursive(char *str, t_context *ctx, int type);
 char				*expand_line(char *str, t_context *ctx, int type);
 int					count_dollar(const char *str);
 int					has_dollar_preceded_by_redir(char *str, int i);

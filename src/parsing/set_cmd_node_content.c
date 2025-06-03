@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:36:28 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/03 14:40:37 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:26:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ t_cmd	*init_cmd(size_t args_count, size_t redirects_count)
 	cmd->redirects = ft_calloc((redirects_count + 1), sizeof(t_redirect *));
 	if (!cmd->redirects)
 		return (return_free(cmd, NULL, NULL));
-	cmd->pid = -2;
-	cmd->exit_code = EXIT_SUCCESS;
+	cmd->pid = UNDEFINED_INT;
 	return (cmd);
 }
 

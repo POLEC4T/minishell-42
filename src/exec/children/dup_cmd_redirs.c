@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:53:56 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 11:42:13 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:26:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_redir_in(t_context *ctx, t_cmd *cmd)
 	int	i;
 	int	input;
 
-	input = -2;
+	input = UNDEFINED_INT;
 	i = -1;
 	while (cmd->redirects && cmd->redirects[++i])
 		if (cmd->redirects[i]->fd_in >= 0)
@@ -48,7 +48,7 @@ int	get_redir_out(t_context *ctx, t_cmd *cmd)
 	int	i;
 	int	output;
 
-	output = -2;
+	output = UNDEFINED_INT;
 	i = -1;
 	while (cmd->redirects && cmd->redirects[++i])
 		if (cmd->redirects[i]->fd_out >= 0)
@@ -77,9 +77,9 @@ void	dup_cmd_redirs(t_context *ctx, t_node *node_cmd)
 
 	input = get_redir_in(ctx, cast_to_cmd(node_cmd->content));
 	output = get_redir_out(ctx, cast_to_cmd(node_cmd->content));
-	if (input == -2 && ctx->exec_data->prev_pipe_read >= 0)
+	if (input == UNDEFINED_INT && ctx->exec_data->prev_pipe_read >= 0)
 		input = ctx->exec_data->prev_pipe_read;
-	if (output == -2 && ctx->exec_data->pipe_fds[WRITE] >= 0)
+	if (output == UNDEFINED_INT && ctx->exec_data->pipe_fds[WRITE] >= 0)
 		output = ctx->exec_data->pipe_fds[WRITE];
 	redirect(input, output, ctx);
 }

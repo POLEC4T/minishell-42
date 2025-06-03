@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 15:43:45 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:30:16 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	handle_pars_error_feedback(t_context *ctx)
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
-	else if (ctx->hd_pid == 0)
+	else if (ctx->hd_pid == CHILD)
 	{
 		if (g_signal > 0 && ctx->exit_code == EXIT_SUCCESS)
 			ctx->exit_code = 128 + g_signal;

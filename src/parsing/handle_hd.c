@@ -86,7 +86,7 @@ static int	start_hd_child(t_context *ctx, t_redirect **redir, char *eof)
 	ctx->hd_pid = fork();
 	if (ctx->hd_pid == -1)
 		return (err_start_hd_child(ctx, eof, 0));
-	if (!ctx->hd_pid)
+	if (ctx->hd_pid == CHILD)
 	{
 		if (setup_hd_signals() == EXIT_FAILURE)
 			return (err_start_hd_child(ctx, eof, 1));
