@@ -6,31 +6,13 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/02 16:37:10 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 15:43:45 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int			g_signal = 0;
-
-void	setup_parent_signals(t_context *ctx)
-{
-	if (signal(SIGINT, parent_sigint_handler) == SIG_ERR)
-	{
-		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n",
-			strerror(errno));
-		ctx->exit_code = EXIT_FAILURE;
-		exit_free(ctx);
-	}
-	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-	{
-		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n",
-			strerror(errno));
-		ctx->exit_code = EXIT_FAILURE;
-		exit_free(ctx);
-	}
-}
 
 /**
  * if we are in the parent
