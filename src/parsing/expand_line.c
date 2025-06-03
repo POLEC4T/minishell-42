@@ -23,13 +23,11 @@ static char	*get_key_word(char *str)
 	if (str[i] != '$' || str[i + 1] == ' ' || !str[i + 1])
 		return (NULL);
 	i++;
-	while (str[i + len] != ' ' && str[i + len] != '\n' && str[i + len] && str[i
-			+ len] != '\'' && str[i + len] != '\"')
+	while (ft_isalnum(str[i + len]) == 1 || str[i + len] == '_')
 		len++;
 	key_word = ft_calloc(len + 1, 1);
 	len = 0;
-	while (str[i + len] != ' ' && str[i + len] != '\n' && str[i + len] && str[i
-		+ len] != '\'' && str[i + len] != '\"')
+	while (ft_isalnum(str[i + len]) == 1 || str[i + len] == '_')
 	{
 		key_word[len] = str[i + len];
 		len++;
@@ -40,7 +38,7 @@ static char	*get_key_word(char *str)
 
 static void	skip_redir_word(const char *str, size_t *i, size_t *len)
 {
-	while (str[*i] && str[*i] != ' ' && str[*i] != '\n' && str[*i] != '"')
+	while (ft_isalnum(str[*i]) == 1 || str[*i] == '_')
 		(*i)++;
 	while (str[*i])
 	{
@@ -92,7 +90,7 @@ int	find_end_inter(char *str, int type)
 			h++;
 			while (str[h] == ' ')
 				h++;
-			while (str[h] != ' ' && str[h] != '"' && str[h] != '\n' && str[h])
+			while ((ft_isalnum(str[h]) == 1 ||  str[h] == '_' )&& str[h])
 				h++;
 			break ;
 		}
@@ -144,52 +142,6 @@ static char	*get_expanded_str(char *str, char *inter, int final_len, int type)
 	return (expanded);
 }
 
-// static char	*fill_expanded(char *str, char *inter, char *expanded, size_t i)
-// {
-// 	size_t	j;
-// 	size_t	h;
-
-// 	j = 0;
-// 	h = find_end_inter(str, CMD);
-// 	while (inter && inter[j])
-// 	{
-// 		expanded[i + j] = inter[j];
-// 		j++;
-// 	}
-// 	while (str[h])
-// 	{
-// 		expanded[i + j] = str[h];
-// 		j++;
-// 		h++;
-// 	}
-// 	return (expanded);
-// }
-
-// static char	*get_expanded_str(char *str, char *inter, int final_len, int type)
-// {
-// 	char	*expanded;
-// 	size_t	i;
-
-// 	i = 0;
-// 	expanded = ft_calloc(final_len + 1, sizeof(char));
-// 	if (!expanded)
-// 		return (NULL);
-// 	while (str[i] && str[i] != '$')
-// 	{
-// 		expanded[i] = str[i];
-// 		i++;
-// 	}
-// 	if ((type == CMD && has_dollar_preceded_by_redir(str, i) != 1)
-// 		|| type != CMD)
-// 		return (fill_expanded(str, inter, expanded, i));
-// 	while (str[i])
-// 	{
-// 		expanded[i] = str[i];
-// 		i++;
-// 	}
-// 	return (expanded);
-// }
-
 char	*expand_line(char *str, t_context *ctx, int type)
 {
 	char *keyword;
@@ -237,6 +189,7 @@ char	*expand_line(char *str, t_context *ctx, int type)
 				else if (type == CMD && has_dollar_preceded_by_redir(str,
 						i) == 1)
 				{
+					i++;
 					while (str[i] && str[i] != '$')
 						i++;
 				}

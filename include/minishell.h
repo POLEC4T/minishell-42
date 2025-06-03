@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 14:40:10 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 16:13:49 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ typedef enum e_redir_type
 	HEREDOC,         // <<
 	OUT_TRUNC,       // >>
 	OUT,             // >
-	HEREDOC_NO_INTER // << "eof"
+	HEREDOC_NO_INTER, // << "eof"
 }					t_redir_type;
 
 typedef enum e_inter_type
 {
 	HD,
-	CMD
+	CMD,
 }					t_inter_type;
 
 typedef struct s_redirect
