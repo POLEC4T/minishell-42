@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 11:25:39 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/03 13:39:07 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ t_cmd				*initialize_cmd_with_counts(char *str);
 size_t				handle_argument(char *str, size_t i, t_cmd *cmd,
 						size_t *args);
 size_t				handle_redirection(t_context *ctx, char *str, size_t i,
-						t_cmd *cmd);
+						t_cmd *cmd, size_t *i_redir);
 
 // syntax
 int					is_syntax_valid(char *str);

@@ -6,20 +6,17 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:52:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 19:27:53 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 13:38:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t	handle_redirection(t_context *ctx, char *str, size_t i, t_cmd *cmd)
+size_t	handle_redirection(t_context *ctx, char *str, size_t i, t_cmd *cmd, size_t *i_redir)
 {
-	size_t	i_redir;
-
-	i_redir = 0;
-	if (redirect_define(ctx, str + i, &cmd->redirects[i_redir]) == EXIT_FAILURE)
+	if (redirect_define(ctx, str + i, &cmd->redirects[*i_redir]) == EXIT_FAILURE)
 		return (-1);
-	i_redir++;
+	(*i_redir)++;
 	i = skip_redirection(str, i);
 	i = skip_spaces(str, i);
 	i = skip_word(str, i);
