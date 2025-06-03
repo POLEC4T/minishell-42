@@ -122,7 +122,6 @@ CHILDREN_FILES=\
 	process_cmd.c \
 	dup_cmd_redirs.c \
 	exec_cmd.c \
-	setup_child_signals.c \
 
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
 EXEC_FILES=\

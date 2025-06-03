@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 14:40:10 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 15:57:06 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ t_cmd				*cast_to_cmd(void *to_cast);
 
 // env utils
 t_key_value			*cast_to_key_value(void *to_cast);
-t_node				*ft_envnew(char *key, char *value);
+t_node				*ft_envnew(char *key, char *v);
 t_node				*ft_get_env_node(t_node **head, char *key);
 char				*ft_get_env_val(t_context *ctx, char *key);
 void				ft_free_env_content(void *content);
@@ -214,11 +214,6 @@ void				free_exec(t_exec *data);
 // get_next_line
 char				*get_next_line(int fd);
 
-// signals
-void				parent_sigint_handler(int sigint);
-int					set_hd_sigint_handler(void (*handler)(int));
-void				hd_sigint_handler(int sig);
-
 ////// pipex
 
 # define READ 0
@@ -251,6 +246,8 @@ void				init_ctx_cmds(t_context *context);
 
 // signals
 void				setup_child_signals(t_context *ctx);
+void				setup_parent_signals(t_context *ctx);
+int					setup_hd_signals(void);
 
 // close
 void				close_pipes(t_exec *d);

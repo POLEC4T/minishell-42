@@ -88,7 +88,7 @@ static int	start_hd_child(t_context *ctx, t_redirect **redir, char *eof)
 		return (err_start_hd_child(ctx, eof, 0));
 	if (!ctx->hd_pid)
 	{
-		if (set_hd_sigint_handler(hd_sigint_handler) == EXIT_FAILURE)
+		if (setup_hd_signals() == EXIT_FAILURE)
 			return (err_start_hd_child(ctx, eof, 1));
 		hd_fd = open((*redir)->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (hd_fd == -1)

@@ -6,13 +6,13 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:12:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/02 16:36:53 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 15:54:56 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parent_sigint_handler(int sigint)
+static void	parent_sigint_handler(int sigint)
 {
 	write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
@@ -21,16 +21,39 @@ void	parent_sigint_handler(int sigint)
 	g_signal = sigint;
 }
 
+void	setup_parent_signals(t_context *ctx)
+{
+	if (signal(SIGINT, parent_sigint_handler) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n",
+			strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
+	}
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n",
+			strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
+	}
+}
+
+static void	hd_sigint_handler(int sig)
+{
+	g_signal = sig;
+}
+
 /**
  * using sigaction to allow gnl to be interrupted by a signal,
  * thanks to the sa_flags = 0
  */
-int	set_hd_sigint_handler(void (*handler)(int))
+int	setup_hd_signals(void)
 {
 	struct sigaction	sa;
 
 	g_signal = 0;
-	sa.sa_handler = handler;
+	sa.sa_handler = hd_sigint_handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	if (sigaction(SIGINT, &sa, NULL) == -1)
@@ -38,7 +61,18 @@ int	set_hd_sigint_handler(void (*handler)(int))
 	return (EXIT_SUCCESS);
 }
 
-void	hd_sigint_handler(int sig)
+void	setup_child_signals(t_context *ctx)
 {
-	g_signal = sig;
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
+	}
+	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
+	}
 }
