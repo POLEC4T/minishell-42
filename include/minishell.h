@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 13:39:07 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 14:40:10 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ typedef struct s_exec
 	int				saved_stdin;
 }					t_exec;
 
-typedef struct s_cmdstr
+typedef struct s_str_index
 {
 	size_t			i;
 	char			*str;
-}					t_cmdstr;
+}					t_str_index;
 
 typedef struct s_context
 {
@@ -125,7 +125,7 @@ int					ft_isdigit(int c);
 void				ft_free_tab(void **tab);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strchr(const char *string, int c);
-size_t				ft_strlcpy(char *dst, const char *src, size_t size);
+
 size_t				ft_tablen(void **tab);
 char				*ft_itoa(int n);
 char				*rm_last_char(char *str);
@@ -199,12 +199,11 @@ t_cmd				*init_cmd(size_t args_count, size_t redirects_count);
 t_cmd				*initialize_cmd_with_counts(char *str);
 size_t				handle_argument(char *str, size_t i, t_cmd *cmd,
 						size_t *args);
-size_t				handle_redirection(t_context *ctx, char *str, size_t i,
+size_t				handle_redirection(t_context *ctx, t_str_index *rl,
 						t_cmd *cmd, size_t *i_redir);
 
 // syntax
 int					is_syntax_valid(char *str);
-// char				*quote_delimiter(char *str);
 
 // free
 void				exit_free(t_context *context);

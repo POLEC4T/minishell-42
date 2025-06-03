@@ -24,7 +24,7 @@ static char	*get_key_word(char *str)
 		return (NULL);
 	i++;
 	while (str[i + len] != ' ' && str[i + len] != '\n' && str[i + len] && str[i
-		+ len] != '\'' && str[i + len] != '\"')
+			+ len] != '\'' && str[i + len] != '\"')
 		len++;
 	key_word = ft_calloc(len + 1, 1);
 	len = 0;
@@ -52,7 +52,8 @@ static int	get_final_len(char *str, char *keyword, int type)
 			i++;
 			len++;
 		}
-		if ((type == CMD && has_dollar_preceded_by_redir(str, i) != 1) || type != CMD)
+		if ((type == CMD && has_dollar_preceded_by_redir(str, i) != 1)
+			|| type != CMD)
 		{
 			while (str[i] && str[i] != ' ' && str[i] != '\n' && str[i] != '"')
 				i++;
