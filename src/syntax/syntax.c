@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:31:32 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/02 13:14:25 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/04 15:22:45 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,30 @@ int	pipe_check(const char *str)
 	const char	*ptr = str;
 	const char	*segment_start;
 	const char	*segment_end;
+	char		quote = 0;
 
 	while (1)
 	{
+		// Sauter les espaces initiaux
 		while (*ptr && isspace((unsigned char)*ptr))
 			ptr++;
 		if (*ptr == '\0')
 			return (-1);
 		segment_start = ptr;
-		while (*ptr && *ptr != '|')
+
+		// Avancer jusqu'au prochain | hors quotes ou fin de chaîne
+		while (*ptr)
+		{
+			if (!quote && (*ptr == '\'' || *ptr == '"'))
+				quote = *ptr;
+			else if (quote && *ptr == quote)
+				quote = 0;
+			else if (!quote && *ptr == '|')
+				break;
 			ptr++;
+		}
 		segment_end = ptr - 1;
+		// Retirer les espaces à la fin du segment
 		while (segment_end >= segment_start
 			&& isspace((unsigned char)*segment_end))
 			segment_end--;
@@ -86,13 +99,16 @@ int	pipe_check(const char *str)
 			return (-1);
 		if (*ptr == '|')
 		{
-			ptr++; // Skip the pipe
+			ptr++; // Passer le pipe
 			if (*ptr == '\0')
 				return (-1);
 		}
 		else
 			break ;
 	}
+	// Si on sort du while avec une quote ouverte -> erreur de syntaxe
+	if (quote)
+		return (-1);
 	return (0);
 }
 

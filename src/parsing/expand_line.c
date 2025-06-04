@@ -90,7 +90,7 @@ int	find_end_inter(char *str, int type)
 			h++;
 			while (str[h] == ' ')
 				h++;
-			while ((ft_isalnum(str[h]) == 1 ||  str[h] == '_' )&& str[h])
+			while ((ft_isalnum(str[h]) == 1 || str[h] == '_') && str[h])
 				h++;
 			break ;
 		}
@@ -142,78 +142,179 @@ static char	*get_expanded_str(char *str, char *inter, int final_len, int type)
 	return (expanded);
 }
 
+void	update_quotes(char c, int *in_single, int *in_double)
+{
+	if (c == '\'' && !*in_double)
+		*in_single = !*in_single;
+	else if (c == '"' && !*in_single)
+		*in_double = !*in_double;
+}
+
+int	should_expand(char *str, size_t i, int in_single)
+{
+	return (!in_single && str[i] == '$' && str[i + 1] != ' ' && str[i
+		+ 1] != '\0');
+}
+
+// Cette fonction s’occupe uniquement de la récupération du mot-clé à expand
+size_t	find_expand_index(char *str, int *in_single, int *in_double)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		update_quotes(str[i], in_single, in_double);
+		if (should_expand(str, i, *in_single))
+			break ;
+		i++;
+	}
+	return (i);
+}
+
+static char	*expand_word(char *str, size_t i, t_context *ctx, int type)
+{
+	char	*keyword;
+	char	*expanded_word;
+	char	*expanded_str;
+
+	keyword = get_key_word(str + i);
+	if (str[i + 1] == '?')
+		expanded_word = ft_itoa(ctx->exit_code);
+	else
+		expanded_word = ft_get_env_val(ctx, keyword);
+	expanded_str = get_expanded_str(str, expanded_word, get_final_len(str,
+				expanded_word, type), type);
+	free(keyword);
+	free(expanded_word);
+	free(str);
+	return (expanded_str);
+}
+
+static int	handle_redir_case(char *str, size_t *i, int type)
+{
+	if (type == CMD && has_dollar_preceded_by_redir(str, *i) == 1)
+	{
+		if (count_dollar(str) == 1)
+			return (1);
+		(*i)++;
+		while (str[*i] && str[*i] != '$')
+			(*i)++;
+	}
+	else if (type != CMD)
+	{
+		while (str[*i] && str[*i] != '$')
+			(*i)++;
+	}
+	return (0);
+}
+
+char	*expand_iteration(char *str, t_context *ctx, int type, int *expanded)
+{
+	int		in_single;
+	int		in_double;
+	size_t	i;
+
+	in_single = 0;
+	in_double = 0;
+	i = find_expand_index(str, &in_single, &in_double);
+	if (!str[i])
+		return (str);
+	if (handle_redir_case(str, &i, type))
+		return (str);
+	*expanded = 1;
+	return (expand_word(str, i, ctx, type));
+}
+
 char	*expand_line(char *str, t_context *ctx, int type)
 {
-	char *keyword;
-	char *expanded_word;
-	char *expanded_str;
-	size_t i;
-	int in_single_quote;
-	int in_double_quote;
-	int expanded;
+	int	expanded;
 
 	if (str == NULL)
 		return (str);
 	if (ft_strchr(str, '$') == 0)
 		return (str);
-
 	expanded = 1;
 	while (expanded)
 	{
 		expanded = 0;
-		i = 0;
-		in_single_quote = 0;
-		in_double_quote = 0;
-		while (str[i])
-		{
-			if (str[i] == '\'' && !in_double_quote)
-			{
-				in_single_quote = !in_single_quote;
-				i++;
-				continue ;
-			}
-			else if (str[i] == '"' && !in_single_quote)
-			{
-				in_double_quote = !in_double_quote;
-				i++;
-				continue ;
-			}
-
-			// Expansion si PAS dans quote simple
-			if (!in_single_quote && str[i] == '$' && str[i + 1] != ' ' && str[i
-				+ 1] != '\0')
-			{
-				if (type == CMD && has_dollar_preceded_by_redir(str, i) == 1
-					&& count_dollar(str) == 1)
-					return (str);
-				else if (type == CMD && has_dollar_preceded_by_redir(str,
-						i) == 1)
-				{
-					i++;
-					while (str[i] && str[i] != '$')
-						i++;
-				}
-				else if (type != CMD)
-				{
-					while (str[i] && str[i] != '$')
-						i++;
-				}
-				keyword = get_key_word(str + i);
-				if (str[i + 1] == '?')
-					expanded_word = ft_itoa(ctx->exit_code);
-				else
-					expanded_word = ft_get_env_val(ctx, keyword);
-				expanded_str = get_expanded_str(str, expanded_word,
-						get_final_len(str, expanded_word, type), type);
-				free(keyword);
-				free(expanded_word);
-				free(str);
-				str = expanded_str;
-				expanded = 1;
-				break ; // recommencer avec la nouvelle chaîne
-			}
-			i++;
-		}
+		str = expand_iteration(str, ctx, type, &expanded);
 	}
 	return (str);
 }
+
+// char	*expand_line(char *str, t_context *ctx, int type)
+// {
+// 	char *keyword;
+// 	char *expanded_word;
+// 	char *expanded_str;
+// 	size_t i;
+// 	int in_single_quote;
+// 	int in_double_quote;
+// 	int expanded;
+
+// 	if (str == NULL)
+// 		return (str);
+// 	if (ft_strchr(str, '$') == 0)
+// 		return (str);
+
+// 	expanded = 1;
+// 	while (expanded)
+// 	{
+// 		expanded = 0;
+// 		i = 0;
+// 		in_single_quote = 0;
+// 		in_double_quote = 0;
+// 		while (str[i])
+// 		{
+// 			if (str[i] == '\'' && !in_double_quote)
+// 			{
+// 				in_single_quote = !in_single_quote;
+// 				i++;
+// 				continue ;
+// 			}
+// 			else if (str[i] == '"' && !in_single_quote)
+// 			{
+// 				in_double_quote = !in_double_quote;
+// 				i++;
+// 				continue ;
+// 			}
+
+// 			// Expansion si PAS dans quote simple
+// 			if (!in_single_quote && str[i] == '$' && str[i + 1] != ' ' && str[i
+// 				+ 1] != '\0')
+// 			{
+// 				if (type == CMD && has_dollar_preceded_by_redir(str, i) == 1
+// 					&& count_dollar(str) == 1)
+// 					return (str);
+// 				else if (type == CMD && has_dollar_preceded_by_redir(str,
+// 						i) == 1)
+// 				{
+// 					i++;
+// 					while (str[i] && str[i] != '$')
+// 						i++;
+// 				}
+// 				else if (type != CMD)
+// 				{
+// 					while (str[i] && str[i] != '$')
+// 						i++;
+// 				}
+// 				keyword = get_key_word(str + i);
+// 				if (str[i + 1] == '?')
+// 					expanded_word = ft_itoa(ctx->exit_code);
+// 				else
+// 					expanded_word = ft_get_env_val(ctx, keyword);
+// 				expanded_str = get_expanded_str(str, expanded_word,
+// 						get_final_len(str, expanded_word, type), type);
+// 				free(keyword);
+// 				free(expanded_word);
+// 				free(str);
+// 				str = expanded_str;
+// 				expanded = 1;
+// 				break ; // recommencer avec la nouvelle chaîne
+// 			}
+// 			i++;
+// 		}
+// 	}
+// 	return (str);
+// }
