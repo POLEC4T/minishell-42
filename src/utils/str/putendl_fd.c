@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:10:12 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/29 12:47:35 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:26:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_putendl_fd(char *s, int fd)
 
 	counter = 0;
 	if (!s)
-		return (-2);
+		return (UNDEFINED_INT);
 	counter += write(fd, s, ft_strlen(s));
 	counter += write(fd, "\n", 1);
 	if (counter < 0)

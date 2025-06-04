@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 19:37:37 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:29:02 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 			exit_free(ctx);
 		}
 		secure_fork(&cmd->pid, ctx);
-		if (!cmd->pid)
+		if (cmd->pid == CHILD)
 			process_cmd(ctx, cmd_node);
 	}
 }
@@ -70,13 +70,7 @@ void	start_children(t_context *ctx)
 	{
 		if (curr_node->next)
 			secure_pipe(ctx);
-		if (open_cmd_redirs(curr_node) == EXIT_SUCCESS)
-			process_cmd_if(ctx, curr_node);
-		else
-		{
-			wait_children(ctx);
-			(cast_to_cmd(curr_node->content))->exit_code = EXIT_FAILURE;
-		}
+		process_cmd_if(ctx, curr_node);
 		close_useless_pipes(ctx->exec_data, curr_node);
 		close_cmd_redirs(curr_node);
 		curr_node = curr_node->next;
@@ -111,6 +105,7 @@ void	wait_children(t_context *ctx)
 
 	already_printed = 0;
 	curr_node = *ctx->head_cmd;
+	status = EXIT_SUCCESS;
 	while (curr_node)
 	{
 		cmd = cast_to_cmd(curr_node->content);
@@ -122,8 +117,6 @@ void	wait_children(t_context *ctx)
 			else if (WIFSIGNALED(status))
 				handle_signal(ctx, status, &already_printed);
 		}
-		else if (cmd->exit_code)
-			ctx->exit_code = cmd->exit_code;
 		curr_node = curr_node->next;
 	}
 }

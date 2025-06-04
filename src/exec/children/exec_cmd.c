@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:48:08 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 11:43:03 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:29:02 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	exec_cmd(t_context *ctx, t_node *node_cmd)
 	if (is_builtin_cmd(cmd->args[0]))
 	{
 		exec_builtin(ctx, cmd);
-		if (!cmd->pid)
+		if (cmd->pid == CHILD)
 			exit_free(ctx);
 		else
 		{

@@ -23,11 +23,11 @@ static char	*get_key_word(char *str)
 	if (str[i] != '$' || str[i + 1] == ' ' || !str[i + 1])
 		return (NULL);
 	i++;
-	while (ft_isalnum(str[i + len]) == 1 || str[i + len] == '_')
+	while (ft_isalnum(str[i + len]) == 1 || str[i + len] == '_' || str[i + len] == '?')
 		len++;
 	key_word = ft_calloc(len + 1, 1);
 	len = 0;
-	while (ft_isalnum(str[i + len]) == 1 || str[i + len] == '_')
+	while (ft_isalnum(str[i + len]) == 1 || str[i + len] == '_' || str[i + len] == '?')
 	{
 		key_word[len] = str[i + len];
 		len++;
@@ -38,7 +38,7 @@ static char	*get_key_word(char *str)
 
 static void	skip_redir_word(const char *str, size_t *i, size_t *len)
 {
-	while (ft_isalnum(str[*i]) == 1 || str[*i] == '_')
+	while (ft_isalnum(str[*i]) == 1 || str[*i] == '_' || str[*i] == '?')
 		(*i)++;
 	while (str[*i])
 	{
@@ -90,7 +90,7 @@ int	find_end_inter(char *str, int type)
 			h++;
 			while (str[h] == ' ')
 				h++;
-			while ((ft_isalnum(str[h]) == 1 || str[h] == '_') && str[h])
+			while (str[h] && (ft_isalnum(str[h]) == 1 ||  str[h] == '_' || str[h] == '?'))
 				h++;
 			break ;
 		}

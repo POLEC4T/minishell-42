@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:37:03 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/26 18:46:12 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:26:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	my_close(int *fd)
 {
 	if (*fd > 2)
 		close(*fd);
-	*fd = -2;
+	*fd = UNDEFINED_INT;
 }
 
 void	close_pipes(t_exec *d)

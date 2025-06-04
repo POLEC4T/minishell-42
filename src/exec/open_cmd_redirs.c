@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 19:10:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/28 21:05:04 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:15:27 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,6 @@ static int	open_cmd_redir(t_redirect *redir)
 	return (EXIT_SUCCESS);
 }
 
-/**
- * @returns EXIT_FAILURE if one of the redirs files cannot be opened
- */
 int	open_cmd_redirs(t_node *node_cmd)
 {
 	int		i;

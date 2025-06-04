@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 16:13:49 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:28:27 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,34 @@
 # define MINISHELL_H
 
 # include <errno.h>
+# include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 # define HD_FILENAME ".heredoc_tmp_"
+# define READ 0
+# define WRITE 1
+# define BUFFER_SIZE 1024
+# define UNDEFINED_INT -2
+# define CHILD 0
 
 extern int			g_signal;
 
 typedef enum e_redir_type
 {
-	IN,              // <
-	HEREDOC,         // <<
-	OUT_TRUNC,       // >>
-	OUT,             // >
+	IN,               // <
+	HEREDOC,          // <<
+	OUT_TRUNC,        // >>
+	OUT,              // >
 	HEREDOC_NO_INTER, // << "eof"
 }					t_redir_type;
 
@@ -59,7 +67,6 @@ typedef struct s_cmd
 	char			**args;
 	t_redirect		**redirects;
 	int				pid;
-	int				exit_code;
 }					t_cmd;
 
 typedef struct s_key_value
@@ -148,11 +155,11 @@ t_key_value			*cast_to_key_value(void *to_cast);
 t_cmd				*cast_to_cmd(void *to_cast);
 
 // env utils
-t_key_value			*cast_to_key_value(void *to_cast);
 t_node				*ft_envnew(char *key, char *value);
 t_node				*ft_get_env_node(t_node **head, char *key);
 char				*ft_get_env_val(t_context *ctx, char *key);
 void				ft_free_env_content(void *content);
+t_key_value			*cast_to_key_value(void *to_cast);
 
 // env
 char				**env_to_tabstr(t_context *ctx, char *to_free);
@@ -178,7 +185,6 @@ int					set_cmd_node_content(char *str, t_context *ctx,
 size_t				extract_redirection_filename(char *str, char *filename);
 int					handle_hd(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
-char				*expand_line_recursive(char *str, t_context *ctx, int type);
 char				*expand_line(char *str, t_context *ctx, int type);
 int					count_dollar(const char *str);
 int					has_dollar_preceded_by_redir(char *str, int i);
@@ -205,6 +211,11 @@ size_t				handle_redirection(t_context *ctx, t_str_index *rl,
 // syntax
 int					is_syntax_valid(char *str);
 
+// signals
+void				setup_child_signals(t_context *ctx);
+void				setup_parent_signals(t_context *ctx);
+int					setup_hd_signals(void);
+
 // free
 void				exit_free(t_context *context);
 void				free_context(t_context *context);
@@ -214,43 +225,17 @@ void				free_exec(t_exec *data);
 // get_next_line
 char				*get_next_line(int fd);
 
-// signals
-void				parent_sigint_handler(int sigint);
-int					set_hd_sigint_handler(void (*handler)(int));
-void				hd_sigint_handler(int sig);
-
-////// pipex
-
-# define READ 0
-# define WRITE 1
-# define BUFFER_SIZE 1024
-
-# include <errno.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/wait.h>
-# include <unistd.h>
+////// exec
 
 // exec
 void				ft_exec(t_context *ctx);
-
-// open_cmd_redirs
 int					open_cmd_redirs(t_node *node_cmd);
-
-// redirs
 void				dup_cmd_redirs(t_context *ctx, t_node *node_cmd);
-
-// exec_cmd
 void				exec_cmd(t_context *ctx, t_node *node_cmd);
 
 // init
 void				clean_init_exec(t_context *ctx);
 void				init_ctx_cmds(t_context *context);
-
-// signals
-void				setup_child_signals(t_context *ctx);
 
 // close
 void				close_pipes(t_exec *d);

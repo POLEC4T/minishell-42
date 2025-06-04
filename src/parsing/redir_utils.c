@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 13:37:58 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/03 18:26:33 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ int	redirect_define(t_context *ctx, char *str, t_redirect **redir)
 		return (return_int_failure_msg("redirect_define:"));
 	i = 0;
 	(*redir)->redir_type = detect_redirection_type(str, &i);
-	(*redir)->fd_in = -2;
-	(*redir)->fd_out = -2;
+	(*redir)->fd_in = UNDEFINED_INT;
+	(*redir)->fd_out = UNDEFINED_INT;
 	(*redir)->filename = NULL;
 	if ((*redir)->redir_type == HEREDOC
 		|| (*redir)->redir_type == HEREDOC_NO_INTER)
