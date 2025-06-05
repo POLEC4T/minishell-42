@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:48:08 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 11:34:46 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 11:53:04 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	exec_cmd(t_context *ctx, t_cmd *cmd)
 		else
 		{
 			redirect(data->saved_stdin, data->saved_stdout, ctx);
-			close_exec_fds(data);
+			my_close(&data->saved_stdin);
+			my_close(&data->saved_stdout);
 		}
 	}
 	else

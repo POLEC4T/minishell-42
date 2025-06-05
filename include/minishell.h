@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 11:18:52 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 13:40:43 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,20 @@
 
 extern int			g_signal;
 
+/**
+ *  IN					= <
+ *	HEREDOC				= <<
+ *	OUT_TRUNC			= >>
+ *	OUT					= >
+ *	HEREDOC_NO_INTER	= "eof"
+ */
 typedef enum e_redir_type
 {
-	IN,               // <
-	HEREDOC,          // <<
-	OUT_TRUNC,        // >>
-	OUT,              // >
-	HEREDOC_NO_INTER, // << "eof"
+	IN,
+	HEREDOC,
+	OUT_TRUNC,
+	OUT,
+	HEREDOC_NO_INTER,
 }					t_redir_type;
 
 typedef enum e_inter_type

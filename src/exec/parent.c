@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 11:44:37 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 12:45:58 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ static void	close_useless_pipes(t_exec *exec_data, t_node *curr_node)
 
 void	start_children(t_context *ctx)
 {
-	t_node	*curr_node;
+	t_node	*curr_cmd_node;
 
-	curr_node = *ctx->head_cmd;
-	while (curr_node)
+	curr_cmd_node = *ctx->head_cmd;
+	while (curr_cmd_node)
 	{
-		if (curr_node->next)
+		if (curr_cmd_node->next)
 			secure_pipe(ctx);
-		process_cmd_if(ctx, curr_node);
-		close_useless_pipes(ctx->exec_data, curr_node);
-		curr_node = curr_node->next;
+		process_cmd_if(ctx, curr_cmd_node);
+		close_useless_pipes(ctx->exec_data, curr_cmd_node);
+		curr_cmd_node = curr_cmd_node->next;
 	}
 }
 
