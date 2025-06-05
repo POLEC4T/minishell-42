@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:10:12 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 18:26:33 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:39:51 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 int	ft_putstr_fd(char *s, int fd)
 {
 	if (!s)
-		return (UNDEFINED_INT);
+		return (-2);
 	return (write(fd, s, ft_strlen(s)));
 }

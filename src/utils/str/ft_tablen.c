@@ -6,11 +6,11 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:33:08 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/04/18 17:44:41 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:37:11 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stddef.h>
 
 size_t	ft_tablen(void **tab)
 {

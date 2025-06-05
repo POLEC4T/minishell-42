@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   is_char_in_str.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:32:18 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/14 14:51:39 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:38:04 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stddef.h>
 
 int	is_char_in_str(char c, char *str)
 {

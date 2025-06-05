@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/07 11:49:22 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:34:42 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,27 +118,3 @@ char	**ft_split_first(char const *s, char *delim)
 	res[nb_words] = NULL;
 	return (res);
 }
-
-// int	main(void)
-// {
-// 	char **result;
-// 	int i;
-// 	char *str = "DOCKER_HOST=unix:///run/user/=103=416/docker.sock";
-// 	// printf("nb words: %d\n", calc_nb_words(str, "="));
-
-// 	result = ft_split_first(str, "=");
-// 	if (!result)
-// 	{
-// 		printf("Error: Memory allocation failed\n");
-// 		return (1);
-// 	}
-// 	i = 0;
-// 	printf("%s\n", result[0]);
-// 	while (result[i])
-// 	{
-// 		printf("%s\n", result[i + 1]);
-// 		i++;
-// 	}
-// 	ft_free_tab((void *)result);
-// 	return (0);
-// }

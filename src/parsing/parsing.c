@@ -6,13 +6,13 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/02 16:22:39 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:23:46 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	err_parsing(void **to_free)
+static int	err_parsing(void **to_free)
 {
 	ft_fprintf(STDERR_FILENO, "parsing: %s\n", strerror(errno));
 	if (to_free)

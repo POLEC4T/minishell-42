@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/10 12:02:34 by nle-gued          #+#    #+#             */
-/*   Updated: 2024/11/11 20:45:43 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:33:05 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <stdlib.h>
 
 static int	manydigit(int n)
@@ -61,12 +60,3 @@ char	*ft_itoa(int n)
 	}
 	return (itoa);
 }
-/*
-int	main(int argc, char **argv)
-{
-	int		test1;
-	char	*res;
-
-	res = ft_itoa(-2147483648);
-	printf("%s", res);
-}*/
