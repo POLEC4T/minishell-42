@@ -109,7 +109,7 @@ int	handle_hd(t_context *ctx, char *str, size_t *i, t_redirect **redir)
 	eof = malloc((redirlen(str) + 1) * sizeof(char));
 	if (!eof)
 		return (return_int_failure_msg("handle_hd: malloc eof"));
-	*i += extract_redirection_filename(str + *i, eof);
+	*i += extract_redir_word(str + *i, eof);
 	if (start_hd_child(ctx, redir, eof) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (wait_hd_child(ctx) == EXIT_FAILURE)

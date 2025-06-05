@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:52:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 14:35:48 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 19:21:40 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ size_t	handle_redirection(t_context *ctx, t_str_index *rl, t_cmd *cmd,
 
 	str = rl->str;
 	i = rl->i;
-	if (redirect_define(ctx, str + i,
-			&cmd->redirects[*i_redir]) == EXIT_FAILURE)
+	if (set_redir(ctx, str + i, &cmd->redirects[*i_redir]) == EXIT_FAILURE)
 		return (-1);
 	(*i_redir)++;
 	i = skip_redirection(str, i);
@@ -33,7 +32,7 @@ size_t	handle_redirection(t_context *ctx, t_str_index *rl, t_cmd *cmd,
 // Gère les arguments dans la chaîne
 size_t	handle_argument(char *str, size_t i, t_cmd *cmd, size_t *args)
 {
-	cmd->args[*args] = args_define(str + i);
+	cmd->args[*args] = set_arg(str + i);
 	if (!cmd->args[*args])
 		return (-1);
 	(*args)++;
@@ -42,14 +41,23 @@ size_t	handle_argument(char *str, size_t i, t_cmd *cmd, size_t *args)
 }
 
 // Initialise la structure t_cmd et retourne un pointeur
-t_cmd	*initialize_cmd_with_counts(char *str)
+t_cmd	*init_cmd(char *str)
 {
-	size_t	args_count;
-	size_t	redirect_count;
-	t_cmd	*cmd;
+	size_t nb_args;
+	size_t nb_redirect;
+	t_cmd *cmd;
 
-	args_count = count_args(str);
-	redirect_count = count_redirect(str);
-	cmd = init_cmd(args_count, redirect_count);
+	nb_args = count_args(str);
+	nb_redirect = count_redirect(str);
+	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->args = ft_calloc((nb_args + 1), sizeof(char *));
+	if (!cmd->args)
+		return (return_free(cmd, NULL, NULL));
+	cmd->redirects = ft_calloc((nb_redirect + 1), sizeof(t_redirect *));
+	if (!cmd->redirects)
+		return (return_free(cmd, cmd->args, NULL));
+	cmd->pid = UNDEFINED_INT;
 	return (cmd);
 }

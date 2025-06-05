@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 17:10:35 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 19:20:29 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ int					parsing(char *str, t_context *ctx);
 void				process_lines(t_context *ctx);
 int					set_cmd_node_content(char *str, t_context *ctx,
 						t_node *cmd_node);
-size_t				extract_redirection_filename(char *str, char *filename);
+size_t				extract_redir_word(char *str, char *filename);
 int					handle_hd(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
 int					count_dollars(const char *str);
@@ -217,11 +217,10 @@ size_t				skip_redirection(char *str, size_t i);
 size_t				skip_spaces(char *str, size_t i);
 int					count_args(char *str);
 int					count_redirect(char *str);
-int					redirect_define(t_context *ctx, char *str,
+int					set_redir(t_context *ctx, char *str,
 						t_redirect **redir);
-char				*args_define(char *str);
-t_cmd				*init_cmd(size_t args_count, size_t redirects_count);
-t_cmd				*initialize_cmd_with_counts(char *str);
+char				*set_arg(char *str);
+t_cmd				*init_cmd(char *str);
 size_t				handle_argument(char *str, size_t i, t_cmd *cmd,
 						size_t *args);
 size_t				handle_redirection(t_context *ctx, t_str_index *rl,

@@ -6,13 +6,13 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 18:26:33 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 19:19:08 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_output_redirection(char *str, size_t *i)
+static t_redir_type	get_output_redir_type(char *str, size_t *i)
 {
 	int	type;
 
@@ -23,13 +23,11 @@ int	handle_output_redirection(char *str, size_t *i)
 		(*i)++;
 	}
 	else
-	{
 		type = OUT;
-	}
 	return (type);
 }
 
-int	handle_input_redirection(char *str, size_t *i)
+static t_redir_type	get_input_redir_type(char *str, size_t *i)
 {
 	int		type;
 	size_t	j;
@@ -38,38 +36,35 @@ int	handle_input_redirection(char *str, size_t *i)
 	if (str[*i] == '<')
 	{
 		(*i)++;
-		j = (*i);
-		while (str[j] && str[j] == ' ')
-			j++;
+		j = skip_spaces(str, (*i));
 		if (str[j] == '"' || str[j] == '\'')
 			type = HEREDOC_NO_INTER;
 		else
 			type = HEREDOC;
 	}
 	else
-	{
 		type = IN;
-	}
 	return (type);
 }
 
-int	detect_redirection_type(char *str, size_t *i)
+static t_redir_type	get_redir_type(char *str, size_t *i)
 {
-	int	type;
+	int	redir_type;
 
-	type = -1;
+	redir_type = UNDEFINED_INT;
 	if (str[*i] == '>')
-	{
-		type = handle_output_redirection(str, i);
-	}
+		redir_type = get_output_redir_type(str, i);
 	else if (str[*i] == '<')
-	{
-		type = handle_input_redirection(str, i);
-	}
-	return (type);
+		redir_type = get_input_redir_type(str, i);
+	return (redir_type);
 }
 
-size_t	extract_redirection_filename(char *str, char *filename)
+/**
+ * extracts the word after the redirection operator
+ * @example: "ls > file.txt" -> "file.txt"
+ * @example: "<< eof" -> "eof"
+ */
+size_t	extract_redir_word(char *str, char *filename)
 {
 	size_t	i;
 	size_t	j;
@@ -97,15 +92,15 @@ size_t	extract_redirection_filename(char *str, char *filename)
 	return (i);
 }
 
-int	redirect_define(t_context *ctx, char *str, t_redirect **redir)
+int	set_redir(t_context *ctx, char *str, t_redirect **redir)
 {
 	size_t	i;
 
 	*redir = malloc(sizeof(t_redirect));
 	if (!*redir)
-		return (return_int_failure_msg("redirect_define:"));
+		return (return_int_failure_msg("set_redir"));
 	i = 0;
-	(*redir)->redir_type = detect_redirection_type(str, &i);
+	(*redir)->redir_type = get_redir_type(str, &i);
 	(*redir)->fd_in = UNDEFINED_INT;
 	(*redir)->fd_out = UNDEFINED_INT;
 	(*redir)->filename = NULL;
@@ -119,8 +114,8 @@ int	redirect_define(t_context *ctx, char *str, t_redirect **redir)
 	{
 		(*redir)->filename = malloc((redirlen(str) + 1) * sizeof(char));
 		if (!(*redir)->filename)
-			return (return_int_failure_msg("redirect_define:"));
-		i += extract_redirection_filename(str + i, (*redir)->filename);
+			return (return_int_failure_msg("set_redir"));
+		i += extract_redir_word(str + i, (*redir)->filename);
 	}
 	return (EXIT_SUCCESS);
 }
