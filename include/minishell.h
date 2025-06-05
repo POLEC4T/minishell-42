@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 10:40:40 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 11:18:52 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ int					is_builtin_cmd(char *cmd);
 
 // parsing
 int					parsing(char *str, t_context *ctx);
-t_context			*read_cmds(t_context *ctx);
+void				read_cmds(t_context *ctx);
 int					set_cmd_node_content(char *str, t_context *ctx,
 						t_node *cmd_node);
 size_t				extract_redirection_filename(char *str, char *filename);

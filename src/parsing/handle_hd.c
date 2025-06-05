@@ -55,7 +55,6 @@ static int	wait_hd_child(t_context *ctx)
 				write(STDERR_FILENO, "\n", 1);
 				g_signal = WEXITSTATUS(status) - 128;
 			}
-			// todo: est ce que ca fait exit vu qu'on a pas eu de signaux ?
 			ctx->exit_code = WEXITSTATUS(status);
 			return (EXIT_FAILURE);
 		}
@@ -113,7 +112,7 @@ int	handle_hd(t_context *ctx, char *str, size_t *i, t_redirect **redir)
 	*i += extract_redirection_filename(str + *i, eof);
 	if (start_hd_child(ctx, redir, eof) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (wait_hd_child(ctx) == EXIT_FAILURE){
-		return (EXIT_FAILURE);}
+	if (wait_hd_child(ctx) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

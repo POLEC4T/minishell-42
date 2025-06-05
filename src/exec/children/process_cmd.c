@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 10:52:53 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 11:39:48 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	process_cmd(t_context *ctx, t_cmd *cmd)
 		ctx->exit_code = EXIT_FAILURE;
 		if (cmd->pid == CHILD)
 			exit_free(ctx);
+		close_cmd_redirs(cmd);
 		return ;
 	}
 	dup_cmd_redirs(ctx, cmd);

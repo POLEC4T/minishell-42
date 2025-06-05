@@ -6,13 +6,21 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:47:13 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 18:30:16 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 11:41:15 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			g_signal = 0;
+int		g_signal = 0;
+
+static void reset_ctx_cmds_and_rl_str(t_context *ctx)
+{
+	free_ctx_cmds(ctx);
+	init_ctx_cmds(ctx);
+	free(ctx->rl_str);
+	ctx->rl_str = NULL;
+}
 
 /**
  * if we are in the parent
@@ -30,10 +38,7 @@ int	handle_pars_error_feedback(t_context *ctx)
 	{
 		if (g_signal > 0)
 		{
-			free_ctx_cmds(ctx);
-			init_ctx_cmds(ctx);
-			free(ctx->rl_str);
-			ctx->rl_str = NULL;
+			reset_ctx_cmds_and_rl_str(ctx);
 			return (EXIT_SUCCESS);
 		}
 		ctx->exit_code = EXIT_FAILURE;
@@ -48,7 +53,7 @@ int	handle_pars_error_feedback(t_context *ctx)
 	return (EXIT_FAILURE);
 }
 
-t_context	*read_cmds(t_context *ctx)
+void	read_cmds(t_context *ctx)
 {
 	while (1)
 	{
@@ -70,12 +75,6 @@ t_context	*read_cmds(t_context *ctx)
 			if (handle_pars_error_feedback(ctx) == EXIT_SUCCESS)
 				continue ;
 		ft_exec(ctx);
-		free_ctx_cmds(ctx);
-		init_ctx_cmds(ctx);
-		free(ctx->rl_str);
-		ctx->rl_str = NULL;
-		free_exec(ctx->exec_data);
-		clean_init_exec(ctx);
+		reset_ctx_cmds_and_rl_str(ctx);
 	}
-	return (NULL);
 }

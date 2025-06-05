@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:48:08 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 10:53:26 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 11:34:46 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	exec_native_cmd(t_context *ctx, t_cmd *cmd)
 {
 	char	*cmd_path;
 	char	**env_tab;
-	
+
 	if (cmd->args[0] == NULL)
 		exit_free(ctx);
 	cmd_path = get_cmd_path(ctx, cmd->args[0]);
@@ -56,6 +56,9 @@ static void	exec_native_cmd(t_context *ctx, t_cmd *cmd)
 
 void	exec_cmd(t_context *ctx, t_cmd *cmd)
 {
+	t_exec	*data;
+
+	data = ctx->exec_data;
 	if (is_builtin_cmd(cmd->args[0]))
 	{
 		exec_builtin(ctx, cmd);
@@ -63,10 +66,8 @@ void	exec_cmd(t_context *ctx, t_cmd *cmd)
 			exit_free(ctx);
 		else
 		{
-			redirect(ctx->exec_data->saved_stdin, ctx->exec_data->saved_stdout,
-				ctx);
-			my_close(&ctx->exec_data->saved_stdin);
-			my_close(&ctx->exec_data->saved_stdout);
+			redirect(data->saved_stdin, data->saved_stdout, ctx);
+			close_exec_fds(data);
 		}
 	}
 	else

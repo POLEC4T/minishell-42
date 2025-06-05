@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/02 14:44:19 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 11:16:00 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_node	*ft_envnew(char *key, char *value)
 		return (NULL);
 	content->key = ft_strdup(key);
 	if (!content->key)
-		return(return_free(content, NULL, NULL));
+		return (return_free(content, NULL, NULL));
 	if (!value)
 		content->value = NULL;
 	else

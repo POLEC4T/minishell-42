@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:37:03 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 10:40:24 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 11:17:29 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	close_all_cmds_redirs(t_node **head_cmd)
 	cmd_node = *head_cmd;
 	while (cmd_node)
 	{
-	
 		cmd = cast_to_cmd(cmd_node->content);
 		close_cmd_redirs(cmd);
 		cmd_node = cmd_node->next;
