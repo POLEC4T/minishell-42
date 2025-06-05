@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   close_exec_pipes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/17 17:57:07 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 16:31:25 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/06/05 14:40:31 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/06/05 17:11:00 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief (builtin env) prints the environment variables
- */
-int	ft_env(t_node **head)
+void	close_exec_pipes(t_exec *d)
 {
-	t_node		*tmp;
-	t_key_value	*env;
-
-	if (!head)
-		return (EXIT_SUCCESS);
-	tmp = *head;
-	while (tmp)
-	{
-		env = cast_to_key_value(tmp->content);
-		if (env && env->key && env->value)
-			printf("%s=%s\n", env->key, env->value);
-		tmp = tmp->next;
-	}
-	return (EXIT_SUCCESS);
+	safe_close(&d->pipe_fds[READ]);
+	safe_close(&d->pipe_fds[WRITE]);
+	safe_close(&d->prev_pipe_read);
 }

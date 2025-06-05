@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_check.c                                        :+:      :+:    :+:   */
+/*   get_cmd_path.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/02 09:34:15 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 16:56:37 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static int	is_directory(t_context *ctx, char *path)
 
 	if (stat(path, &st) == -1)
 	{
-		ctx->exit_code = 127;
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", path, strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		ft_fprintf(STDERR_FILENO, "stat: %s\n", strerror(errno));
 		exit_free(ctx);
 	}
 	return (S_ISDIR(st.st_mode));

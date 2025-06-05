@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   close_cmd_redirs.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/17 17:57:07 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 16:31:25 by mniemaz          ###   ########.fr       */
+/*   Created: 2025/06/05 14:41:45 by mniemaz           #+#    #+#             */
+/*   Updated: 2025/06/05 17:10:56 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief (builtin env) prints the environment variables
- */
-int	ft_env(t_node **head)
+void	close_cmd_redirs(t_cmd *cmd)
 {
-	t_node		*tmp;
-	t_key_value	*env;
+	int		i;
 
-	if (!head)
-		return (EXIT_SUCCESS);
-	tmp = *head;
-	while (tmp)
+	if (cmd == NULL || cmd->redirects == NULL)
+		return ;
+	i = 0;
+	while (cmd->redirects[i])
 	{
-		env = cast_to_key_value(tmp->content);
-		if (env && env->key && env->value)
-			printf("%s=%s\n", env->key, env->value);
-		tmp = tmp->next;
+		safe_close(&cmd->redirects[i]->fd_in);
+		safe_close(&cmd->redirects[i]->fd_out);
+		i++;
 	}
-	return (EXIT_SUCCESS);
 }

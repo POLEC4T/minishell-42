@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parent.c                                           :+:      :+:    :+:   */
+/*   start_children.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 12:45:58 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:11:58 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 static void	close_useless_pipes(t_exec *exec_data, t_node *curr_node)
 {
 	if (curr_node->prev)
-		my_close(&exec_data->prev_pipe_read);
+		safe_close(&exec_data->prev_pipe_read);
 	if (curr_node->next)
 	{
-		my_close(&exec_data->pipe_fds[WRITE]);
+		safe_close(&exec_data->pipe_fds[WRITE]);
 		exec_data->prev_pipe_read = exec_data->pipe_fds[READ];
 	}
 }
@@ -65,49 +65,5 @@ void	start_children(t_context *ctx)
 		process_cmd_if(ctx, curr_cmd_node);
 		close_useless_pipes(ctx->exec_data, curr_cmd_node);
 		curr_cmd_node = curr_cmd_node->next;
-	}
-}
-
-static void	handle_signal(t_context *ctx, int status, int *already_printed)
-{
-	ctx->exit_code = WTERMSIG(status) + 128;
-	if (WIFSIGNALED(status) && !(*already_printed))
-	{
-		if (WTERMSIG(status) == SIGQUIT)
-		{
-			*already_printed = 1;
-			if (WCOREDUMP(status))
-				printf("Quit (core dumped)\n");
-		}
-		if (WTERMSIG(status) == SIGINT)
-		{
-			*already_printed = 1;
-			printf("\n");
-		}
-	}
-}
-
-void	wait_children(t_context *ctx)
-{
-	int		status;
-	t_node	*curr_node;
-	t_cmd	*cmd;
-	int		already_printed;
-
-	already_printed = 0;
-	curr_node = *ctx->head_cmd;
-	status = EXIT_SUCCESS;
-	while (curr_node)
-	{
-		cmd = cast_to_cmd(curr_node->content);
-		if (cmd->pid > 0)
-		{
-			waitpid(cmd->pid, &status, 0);
-			if (WIFEXITED(status))
-				ctx->exit_code = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				handle_signal(ctx, status, &already_printed);
-		}
-		curr_node = curr_node->next;
 	}
 }

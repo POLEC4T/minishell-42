@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 13:40:43 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:10:35 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,8 +174,8 @@ void				create_or_set_env_var(t_context *context, char **kv);
 
 // builtins
 int					ft_export(t_context *ctx, char **args);
-void				ft_unset(t_context *ctx, char **args);
-void				ft_env(t_node **head);
+int					ft_unset(t_context *ctx, char **args);
+int					ft_env(t_node **head);
 int					ft_cd(t_context *context, char **args);
 int					cwd_error(char *to_free);
 int					ft_pwd(char **args);
@@ -186,16 +186,28 @@ int					is_builtin_cmd(char *cmd);
 
 // parsing
 int					parsing(char *str, t_context *ctx);
-void				read_cmds(t_context *ctx);
+void				process_lines(t_context *ctx);
 int					set_cmd_node_content(char *str, t_context *ctx,
 						t_node *cmd_node);
 size_t				extract_redirection_filename(char *str, char *filename);
 int					handle_hd(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
-char				*expand_line(char *str, t_context *ctx, int type);
-int					count_dollar(const char *str);
+int					count_dollars(const char *str);
 int					has_dollar_preceded_by_redir(char *str, int i);
 char				*get_unique_hd_filename(void);
+
+// expand
+char				*expand_line(char *str, t_context *ctx, int type);
+int					find_end_inter(char *str, int type);
+char				*get_expanded_str(char *str, char *inter, int final_len,
+						int type);
+void				update_quotes(char c, int *in_single, int *in_double);
+int					should_expand(char *str, size_t i, int in_single);
+char				*get_key_word(char *str);
+void				skip_redir_word(const char *str, size_t *i, size_t *len);
+int					get_final_len(char *str, char *keyword, int type);
+int					has_dollar_preceded_by_redir(char *str, int i);
+int					count_dollars(const char *str);
 
 // utils pars
 size_t				argslen(char *str);
@@ -241,12 +253,12 @@ void				dup_cmd_redirs(t_context *ctx, t_cmd *cmd);
 void				exec_cmd(t_context *ctx, t_cmd *cmd);
 
 // init
-void				clean_init_exec(t_context *ctx);
 void				init_ctx_cmds(t_context *context);
+void				init_context(t_context *ctx);
 
 // close
-void				close_pipes(t_exec *d);
-void				my_close(int *fd);
+void				close_exec_pipes(t_exec *d);
+void				safe_close(int *fd);
 void				close_all_cmds_redirs(t_node **head_cmd);
 void				close_cmd_redirs(t_cmd *cmd);
 void				close_exec_fds(t_exec *data);

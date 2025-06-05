@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/28 20:32:25 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 16:35:22 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 int	main(int argc, char **argv, char **envp)
 {
+	t_context	ctx;
+
 	(void)argv;
 	if (argc != 1)
 	{
 		ft_fprintf(STDERR_FILENO, "Usage: %s\n", argv[0]);
 		return (EXIT_FAILURE);
 	}
-	minishell(envp);
+	init_context(&ctx);
+	ft_export(&ctx, envp);
+	process_lines(&ctx);
+	exit_free(&ctx);
 	return (EXIT_SUCCESS);
 }

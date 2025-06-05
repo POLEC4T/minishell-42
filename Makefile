@@ -21,9 +21,13 @@ BUILTINS_DIR = builtins
 SIG_DIR = signals
 INC_DIR = include
 PARS_DIR = parsing
+EXPAND_DIR = expand
 EXEC_DIR = exec
 SYNTAX_DIR = syntax
+INITS_DIR = inits
+CLOSE_DIR = close
 CHILDREN_DIR = children
+PARENT_DIR = parent
 INCLUDES = -I$(INC_DIR)/
 
 STR = $(addprefix $(STR_DIR)/, $(STR_FILES))
@@ -59,6 +63,13 @@ STR_FILES=\
 	return_free.c \
 	return_int_failure_msg.c \
 
+CLOSE = $(addprefix $(CLOSE_DIR)/, $(CLOSE_FILES))
+CLOSE_FILES=\
+	close_all_cmds_redirs.c \
+	close_cmd_redirs.c \
+	close_exec_pipes.c \
+	safe_close.c \
+
 ENV_UTILS = $(addprefix $(ENV_UTILS_DIR)/, $(ENV_UTILS_FILES))
 ENV_UTILS_FILES=\
 	env.c \
@@ -69,6 +80,10 @@ FREE_FILES=\
 	free.c \
 	free_utils.c \
 	free_ctx_cmds.c \
+
+INITS = $(addprefix $(INITS_DIR)/, $(INITS_FILES))
+INITS_FILES=\
+	inits.c \
 
 LST = $(addprefix $(LST_DIR)/, $(LST_FILES))
 LST_FILES=\
@@ -89,6 +104,8 @@ UTILS_FILES=\
 	$(LST) \
 	$(ENV_UTILS) \
 	$(FREE) \
+	$(CLOSE) \
+	$(INITS) \
 
 BUILTINS = $(addprefix $(BUILTINS_DIR)/, $(BUILTINS_FILES))
 BUILTINS_FILES=\
@@ -103,19 +120,27 @@ BUILTINS_FILES=\
 	exit_utils.c \
 	is_builtin_cmd.c
 
+EXPAND = $(addprefix $(EXPAND_DIR)/, $(EXPAND_FILES))
+EXPAND_FILES=\
+	expand_line.c \
+	expand_line_utils.c \
+	expand_line_utils_str.c \
+
 PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\
-	maintest.c \
 	parsing.c \
 	set_cmd_node_content.c \
-	expand_line.c \
-	expand_utils.c \
 	parsing_utils.c \
 	count_utils.c \
 	redir_utils.c \
 	cmd_utils.c \
 	handle_hd.c \
 	get_unique_hd_filename.c \
+
+PARENT = $(addprefix $(PARENT_DIR)/, $(PARENT_FILES))
+PARENT_FILES=\
+	start_children.c \
+	wait_children.c \
 
 CHILDREN = $(addprefix $(CHILDREN_DIR)/, $(CHILDREN_FILES))
 CHILDREN_FILES=\
@@ -127,11 +152,10 @@ CHILDREN_FILES=\
 
 EXEC = $(addprefix $(EXEC_DIR)/, $(EXEC_FILES))
 EXEC_FILES=\
-	close.c \
-	parent.c \
 	exec.c \
 	utils.c \
 	$(CHILDREN) \
+	$(PARENT) \
 
 SYNTAX = $(addprefix $(SYNTAX_DIR)/, $(SYNTAX_FILES))
 SYNTAX_FILES=\
@@ -143,11 +167,12 @@ SIGNALS_FILES=\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 SRC_FILES=\
+	process_lines.c \
 	main.c \
-	minishell.c \
 	$(UTILS) \
 	$(BUILTINS) \
 	$(PARS) \
+	$(EXPAND) \
 	$(SYNTAX) \
 	$(EXEC) \
 	$(SIGNALS) \

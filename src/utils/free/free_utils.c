@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:27:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 11:32:44 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:10:35 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	ft_free_env_content(void *content)
 
 void	close_exec_fds(t_exec *data)
 {
-	close_pipes(data);
-	my_close(&data->saved_stdin);
-	my_close(&data->saved_stdout);
+	close_exec_pipes(data);
+	safe_close(&data->saved_stdin);
+	safe_close(&data->saved_stdout);
 }
 
 void	free_exec(t_exec *data)

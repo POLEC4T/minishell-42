@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:48:08 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 11:53:04 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:10:35 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static void	exec_builtin(t_context *ctx, t_cmd *cmd)
 	else if (!ft_strncmp(cmd->args[0], "export", 7))
 		ctx->exit_code = ft_export(ctx, cmd->args + 1);
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
-		ft_unset(ctx, cmd->args + 1);
+		ctx->exit_code = ft_unset(ctx, cmd->args + 1);
 	else if (!ft_strncmp(cmd->args[0], "env", 4))
-		ft_env(ctx->head_env);
+		ctx->exit_code = ft_env(ctx->head_env);
 	else if (!ft_strncmp(cmd->args[0], "exit", 5))
 		ft_exit(ctx, cmd->args + 1);
 }
@@ -48,6 +48,7 @@ static void	exec_native_cmd(t_context *ctx, t_cmd *cmd)
 	}
 	env_tab = env_to_tabstr(ctx, cmd_path);
 	execve(cmd_path, cmd->args, env_tab);
+	ft_fprintf(STDERR_FILENO, "%s: %s\n", cmd->args[0], strerror(errno));
 	free(cmd_path);
 	ft_free_tab((void **)env_tab);
 	ctx->exit_code = EXIT_FAILURE;
@@ -67,8 +68,8 @@ void	exec_cmd(t_context *ctx, t_cmd *cmd)
 		else
 		{
 			redirect(data->saved_stdin, data->saved_stdout, ctx);
-			my_close(&data->saved_stdin);
-			my_close(&data->saved_stdout);
+			safe_close(&data->saved_stdin);
+			safe_close(&data->saved_stdout);
 		}
 	}
 	else

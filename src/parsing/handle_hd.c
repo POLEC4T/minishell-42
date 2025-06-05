@@ -73,7 +73,7 @@ static int	err_start_hd_child(t_context *ctx, char *eof, int is_child)
 
 /**
  * The child returns EXIT_FAILURE in every case in order to free all in parent
- * functions (it exits in read_cmds function)
+ * functions (it exits in process_lines function)
  */
 static int	start_hd_child(t_context *ctx, t_redirect **redir, char *eof)
 {

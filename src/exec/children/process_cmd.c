@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:18:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 11:39:48 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 14:41:27 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	process_cmd(t_context *ctx, t_cmd *cmd)
 		return ;
 	}
 	dup_cmd_redirs(ctx, cmd);
-	close_pipes(ctx->exec_data);
+	close_exec_pipes(ctx->exec_data);
 	close_cmd_redirs(cmd);
 	exec_cmd(ctx, cmd);
 }
