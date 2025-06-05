@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:36:28 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 19:20:29 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 19:44:38 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*set_arg(char *str)
 	size_t	j;
 	char	in_quotes;
 
-	args = ft_calloc(argslen(str) + 1, sizeof(char));
+	args = ft_calloc(get_arg_len(str) + 1, sizeof(char));
 	if (!args)
 		return (err_set_arg());
 	i = -1;

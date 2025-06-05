@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:55:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/14 11:13:57 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:44:38 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ size_t	redirlen(char *str)
 	return (i);
 }
 
-size_t	argslen(char *str)
+size_t	get_arg_len(char *str)
 {
 	return (skip_word(str, 0));
 }

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 19:25:46 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 19:44:38 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ int					has_dollar_preceded_by_redir(char *str, int i);
 int					count_dollars(const char *str);
 
 // utils pars
-size_t				argslen(char *str);
+size_t				get_arg_len(char *str);
 size_t				redirlen(char *str);
 size_t				skip_word(char *str, size_t i);
 size_t				skip_redirection(char *str, size_t i);
