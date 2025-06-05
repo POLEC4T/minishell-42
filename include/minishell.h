@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/03 18:28:27 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 10:40:40 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,9 +229,9 @@ char				*get_next_line(int fd);
 
 // exec
 void				ft_exec(t_context *ctx);
-int					open_cmd_redirs(t_node *node_cmd);
-void				dup_cmd_redirs(t_context *ctx, t_node *node_cmd);
-void				exec_cmd(t_context *ctx, t_node *node_cmd);
+int					open_cmd_redirs(t_cmd *cmd);
+void				dup_cmd_redirs(t_context *ctx, t_cmd *cmd);
+void				exec_cmd(t_context *ctx, t_cmd *cmd);
 
 // init
 void				clean_init_exec(t_context *ctx);
@@ -241,7 +241,7 @@ void				init_ctx_cmds(t_context *context);
 void				close_pipes(t_exec *d);
 void				my_close(int *fd);
 void				close_all_cmds_redirs(t_node **head_cmd);
-void				close_cmd_redirs(t_node *cmd_node);
+void				close_cmd_redirs(t_cmd *cmd);
 void				close_exec_fds(t_exec *data);
 
 // env check
@@ -253,7 +253,7 @@ void				secure_pipe(t_context *ctx);
 void				redirect(int input, int output, t_context *ctx);
 
 // children
-void				process_cmd(t_context *ctx, t_node *cmd);
+void				process_cmd(t_context *ctx, t_cmd *cmd);
 
 // parent
 void				start_children(t_context *ctx);

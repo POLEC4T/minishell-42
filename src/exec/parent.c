@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/03 18:29:02 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 10:59:39 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,18 @@ static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 	is_cmd_a_single_builtin = !cmd_node->next && !cmd_node->prev
 		&& is_builtin_cmd(cmd->args[0]);
 	if (is_cmd_a_single_builtin)
-		process_cmd(ctx, cmd_node);
+		process_cmd(ctx, cmd);
 	else
 	{
 		if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 		{
-			ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
+			ft_fprintf(STDERR_FILENO, "process_cmd_if: %s\n", strerror(errno));
 			ctx->exit_code = EXIT_FAILURE;
 			exit_free(ctx);
 		}
 		secure_fork(&cmd->pid, ctx);
 		if (cmd->pid == CHILD)
-			process_cmd(ctx, cmd_node);
+			process_cmd(ctx, cmd);
 	}
 }
 
@@ -53,14 +53,6 @@ static void	close_useless_pipes(t_exec *exec_data, t_node *curr_node)
 	}
 }
 
-/**
- * if open_cmd_redirs fails
- * - we don't want to process the command
- * - we wait the previous children in order to not close the pipes before
- * 		they are used
- *   -> if we don't wait the prev children, this command throws a SIGPIPE :
- * 		echo oui | echo bye > test_no_perm
- */
 void	start_children(t_context *ctx)
 {
 	t_node	*curr_node;
@@ -72,7 +64,6 @@ void	start_children(t_context *ctx)
 			secure_pipe(ctx);
 		process_cmd_if(ctx, curr_node);
 		close_useless_pipes(ctx->exec_data, curr_node);
-		close_cmd_redirs(curr_node);
 		curr_node = curr_node->next;
 	}
 }

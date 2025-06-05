@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:53:56 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/03 18:26:33 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 10:36:20 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ int	get_redir_out(t_context *ctx, t_cmd *cmd)
  * @brief duplicates the fd in and out of the command
  * redirections and pipes
  */
-void	dup_cmd_redirs(t_context *ctx, t_node *node_cmd)
+void	dup_cmd_redirs(t_context *ctx, t_cmd *cmd)
 {
 	int	input;
 	int	output;
 
-	input = get_redir_in(ctx, cast_to_cmd(node_cmd->content));
-	output = get_redir_out(ctx, cast_to_cmd(node_cmd->content));
+	input = get_redir_in(ctx, cmd);
+	output = get_redir_out(ctx, cmd);
 	if (input == UNDEFINED_INT && ctx->exec_data->prev_pipe_read >= 0)
 		input = ctx->exec_data->prev_pipe_read;
 	if (output == UNDEFINED_INT && ctx->exec_data->pipe_fds[WRITE] >= 0)

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:37:03 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/03 18:26:33 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 10:40:24 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ void	close_pipes(t_exec *d)
 	my_close(&d->prev_pipe_read);
 }
 
-void	close_cmd_redirs(t_node *cmd_node)
+void	close_cmd_redirs(t_cmd *cmd)
 {
-	t_cmd	*cmd;
 	int		i;
 
-	cmd = cast_to_cmd(cmd_node->content);
 	if (cmd == NULL || cmd->redirects == NULL)
 		return ;
 	i = 0;
@@ -50,11 +48,14 @@ void	close_cmd_redirs(t_node *cmd_node)
 void	close_all_cmds_redirs(t_node **head_cmd)
 {
 	t_node	*cmd_node;
+	t_cmd	*cmd;
 
 	cmd_node = *head_cmd;
 	while (cmd_node)
 	{
-		close_cmd_redirs(cmd_node);
+	
+		cmd = cast_to_cmd(cmd_node->content);
+		close_cmd_redirs(cmd);
 		cmd_node = cmd_node->next;
 	}
 }

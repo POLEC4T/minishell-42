@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 19:10:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/03 18:15:27 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/05 10:35:09 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,10 @@ static int	open_cmd_redir(t_redirect *redir)
 	return (EXIT_SUCCESS);
 }
 
-int	open_cmd_redirs(t_node *node_cmd)
+int	open_cmd_redirs(t_cmd *cmd)
 {
 	int		i;
-	t_cmd	*cmd;
 
-	cmd = cast_to_cmd(node_cmd->content);
 	if (cmd->redirects == NULL)
 		return (EXIT_SUCCESS);
 	i = -1;
