@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/06 10:57:34 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:10:39 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ char				**ft_split_quote(char const *s, char *delim);
 void				*return_free(void *to_free1, void *to_free2,
 						void *to_free3);
 int					return_int_failure_msg(char *msg);
+int					ft_isspace(int c);
 
 // str_utils
 
