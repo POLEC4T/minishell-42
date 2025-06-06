@@ -64,6 +64,7 @@ STR_FILES=\
 	return_free.c \
 	get_unique_filename.c \
 	return_int_failure_msg.c \
+	ft_isspace.c \
 
 CLOSE = $(addprefix $(CLOSE_DIR)/, $(CLOSE_FILES))
 CLOSE_FILES=\

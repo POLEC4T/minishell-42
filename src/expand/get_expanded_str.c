@@ -24,7 +24,7 @@ void	copy_inter(char *expanded, char *inter, size_t i, size_t *j)
 		expanded[i + k] = inter[k];
 		k++;
 	}
-	*j = k;
+	*j = k + i;
 }
 
 void	copy_rest(char *expanded, char *str, size_t *j, size_t *h)
