@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:52:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 19:27:34 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/06 10:45:10 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ size_t	handle_redirection(t_context *ctx, t_str_index *rl, t_cmd *cmd,
 	return (i);
 }
 
-// Gère les arguments dans la chaîne
 size_t	handle_argument(char *str, size_t i, t_cmd *cmd, size_t *args)
 {
 	cmd->args[*args] = set_arg(str + i);
@@ -40,7 +39,6 @@ size_t	handle_argument(char *str, size_t i, t_cmd *cmd, size_t *args)
 	return (i);
 }
 
-// Initialise la structure t_cmd et retourne un pointeur
 t_cmd	*init_cmd(char *str)
 {
 	size_t nb_args;
