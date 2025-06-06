@@ -3,69 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_quotes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:53:34 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/06 10:55:29 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:10:06 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief Updates the quote state based on the current character.
- */
-static char	update_quote_state(char current, char quote)
-{
-	if ((current == '\'' || current == '\"'))
-	{
-		if (quote == 0)
-			return (current);
-		else if (quote == current)
-			return (0);
-	}
-	return (quote);
-}
-
-static int	calc_nb_words(char const *s, char *delim)
-{
-	int		i;
-	int		counter;
-	char	quote;
-
-	i = 0;
-	counter = 0;
-	quote = 0;
-	while (s[i])
-	{
-		quote = update_quote_state(s[i], quote);
-		if (!quote && !is_char_in_str(s[i], delim) && ((is_char_in_str(s[i + 1],
-						delim) && !update_quote_state(s[i + 1], quote)) || s[i
-				+ 1] == '\0'))
-			counter++;
-		i++;
-	}
-	return (counter);
-}
-
-static char	*fill_word(char *word, char const *s, char *delim)
-{
-	int		i;
-	char	quote;
-
-	i = 0;
-	quote = 0;
-	while (s[i])
-	{
-		quote = update_quote_state(s[i], quote);
-		if (!quote && is_char_in_str(s[i], delim))
-			break ;
-		word[i] = s[i];
-		i++;
-	}
-	word[i] = '\0';
-	return (word);
-}
 
 int	handle_word(char **res, const char *s, t_split_ctx *ctx)
 {
@@ -84,7 +29,7 @@ int	handle_word(char **res, const char *s, t_split_ctx *ctx)
 		res[ctx->i_res] = malloc((ctx->i - start + 1) * sizeof(char));
 		if (!res[ctx->i_res])
 			return (0);
-		fill_word(res[ctx->i_res], s + start, ctx->delim);
+		fill_word_quote(res[ctx->i_res], s + start, ctx->delim);
 		ctx->i_res++;
 	}
 	return (1);
@@ -113,13 +58,13 @@ int	alloc_n_write(char **res, const char *s, char *delim)
 
 char	**ft_split_quote(char const *s, char *delim)
 {
-	int nb_words;
-	int i_alloc_res;
-	char **res;
+	int		nb_words;
+	int		i_alloc_res;
+	char	**res;
 
 	if (!s)
 		return (NULL);
-	nb_words = calc_nb_words(s, delim);
+	nb_words = calc_nb_words_quote(s, delim);
 	res = malloc((nb_words + 1) * sizeof(char *));
 	if (!res)
 		return (NULL);

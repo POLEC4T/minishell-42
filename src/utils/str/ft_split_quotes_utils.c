@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_quotes_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 10:36:53 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/06 10:54:56 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:09:49 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	update_quote_state(char current, char quote)
 	return (quote);
 }
 
-int	calc_nb_words(char const *s, char *delim)
+int	calc_nb_words_quote(char const *s, char *delim)
 {
 	int		i;
 	int		counter;
@@ -39,16 +39,18 @@ int	calc_nb_words(char const *s, char *delim)
 	while (s[i])
 	{
 		quote = update_quote_state(s[i], quote);
-		if (!quote && !is_char_in_str(s[i], delim) && ((is_char_in_str(s[i + 1],
-						delim) && !update_quote_state(s[i + 1], quote)) || s[i
-				+ 1] == '\0'))
+		if (!quote
+			&& !is_char_in_str(s[i], delim)
+			&& ((is_char_in_str(s[i + 1], delim)
+					&& !update_quote_state(s[i + 1], quote))
+				|| s[i + 1] == '\0'))
 			counter++;
 		i++;
 	}
 	return (counter);
 }
 
-char	*fill_word(char *word, char const *s, char *delim)
+char	*fill_word_quote(char *word, char const *s, char *delim)
 {
 	int		i;
 	char	quote;

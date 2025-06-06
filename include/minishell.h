@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/06 10:57:34 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:09:53 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,9 @@ size_t				ft_tablen(void **tab);
 char				*ft_itoa(int n);
 char				*rm_last_char(char *str);
 char				**ft_split_quote(char const *s, char *delim);
+char				update_quote_state(char current, char quote);
+char				*fill_word_quote(char *word, char const *s, char *delim);
+int					calc_nb_words_quote(char const *s, char *delim);
 void				*return_free(void *to_free1, void *to_free2,
 						void *to_free3);
 int					return_int_failure_msg(char *msg);
