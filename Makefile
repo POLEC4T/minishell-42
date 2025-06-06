@@ -91,12 +91,9 @@ INITS_FILES=\
 LST = $(addprefix $(LST_DIR)/, $(LST_FILES))
 LST_FILES=\
 	ft_lstaddback.c \
-	ft_lstaddfront.c \
 	ft_lstclear.c \
 	ft_lstdelone.c \
-	ft_lstiter_bonus.c \
 	ft_lstlast.c \
-	ft_lstmap.c \
 	ft_lstnew.c \
 	ft_lstsize.c \
 	cast.c \
