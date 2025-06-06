@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-// Cette fonction s’occupe uniquement de la récupération du mot-clé à expand
 static size_t	find_expand_index(char *str, int *in_single, int *in_double)
 {
 	size_t	i;

@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/06 10:48:51 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/06 10:57:34 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define HD_FILENAME ".heredoc_tmp_"
+# define HD_BASENAME ".heredoc_tmp_"
 # define READ 0
 # define WRITE 1
 # define BUFFER_SIZE 1024
@@ -41,7 +41,7 @@ extern int			g_signal;
  *	HEREDOC				= <<
  *	OUT_TRUNC			= >>
  *	OUT					= >
- *	HEREDOC_NO_INTER	= "eof"
+ *	HEREDOC_NO_INTER	= << "eof"
  */
 typedef enum e_redir_type
 {
@@ -150,7 +150,7 @@ int					ft_isdigit(int c);
 void				ft_free_tab(void **tab);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strchr(const char *string, int c);
-
+int					ft_isspace(int c);
 size_t				ft_tablen(void **tab);
 char				*ft_itoa(int n);
 char				*rm_last_char(char *str);
@@ -209,7 +209,7 @@ int					handle_hd(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
 int					count_dollars(const char *str);
 int					has_dollar_preceded_by_redir(char *str, int i);
-char				*get_unique_hd_filename(void);
+char				*get_unique_filename(char *base_name);
 
 // expand
 char				*expand_line(char *str, t_context *ctx, int type);
@@ -225,8 +225,8 @@ int					has_dollar_preceded_by_redir(char *str, int i);
 int					count_dollars(const char *str);
 
 // utils pars
-size_t				argslen(char *str);
-size_t				redirlen(char *str);
+size_t				get_arg_len(char *str);
+size_t				redir_word_len(char *str);
 size_t				skip_word(char *str, size_t i);
 size_t				skip_redirection(char *str, size_t i);
 size_t				skip_spaces(char *str, size_t i);

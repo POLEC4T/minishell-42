@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 17:11:58 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/06 10:17:05 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 	cmd = cast_to_cmd(cmd_node->content);
 	is_cmd_a_single_builtin = !cmd_node->next && !cmd_node->prev
 		&& is_builtin_cmd(cmd->args[0]);
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+	{
+		ft_fprintf(STDERR_FILENO, "process_cmd_if: %s\n", strerror(errno));
+		ctx->exit_code = EXIT_FAILURE;
+		exit_free(ctx);
+	}
 	if (is_cmd_a_single_builtin)
 		process_cmd(ctx, cmd);
 	else
 	{
-		if (signal(SIGINT, SIG_IGN) == SIG_ERR)
-		{
-			ft_fprintf(STDERR_FILENO, "process_cmd_if: %s\n", strerror(errno));
-			ctx->exit_code = EXIT_FAILURE;
-			exit_free(ctx);
-		}
 		secure_fork(&cmd->pid, ctx);
 		if (cmd->pid == CHILD)
 			process_cmd(ctx, cmd);
