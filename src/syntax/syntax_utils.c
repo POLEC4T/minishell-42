@@ -14,7 +14,7 @@
 
 const char	*skip_leading_spaces(const char *ptr)
 {
-	while (*ptr && isspace((unsigned char)*ptr))
+	while (*ptr && ft_isspace((unsigned char)*ptr))
 		ptr++;
 	return (ptr);
 }
@@ -41,7 +41,7 @@ const char	*find_pipe(const char *ptr, char *quote)
 
 const char	*skip_trailing_spaces(const char *start, const char *end)
 {
-	while (end >= start && isspace((unsigned char)*end))
+	while (end >= start && ft_isspace((unsigned char)*end))
 		end--;
 	return (end);
 }
