@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/06 09:41:43 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/06 10:37:50 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int					ft_isdigit(int c);
 void				ft_free_tab(void **tab);
 void				*ft_calloc(size_t nmemb, size_t size);
 char				*ft_strchr(const char *string, int c);
-
+int					ft_isspace(int c);
 size_t				ft_tablen(void **tab);
 char				*ft_itoa(int n);
 char				*rm_last_char(char *str);
@@ -212,8 +212,7 @@ size_t				skip_redirection(char *str, size_t i);
 size_t				skip_spaces(char *str, size_t i);
 int					count_args(char *str);
 int					count_redirect(char *str);
-int					set_redir(t_context *ctx, char *str,
-						t_redirect **redir);
+int					set_redir(t_context *ctx, char *str, t_redirect **redir);
 char				*set_arg(char *str);
 t_cmd				*init_cmd(char *str);
 size_t				handle_argument(char *str, size_t i, t_cmd *cmd,
