@@ -46,6 +46,7 @@ STR_FILES=\
 	putendl_fd.c \
 	ft_split_first.c \
 	ft_split_quotes.c \
+	ft_split_quotes_utils.c \
 	ft_split.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
@@ -125,6 +126,7 @@ EXPAND_FILES=\
 	expand_line.c \
 	expand_line_utils.c \
 	expand_line_utils_str.c \
+	get_expanded_str.c \
 
 PARS = $(addprefix $(PARS_DIR)/, $(PARS_FILES))
 PARS_FILES=\
@@ -160,6 +162,9 @@ EXEC_FILES=\
 SYNTAX = $(addprefix $(SYNTAX_DIR)/, $(SYNTAX_FILES))
 SYNTAX_FILES=\
 	syntax.c \
+	is_syntax_valid.c \
+	syntax_utils.c \
+	bracket_check_syntax.c \
 
 SIGNALS = $(addprefix $(SIG_DIR)/, $(SIGNALS_FILES))
 SIGNALS_FILES=\

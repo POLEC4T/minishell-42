@@ -3,28 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 17:31:32 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 14:59:04 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/06 10:28:50 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-typedef struct s_quote
-{
-	int		single;
-	int		dbl;
-	int		in_single;
-	int		in_double;
-}			t_quote;
-
 static int	is_unescaped_quote(const char *str, int i, char quote,
 		int in_other_quotes)
 {
 	return (str[i] == quote && !in_other_quotes && !(i > 0 && str[i
-			- 1] == '\\'));
+				- 1] == '\\'));
 }
 
 t_quote	init_quote(void)
@@ -63,99 +55,44 @@ int	check_quotes_parity(const char *str)
 	return (0);
 }
 
+static int	process_segment(const char **ptr, char *quote)
+{
+	const char	*seg_start;
+	const char	*seg_end;
+
+	*ptr = skip_leading_spaces(*ptr);
+	if (**ptr == '\0')
+		return (-1);
+	seg_start = *ptr;
+	*ptr = find_pipe(*ptr, quote);
+	seg_end = *ptr - 1;
+	seg_end = skip_trailing_spaces(seg_start, seg_end);
+	if (is_segment_empty(seg_start, seg_end))
+		return (-1);
+	return (0);
+}
+
 int	pipe_check(const char *str)
 {
-	const char	*ptr = str;
-	const char	*segment_start;
-	const char	*segment_end;
-	char		quote = 0;
+	char		quote;
+	const char	*ptr;
 
+	ptr = str;
+	quote = 0;
 	while (1)
 	{
-		// Sauter les espaces initiaux
-		while (*ptr && isspace((unsigned char)*ptr))
-			ptr++;
-		if (*ptr == '\0')
-			return (-1);
-		segment_start = ptr;
-
-		// Avancer jusqu'au prochain | hors quotes ou fin de chaîne
-		while (*ptr)
-		{
-			if (!quote && (*ptr == '\'' || *ptr == '"'))
-				quote = *ptr;
-			else if (quote && *ptr == quote)
-				quote = 0;
-			else if (!quote && *ptr == '|')
-				break;
-			ptr++;
-		}
-		segment_end = ptr - 1;
-		// Retirer les espaces à la fin du segment
-		while (segment_end >= segment_start
-			&& isspace((unsigned char)*segment_end))
-			segment_end--;
-		if (segment_end < segment_start)
+		if (process_segment(&ptr, &quote) < 0)
 			return (-1);
 		if (*ptr == '|')
 		{
-			ptr++; // Passer le pipe
+			ptr++;
 			if (*ptr == '\0')
 				return (-1);
 		}
 		else
 			break ;
 	}
-	// Si on sort du while avec une quote ouverte -> erreur de syntaxe
 	if (quote)
 		return (-1);
 	return (0);
 }
-
-int	brackets_check(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '<' || str[i] == '>')
-		{
-			i++;
-			if (str[i] == '<' || str[i] == '>')
-				i++;
-			while (str[i] && str[i] != '|')
-			{
-				if (str[i] != ' ')
-					break ;
-				i++;
-			}
-			if (str[i] == '|' || !str[i])
-				return (-1);
-		}
-		else
-			i++;
-	}
-	return (0);
-}
-
-int	is_syntax_valid(char *str)
-{
-	if (check_quotes_parity(str) != 0)
-	{
-		ft_fprintf(STDERR_FILENO, "syntax: quote parity issue\n");
-		return (0);
-	}
-	if (strchr(str, '|') && pipe_check(str) != 0)
-	{
-		ft_fprintf(STDERR_FILENO, "syntax: pipe issue\n");
-		return (0);
-	}
-	if (brackets_check(str) != 0)
-	{
-		ft_fprintf(STDERR_FILENO, "syntax: angle bracket issue\n");
-		return (0);
-	}
-	return(1);
-}
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 19:25:46 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/06 10:48:51 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,22 @@ typedef struct s_context
 	char			*rl_str;
 }					t_context;
 
+typedef struct s_quote
+{
+	int				single;
+	int				dbl;
+	int				in_single;
+	int				in_double;
+}					t_quote;
+
+typedef struct s_split_ctx
+{
+	int				i;
+	int				i_res;
+	char			quote;
+	char			*delim;
+}					t_split_ctx;
+
 // str
 int					ft_putstr_fd(char *s, int fd);
 int					ft_putendl_fd(char *s, int fd);
@@ -142,6 +158,10 @@ char				**ft_split_quote(char const *s, char *delim);
 void				*return_free(void *to_free1, void *to_free2,
 						void *to_free3);
 int					return_int_failure_msg(char *msg);
+
+// str_utils
+
+void				free_tab(char **tab, int limit);
 
 // output
 int					ft_fprintf(int fd, const char *fmt, ...);
@@ -212,8 +232,7 @@ size_t				skip_redirection(char *str, size_t i);
 size_t				skip_spaces(char *str, size_t i);
 int					count_args(char *str);
 int					count_redirect(char *str);
-int					set_redir(t_context *ctx, char *str,
-						t_redirect **redir);
+int					set_redir(t_context *ctx, char *str, t_redirect **redir);
 char				*set_arg(char *str);
 t_cmd				*init_cmd(char *str);
 size_t				handle_argument(char *str, size_t i, t_cmd *cmd,
@@ -223,6 +242,15 @@ size_t				handle_redirection(t_context *ctx, t_str_index *rl,
 
 // syntax
 int					is_syntax_valid(char *str);
+int					brackets_check(char *str);
+int					pipe_check(const char *str);
+int					check_quotes_parity(const char *str);
+// utils syntax
+int					is_segment_empty(const char *start, const char *end);
+const char			*skip_trailing_spaces(const char *start, const char *end);
+const char			*find_pipe(const char *ptr, char *quote);
+void				update_quote(const char c, char *quote);
+const char			*skip_leading_spaces(const char *ptr);
 
 // signals
 void				setup_child_signals(t_context *ctx);

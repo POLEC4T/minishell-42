@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:52:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 19:27:34 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/06 10:26:04 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ size_t	handle_argument(char *str, size_t i, t_cmd *cmd, size_t *args)
 // Initialise la structure t_cmd et retourne un pointeur
 t_cmd	*init_cmd(char *str)
 {
-	size_t nb_args;
-	size_t nb_redirect;
-	t_cmd *cmd;
+	size_t	nb_args;
+	size_t	nb_redirect;
+	t_cmd	*cmd;
 
 	nb_args = count_args(str);
 	nb_redirect = count_redirect(str);

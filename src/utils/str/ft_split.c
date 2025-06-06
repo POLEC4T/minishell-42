@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:14:51 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/16 10:46:51 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/06 10:45:32 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	free_tab(char **tab, int limit)
+void	free_tab(char **tab, int limit)
 {
 	int	i;
 
