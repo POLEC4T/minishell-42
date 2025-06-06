@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 19:19:08 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/06 09:36:03 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static t_redir_type	get_redir_type(char *str, size_t *i)
  * extracts the word after the redirection operator
  * @example: "ls > file.txt" -> "file.txt"
  * @example: "<< eof" -> "eof"
+ * @returns the index of the next character after the redirection word
  */
 size_t	extract_redir_word(char *str, char *filename)
 {
@@ -112,7 +113,7 @@ int	set_redir(t_context *ctx, char *str, t_redirect **redir)
 	}
 	else
 	{
-		(*redir)->filename = malloc((redirlen(str) + 1) * sizeof(char));
+		(*redir)->filename = malloc((redir_word_len(str) + 1) * sizeof(char));
 		if (!(*redir)->filename)
 			return (return_int_failure_msg("set_redir"));
 		i += extract_redir_word(str + i, (*redir)->filename);

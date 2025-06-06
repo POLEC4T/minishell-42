@@ -103,10 +103,10 @@ int	handle_hd(t_context *ctx, char *str, size_t *i, t_redirect **redir)
 {
 	char	*eof;
 
-	(*redir)->filename = get_unique_hd_filename();
+	(*redir)->filename = get_unique_filename(HD_BASENAME);
 	if (!(*redir)->filename)
-		return (return_int_failure_msg("handle_hd: get_unique_hd_filename"));
-	eof = malloc((redirlen(str) + 1) * sizeof(char));
+		return (return_int_failure_msg("handle_hd: get_unique_filename"));
+	eof = malloc((redir_word_len(str) + 1) * sizeof(char));
 	if (!eof)
 		return (return_int_failure_msg("handle_hd: malloc eof"));
 	*i += extract_redir_word(str + *i, eof);

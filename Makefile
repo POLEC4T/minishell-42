@@ -61,6 +61,7 @@ STR_FILES=\
 	get_next_line.c \
 	rm_last_char.c \
 	return_free.c \
+	get_unique_filename.c \
 	return_int_failure_msg.c \
 
 CLOSE = $(addprefix $(CLOSE_DIR)/, $(CLOSE_FILES))
@@ -135,7 +136,6 @@ PARS_FILES=\
 	redir_utils.c \
 	cmd_utils.c \
 	handle_hd.c \
-	get_unique_hd_filename.c \
 
 PARENT = $(addprefix $(PARENT_DIR)/, $(PARENT_FILES))
 PARENT_FILES=\

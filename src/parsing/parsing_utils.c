@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:55:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 19:44:38 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/06 09:34:27 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ size_t	skip_word(char *str, size_t i)
 	return (i);
 }
 
-size_t	redirlen(char *str)
+size_t	redir_word_len(char *str)
 {
 	size_t	i;
 	size_t	j;

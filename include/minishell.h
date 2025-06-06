@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/05 19:44:38 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/06 09:41:43 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-# define HD_FILENAME ".heredoc_tmp_"
+# define HD_BASENAME ".heredoc_tmp_"
 # define READ 0
 # define WRITE 1
 # define BUFFER_SIZE 1024
@@ -41,7 +41,7 @@ extern int			g_signal;
  *	HEREDOC				= <<
  *	OUT_TRUNC			= >>
  *	OUT					= >
- *	HEREDOC_NO_INTER	= "eof"
+ *	HEREDOC_NO_INTER	= << "eof"
  */
 typedef enum e_redir_type
 {
@@ -189,7 +189,7 @@ int					handle_hd(t_context *ctx, char *str, size_t *i,
 						t_redirect **redir);
 int					count_dollars(const char *str);
 int					has_dollar_preceded_by_redir(char *str, int i);
-char				*get_unique_hd_filename(void);
+char				*get_unique_filename(char *base_name);
 
 // expand
 char				*expand_line(char *str, t_context *ctx, int type);
@@ -206,7 +206,7 @@ int					count_dollars(const char *str);
 
 // utils pars
 size_t				get_arg_len(char *str);
-size_t				redirlen(char *str);
+size_t				redir_word_len(char *str);
 size_t				skip_word(char *str, size_t i);
 size_t				skip_redirection(char *str, size_t i);
 size_t				skip_spaces(char *str, size_t i);
