@@ -22,7 +22,7 @@ int	is_syntax_valid(char *str)
 		ft_fprintf(STDERR_FILENO, "syntax: quote parity issue\n");
 		return (0);
 	}
-	if (strchr(str, '|') && pipe_check(str) != 0)
+	if (ft_strchr(str, '|') && pipe_check(str) != 0)
 	{
 		ft_fprintf(STDERR_FILENO, "syntax: pipe issue\n");
 		return (0);

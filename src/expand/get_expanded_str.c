@@ -30,7 +30,7 @@ void	copy_inter(char *expanded, char *inter, size_t i, size_t *j)
 void	copy_rest(char *expanded, char *str, size_t *j, size_t *h)
 {
 	while (str[*h])
-		expanded[*j] = str[(*h)++];
+		expanded[(*j)++] = str[(*h)++];
 }
 
 char	*get_expanded_str(char *str, char *inter, int final_len, int type)
