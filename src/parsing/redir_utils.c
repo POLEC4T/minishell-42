@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/09 09:36:56 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:41:45 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,25 @@ static t_redir_type	get_redir_type(char *str, size_t *i)
 	return (redir_type);
 }
 
+static int	is_char_in_quotes(int index, const char *s)
+{
+	int	in_quote;
+
+	in_quote = 0;
+	for (int i = 0; s[i] != '\0'; ++i)
+	{
+		if (s[i] == '"' && (i == 0 || s[i - 1] != '\\'))
+		{
+			in_quote = !in_quote;
+		}
+		if (i == index)
+		{
+			return (in_quote);
+		}
+	}
+	return (0);
+}
+
 /**
  * extracts the word after the redirection operator
  * @example: "ls > file.txt" -> "file.txt"
@@ -71,12 +90,13 @@ size_t	extract_redir_word(char *str, char *filename)
 	size_t	j;
 	char	quote;
 
-	i = 0;
 	j = 0;
 	quote = 0;
-	i = skip_spaces(str, i);
-	while (str[i] && (str[i] != '>' && str[i] != '<'))
+	i = skip_spaces(str, 0);
+	while (str[i])
 	{
+		if ((str[i] == '<' || str[i] == '>') && is_char_in_quotes(i, str) == 0)
+			break ;
 		if ((str[i] == '"' || str[i] == '\'') && !quote)
 			quote = str[i++];
 		else if (quote && str[i] == quote)
