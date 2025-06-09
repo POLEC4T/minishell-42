@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:23:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/06 10:17:05 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	process_cmd_if(t_context *ctx, t_node *cmd_node)
 		&& is_builtin_cmd(cmd->args[0]);
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 	{
-		ft_fprintf(STDERR_FILENO, "process_cmd_if: %s\n", strerror(errno));
+		ft_dprintf(STDERR_FILENO, "process_cmd_if: %s\n", strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}

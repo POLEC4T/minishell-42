@@ -24,7 +24,7 @@ static void	write_in_file(int hd_fd, char *eof, t_context *ctx,
 		if (!line && g_signal == 0)
 		{
 			write(STDERR_FILENO, "\n", 1);
-			ft_fprintf(STDERR_FILENO, "warning: here-document \
+			ft_dprintf(STDERR_FILENO, "warning: here-document \
 delimited by end-of-file (wanted `%s')\n", eof);
 			break ;
 		}
@@ -65,7 +65,7 @@ static int	wait_hd_child(t_context *ctx)
 static int	err_start_hd_child(t_context *ctx, char *eof, int is_child)
 {
 	free(eof);
-	ft_fprintf(STDERR_FILENO, "start_hd_child: %s\n", strerror(errno));
+	ft_dprintf(STDERR_FILENO, "start_hd_child: %s\n", strerror(errno));
 	if (is_child)
 		ctx->exit_code = EXIT_FAILURE;
 	return (EXIT_FAILURE);

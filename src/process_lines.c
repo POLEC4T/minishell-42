@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_lines.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:53:50 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/09 09:46:44 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:26:06 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,28 @@ static int	handle_pars_error_feedback(t_context *ctx)
 }
 
 /**
- * Steps :
- *  - read line
- *  - check syntax
- *  - add to history
- *  - expand line
- *  - parse line
- *  - execute commands
- *  - reset and start over
+ * rl_catch_signals (a readline global variable) is set to 0 to cancel 
+ * readline's signal handling.
+ * otherwise, CTRL-C would be caught by readline and cause it to leak memory.
+ * How to reproduce the leak:
+ * - remove the line rl_catch_signals = 0
+ * - compile the program
+ * - resize the terminal to be small vertically
+ * - type /dev/
+ * - press tab
+ * - press y to confirm the completion
+ * - CTRL-C
+ * - try to type something
+ * -> causing readline to leak
  */
 void	process_lines(t_context *ctx)
 {
+	rl_catch_signals = 0;
 	while (1)
 	{
 		g_signal = 0;
 		setup_parent_signals(ctx);
-		ctx->rl_str = readline("\033[1;35m➜  pitishell$ \033[0m");
+		ctx->rl_str = readline("➜  pitishell$ ");
 		if (g_signal == SIGINT)
 			ctx->exit_code = 128 + g_signal;
 		if (!ctx->rl_str)
@@ -77,12 +83,10 @@ void	process_lines(t_context *ctx)
 			write(1, "exit\n", 6);
 			exit_free(ctx);
 		}
-		add_history(ctx->rl_str);
-		if (!is_syntax_valid(ctx->rl_str))
-		{
-			ctx->exit_code = 2;
+		if (ctx->rl_str[0] != '\0')
+			add_history(ctx->rl_str);
+		if (!is_syntax_valid(ctx, ctx->rl_str))
 			continue ;
-		}
 		ctx->rl_str = expand_line(ctx->rl_str, ctx, CMD);
 		if (parsing(ctx->rl_str, ctx) == EXIT_FAILURE)
 			if (handle_pars_error_feedback(ctx) == EXIT_SUCCESS)

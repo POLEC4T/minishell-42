@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:43:03 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 19:35:34 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ void	ft_exit(t_context *context, char **args)
 		context->exit_code = ft_atoi_exit(args[0], &error);
 		if (error)
 		{
-			ft_fprintf(STDERR_FILENO, "exit: %s: numeric argument required\n",
+			ft_dprintf(STDERR_FILENO, "exit: %s: numeric argument required\n",
 				args[0]);
 			context->exit_code = 2;
 		}
 		else if (args[1])
 		{
-			ft_fprintf(STDERR_FILENO, "exit: too many arguments\n");
+			ft_dprintf(STDERR_FILENO, "exit: too many arguments\n");
 			context->exit_code = 1;
 			return ;
 		}

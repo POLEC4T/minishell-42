@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:20:59 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 11:16:00 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	err_create_or_set_env_var(t_context *context, char **to_free)
 {
 	if (to_free)
 		ft_free_tab((void **)to_free);
-	ft_fprintf(STDERR_FILENO, "create_or_set_env_var: %s\n", strerror(errno));
+	ft_dprintf(STDERR_FILENO, "create_or_set_env_var: %s\n", strerror(errno));
 	exit_free(context);
 }
 
@@ -120,7 +120,7 @@ char	*ft_get_env_val(t_context *ctx, char *key)
 		dup = ft_strdup(kv->value);
 		if (!dup)
 		{
-			ft_fprintf(STDERR_FILENO, "ft_get_env_val: %s\n", strerror(errno));
+			ft_dprintf(STDERR_FILENO, "ft_get_env_val: %s\n", strerror(errno));
 			exit_free(ctx);
 		}
 		return (dup);

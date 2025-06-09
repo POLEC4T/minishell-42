@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:57:45 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 17:34:05 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_secure_strdup(t_context *ctx, char *s, char *err_title)
 	dup = ft_strdup(s);
 	if (!dup)
 	{
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", err_title, strerror(errno));
+		ft_dprintf(STDERR_FILENO, "%s: %s\n", err_title, strerror(errno));
 		exit_free(ctx);
 	}
 	return (dup);

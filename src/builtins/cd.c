@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 11:01:44 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 13:03:39 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	init_newpwd(t_context *context, char *path, char **newpwd)
 		*newpwd = ft_get_env_val(context, "HOME");
 		if (*newpwd == NULL)
 		{
-			ft_fprintf(STDERR_FILENO, "cd: HOME not set\n");
+			ft_dprintf(STDERR_FILENO, "cd: HOME not set\n");
 			return (EXIT_FAILURE);
 		}
 	}
@@ -33,7 +33,7 @@ static int	init_newpwd(t_context *context, char *path, char **newpwd)
 		*newpwd = ft_strdup(path);
 		if (*newpwd == NULL)
 		{
-			ft_fprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
+			ft_dprintf(STDERR_FILENO, "cd: %s\n", strerror(errno));
 			return (EXIT_FAILURE);
 		}
 	}
@@ -49,7 +49,7 @@ static int	set_to_oldpwd(t_context *context, char **newpwd)
 	*newpwd = ft_get_env_val(context, "OLDPWD");
 	if (*newpwd == NULL)
 	{
-		ft_fprintf(STDERR_FILENO, "cd: PWD not set\n");
+		ft_dprintf(STDERR_FILENO, "cd: PWD not set\n");
 		return (EXIT_FAILURE);
 	}
 	printf("%s\n", *newpwd);
@@ -69,7 +69,7 @@ static void	create_or_set_pwds_env(t_context *context, char *key, char *value)
 		node = ft_envnew(key, value);
 		if (!node)
 		{
-			ft_fprintf(STDERR_FILENO, "create_or_set_pwds_env: %s\n",
+			ft_dprintf(STDERR_FILENO, "create_or_set_pwds_env: %s\n",
 				strerror(errno));
 			exit_free(context);
 		}
@@ -99,7 +99,7 @@ static int	set_pwds(t_context *ctx, char **newpwd)
 		return (cwd_error(*newpwd));
 	if (chdir(*newpwd) == -1)
 	{
-		ft_fprintf(STDERR_FILENO, "cd: %s: %s\n", *newpwd, strerror(errno));
+		ft_dprintf(STDERR_FILENO, "cd: %s: %s\n", *newpwd, strerror(errno));
 		free(*newpwd);
 		free(oldpwd);
 		return (EXIT_FAILURE);
@@ -126,7 +126,7 @@ int	ft_cd(t_context *context, char **args)
 		return (EXIT_FAILURE);
 	if (ft_tablen((void **)args) > 1)
 	{
-		ft_fprintf(STDERR_FILENO, "cd: too many arguments\n");
+		ft_dprintf(STDERR_FILENO, "cd: too many arguments\n");
 		return (EXIT_FAILURE);
 	}
 	newpwd = NULL;

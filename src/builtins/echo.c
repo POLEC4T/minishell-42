@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 17:48:01 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/03 15:20:43 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	write_print_on_error(char *str)
 {
 	if (str && write(STDOUT_FILENO, str, ft_strlen(str)) == -1)
 	{
-		ft_fprintf(STDERR_FILENO, "write: %s\n", strerror(errno));
+		ft_dprintf(STDERR_FILENO, "write: %s\n", strerror(errno));
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

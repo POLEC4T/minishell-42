@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 10:00:00 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/29 17:01:23 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	handle_int(char *buf, int pos, const char **fmt, va_list args)
 	return (pos);
 }
 
-int	ft_fprintf(int fd, const char *fmt, ...)
+int	ft_dprintf(int fd, const char *fmt, ...)
 {
 	char	buf[1024];
 	int		pos;

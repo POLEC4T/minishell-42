@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/09 09:33:00 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ int					ft_isblank(int c);
 void				free_tab(char **tab, int limit);
 
 // output
-int					ft_fprintf(int fd, const char *fmt, ...);
+int					ft_dprintf(int fd, const char *fmt, ...);
 
 // lst
 void				ft_lstadd_back(t_node **lst, t_node *new);
@@ -246,7 +246,7 @@ size_t				handle_redirection(t_context *ctx, t_str_index *rl,
 						t_cmd *cmd, size_t *i_redir);
 
 // syntax
-int					is_syntax_valid(char *str);
+int					is_syntax_valid(t_context *ctx, char *str);
 int					brackets_check(char *str);
 int					pipe_check(const char *str);
 int					check_quotes_parity(const char *str);

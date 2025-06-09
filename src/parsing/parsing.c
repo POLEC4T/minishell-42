@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 16:51:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/06 10:25:33 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	err_parsing(void **to_free)
 {
-	ft_fprintf(STDERR_FILENO, "parsing: %s\n", strerror(errno));
+	ft_dprintf(STDERR_FILENO, "parsing: %s\n", strerror(errno));
 	if (to_free)
 		ft_free_tab(to_free);
 	return (EXIT_FAILURE);

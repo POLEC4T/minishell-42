@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:48:08 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 17:10:35 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ static void	exec_native_cmd(t_context *ctx, t_cmd *cmd)
 	cmd_path = get_cmd_path(ctx, cmd->args[0]);
 	if (!cmd_path)
 	{
-		ft_fprintf(STDERR_FILENO, "%s: command not found\n", cmd->args[0]);
+		ft_dprintf(STDERR_FILENO, "%s: command not found\n", cmd->args[0]);
 		exit_free(ctx);
 	}
 	env_tab = env_to_tabstr(ctx, cmd_path);
 	execve(cmd_path, cmd->args, env_tab);
-	ft_fprintf(STDERR_FILENO, "%s: %s\n", cmd->args[0], strerror(errno));
+	ft_dprintf(STDERR_FILENO, "%s: %s\n", cmd->args[0], strerror(errno));
 	free(cmd_path);
 	ft_free_tab((void **)env_tab);
 	ctx->exit_code = EXIT_FAILURE;

@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 19:09:02 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/03 17:43:48 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	**get_key_value(t_context *ctx, char *line)
 	line_tab = ft_split_first(line, "=");
 	if (line_tab == NULL)
 	{
-		ft_fprintf(STDERR_FILENO, "export: %s\n", strerror(errno));
+		ft_dprintf(STDERR_FILENO, "export: %s\n", strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
@@ -96,7 +96,7 @@ int	ft_export(t_context *ctx, char **args)
 	{
 		if (!ft_is_arg_valid(args[i]))
 		{
-			ft_fprintf(STDERR_FILENO, "export: `%s': not a valid identifier\n",
+			ft_dprintf(STDERR_FILENO, "export: `%s': not a valid identifier\n",
 				args[i]);
 			exit_code = EXIT_FAILURE;
 			continue ;

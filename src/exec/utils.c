@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 15:41:22 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 19:42:04 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	secure_fork(int *pid, t_context *ctx)
 	*pid = fork();
 	if (*pid == -1)
 	{
-		ft_fprintf(STDERR_FILENO, "fork: %s\n", strerror(errno));
+		ft_dprintf(STDERR_FILENO, "fork: %s\n", strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
@@ -41,7 +41,7 @@ void	secure_pipe(t_context *ctx)
 	pipe_ret = pipe(ctx->exec_data->pipe_fds);
 	if (pipe_ret == -1)
 	{
-		ft_fprintf(STDERR_FILENO, "pipe: %s\n", strerror(errno));
+		ft_dprintf(STDERR_FILENO, "pipe: %s\n", strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}

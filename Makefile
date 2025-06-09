@@ -56,7 +56,7 @@ STR_FILES=\
 	ft_calloc.c \
 	ft_free_tab.c \
 	ft_strchr.c \
-	ft_fprintf.c \
+	ft_dprintf.c \
 	ft_itoa.c \
 	ft_tablen.c \
 	get_next_line.c \

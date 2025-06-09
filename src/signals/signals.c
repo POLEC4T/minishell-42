@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:12:58 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/03 16:20:07 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ void	setup_parent_signals(t_context *ctx)
 {
 	if (signal(SIGINT, parent_sigint_handler) == SIG_ERR)
 	{
-		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n",
+		ft_dprintf(STDERR_FILENO, "setup_parent_signals: %s\n",
 			strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 	{
-		ft_fprintf(STDERR_FILENO, "setup_parent_signals: %s\n",
+		ft_dprintf(STDERR_FILENO, "setup_parent_signals: %s\n",
 			strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
@@ -65,13 +65,13 @@ void	setup_child_signals(t_context *ctx)
 {
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 	{
-		ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
+		ft_dprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
 	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
 	{
-		ft_fprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
+		ft_dprintf(STDERR_FILENO, "start_children: %s\n", strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}

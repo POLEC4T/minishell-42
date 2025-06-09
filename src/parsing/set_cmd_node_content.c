@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_cmd_node_content.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:36:28 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/09 09:41:38 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*err_set_arg(void)
 {
-	ft_fprintf(STDERR_FILENO, "set_arg: %s\n", strerror(errno));
+	ft_dprintf(STDERR_FILENO, "set_arg: %s\n", strerror(errno));
 	return (NULL);
 }
 
@@ -49,7 +49,7 @@ char	*set_arg(char *str)
 
 static int	err_set_cmd_node_content(void)
 {
-	ft_fprintf(STDERR_FILENO, "init_cmd: %s\n", strerror(errno));
+	ft_dprintf(STDERR_FILENO, "init_cmd: %s\n", strerror(errno));
 	return (EXIT_FAILURE);
 }
 

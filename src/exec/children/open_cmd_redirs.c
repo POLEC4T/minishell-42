@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 19:10:41 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 10:35:09 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	open_infile(char *filename)
 
 	fd = open(filename, O_RDONLY, 644);
 	if (fd == -1)
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
+		ft_dprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
 	return (fd);
 }
 
@@ -28,7 +28,7 @@ static int	open_outfile(char *filename)
 
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
+		ft_dprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
 	return (fd);
 }
 
@@ -41,7 +41,7 @@ static int	open_outfile_append(char *filename)
 
 	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
+		ft_dprintf(STDERR_FILENO, "%s: %s\n", filename, strerror(errno));
 	return (fd);
 }
 

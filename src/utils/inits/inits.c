@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:25:18 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 17:11:19 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	clean_init_exec(t_context *ctx)
 	ctx->exec_data = malloc(sizeof(t_exec));
 	if (!ctx->exec_data)
 	{
-		ft_fprintf(STDERR_FILENO, "clean_init_exec: %s\n", strerror(errno));
+		ft_dprintf(STDERR_FILENO, "clean_init_exec: %s\n", strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
@@ -33,7 +33,7 @@ void	init_ctx_cmds(t_context *ctx)
 	ctx->head_cmd = malloc(sizeof(t_node *));
 	if (!ctx->head_cmd)
 	{
-		ft_fprintf(STDERR_FILENO, "init_ctx_cmds: %s\n", strerror(errno));
+		ft_dprintf(STDERR_FILENO, "init_ctx_cmds: %s\n", strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit_free(ctx);
 	}
@@ -51,7 +51,7 @@ void	init_context(t_context *ctx)
 	ctx->head_env = malloc(sizeof(t_node *));
 	if (!ctx->head_env)
 	{
-		ft_fprintf(STDERR_FILENO, "init_context: %s\n", strerror(errno));
+		ft_dprintf(STDERR_FILENO, "init_context: %s\n", strerror(errno));
 		ctx->exit_code = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}

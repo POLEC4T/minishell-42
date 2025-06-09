@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:43:43 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/06 10:03:26 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	**get_paths(t_context *ctx)
 		free(path);
 		if (!res)
 		{
-			ft_fprintf(STDERR_FILENO, "get_paths: %s\n", strerror(errno));
+			ft_dprintf(STDERR_FILENO, "get_paths: %s\n", strerror(errno));
 			ctx->exit_code = EXIT_FAILURE;
 			exit_free(ctx);
 		}
@@ -40,7 +40,7 @@ static int	is_directory(t_context *ctx, char *path)
 	if (stat(path, &st) == -1)
 	{
 		ctx->exit_code = 127;
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", path, strerror(errno));
+		ft_dprintf(STDERR_FILENO, "%s: %s\n", path, strerror(errno));
 		exit_free(ctx);
 	}
 	return (S_ISDIR(st.st_mode));
@@ -88,7 +88,7 @@ static char	*get_absolute_cmd_path(t_context *ctx, char *absolute_cmd,
 		ft_free_tab((void **)paths);
 	if (is_directory(ctx, absolute_cmd))
 	{
-		ft_fprintf(STDERR_FILENO, "%s: Is a directory\n", absolute_cmd);
+		ft_dprintf(STDERR_FILENO, "%s: Is a directory\n", absolute_cmd);
 		ctx->exit_code = 126;
 		exit_free(ctx);
 	}
@@ -96,7 +96,7 @@ static char	*get_absolute_cmd_path(t_context *ctx, char *absolute_cmd,
 		return (ft_secure_strdup(ctx, absolute_cmd, "get_absolute_cmd_path"));
 	else
 	{
-		ft_fprintf(STDERR_FILENO, "%s: %s\n", absolute_cmd, strerror(errno));
+		ft_dprintf(STDERR_FILENO, "%s: %s\n", absolute_cmd, strerror(errno));
 		ctx->exit_code = 126;
 		exit_free(ctx);
 	}

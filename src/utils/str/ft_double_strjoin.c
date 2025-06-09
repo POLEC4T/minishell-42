@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:39:20 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 17:31:41 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_double_strjoin(t_context *ctx, char *s1, char *s2, char *s3)
 		res = ft_strjoin(s1, s2);
 		if (!res)
 		{
-			ft_fprintf(STDERR_FILENO, "double_strjoin: %s\n", strerror(errno));
+			ft_dprintf(STDERR_FILENO, "double_strjoin: %s\n", strerror(errno));
 			exit_free(ctx);
 		}
 		return (res);

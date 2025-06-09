@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 17:33:35 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/05/28 20:54:47 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	err_env_to_tabstr(t_context *ctx, char **res, char *to_free)
 {
-	ft_fprintf(STDERR_FILENO, "env_to_tabstr: %s\n", strerror(errno));
+	ft_dprintf(STDERR_FILENO, "env_to_tabstr: %s\n", strerror(errno));
 	if (res)
 		ft_free_tab((void **)res);
 	free(to_free);
