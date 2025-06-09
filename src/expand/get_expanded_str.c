@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_expanded_str.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: marvin <nle-gued@student.42lyon.fr>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: marvin <nle-gued@student.42lyon.fr>        +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2025/06/06 02:47:57 by marvin            #+#    #+#             */
 /*   Updated: 2025/06/06 02:47:57 by marvin           ###   ########.fr       */
 /*                                                                            */
@@ -12,14 +15,15 @@
 
 #include "minishell.h"
 
+
 void	copy_inter(char *expanded, char *inter, size_t i, size_t *j)
 {
-	size_t	k;
+	size_t k;
 
 	k = 0;
 	if (!inter)
 	{
-		*j = k + i;	
+		*j = k + i;
 		return ;
 	}
 	while (inter[k])
@@ -32,16 +36,21 @@ void	copy_inter(char *expanded, char *inter, size_t i, size_t *j)
 
 void	copy_rest(char *expanded, char *str, size_t *j, size_t *h)
 {
-	while (str[*h])
-		expanded[(*j)++] = str[(*h)++];
+	if (str[*h])
+	{
+		if (str[*h] == '?')
+			(*h)++;
+		while (str[*h])
+			expanded[(*j)++] = str[(*h)++];
+	}
 }
 
 char	*get_expanded_str(char *str, char *inter, int final_len, int type)
 {
-	char	*expanded;
-	size_t	i;
-	size_t	j;
-	size_t	h;
+	char *expanded;
+	size_t i;
+	size_t j;
+	size_t h;
 
 	i = 0;
 	j = 0;
