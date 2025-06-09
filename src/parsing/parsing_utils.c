@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:55:33 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/06 09:34:27 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 09:36:28 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	skip_spaces(char *str, size_t i)
 {
-	while (str[i] == ' ' && str[i])
+	while (ft_isblank(str[i]) == 1 && str[i])
 		i++;
 	return (i);
 }
@@ -37,7 +37,7 @@ size_t	skip_word(char *str, size_t i)
 			in_quotes = 0;
 		else if ((str[i] == '"' || str[i] == '\'') && !in_quotes)
 			in_quotes = str[i];
-		if (!in_quotes && (str[i] == ' ' || str[i] == '<' || str[i] == '>'))
+		if (!in_quotes && (ft_isblank(str[i]) == 1 || str[i] == '<' || str[i] == '>'))
 			break ;
 		else
 			i++;

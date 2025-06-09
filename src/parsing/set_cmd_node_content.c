@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_cmd_node_content.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 18:36:28 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 19:44:38 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 09:41:38 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*set_arg(char *str)
 			in_quotes = 0;
 		else if ((str[i] == '"' || str[i] == '\'') && !in_quotes)
 			in_quotes = str[i];
-		else if (!in_quotes && (str[i] == ' ' || str[i] == '<'
+		else if (!in_quotes && (ft_isblank(str[i]) == 1 || str[i] == '<'
 				|| str[i] == '>'))
 			break ;
 		else
@@ -72,7 +72,7 @@ int	set_cmd_node_content(char *str, t_context *ctx, t_node *cmd_node)
 		if (str[i] == '<' || str[i] == '>')
 			i = handle_redirection(ctx, &(t_str_index){.i = i, .str = str}, cmd,
 					&i_redir);
-		else if (str[i] != ' ' && str[i] != ';' && str[i] != '\\')
+		else if (ft_isblank(str[i]) != 1 && str[i] != ';' && str[i] != '\\')
 			i = handle_argument(str, i, cmd, &i_args);
 		else
 			i++;

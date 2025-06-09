@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/06 09:36:03 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 09:36:56 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ size_t	extract_redir_word(char *str, char *filename)
 			quote = 0;
 			i++;
 		}
-		else if (!quote && (str[i] == ' '))
+		else if (!quote && (ft_isblank(str[i]) == 1))
 			break ;
 		else
 			filename[j++] = str[i++];

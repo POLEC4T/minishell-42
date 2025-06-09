@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:12:32 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/05/14 10:39:52 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/09 09:39:16 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ size_t	count_redirect_core(char *str, size_t i, size_t redir)
 			i = skip_word(str, i);
 			redir++;
 		}
-		else if (str[i] != ' ')
+		else if (ft_isblank(str[i]) == 0)
 		{
 			i = skip_word(str, i);
 		}
@@ -45,7 +45,7 @@ size_t	count_args_core(char *str, size_t i, size_t args)
 			i = skip_spaces(str, i);
 			i = skip_word(str, i);
 		}
-		else if (str[i] && str[i] != ' ')
+		else if (str[i] && ft_isblank(str[i]) == 0)
 		{
 			i = skip_word(str, i);
 			args++;

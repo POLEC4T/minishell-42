@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/06 11:12:11 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 09:33:00 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ void				*return_free(void *to_free1, void *to_free2,
 						void *to_free3);
 int					return_int_failure_msg(char *msg);
 int					ft_isspace(int c);
+int					ft_isblank(int c);
 
 // str_utils
 
