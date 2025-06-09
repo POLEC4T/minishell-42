@@ -6,7 +6,7 @@
 /*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 15:02:26 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/05 17:11:49 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:53:26 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ char	*get_key_word(char *str)
 
 	len = 0;
 	i = 0;
-	if (str[i] != '$' || str[i + 1] == ' ' || !str[i + 1])
+	if (!str[i + 1] || str[i] != '$' || ft_isblank(str[i + 1]))
 		return (NULL);
 	i++;
 	while (ft_isalnum(str[i + len]) == 1 || str[i + len] == '_' || str[i
-			+ len] == '?')
+		+ len] == '?')
 		len++;
 	key_word = ft_calloc(len + 1, sizeof(char));
 	len = 0;
 	while (ft_isalnum(str[i + len]) == 1 || str[i + len] == '_' || str[i
-			+ len] == '?')
+		+ len] == '?')
 	{
 		key_word[len] = str[i + len];
 		len++;
@@ -86,7 +86,7 @@ int	has_dollar_preceded_by_redir(char *str, int i)
 	if (!str[i])
 		return (0);
 	j = i - 1;
-	while (j >= 0 && (str[j] == '\\' || str[j] == ';' || str[j] == ' '
+	while (j >= 0 && (str[j] == '\\' || str[j] == ';' || ft_isblank(str[j])
 			|| str[j] == '\'' || str[j] == '"'))
 		j--;
 	if (j >= 1 && str[j] == '<' && str[j - 1] == '<')
