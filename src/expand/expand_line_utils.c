@@ -6,7 +6,7 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:04:30 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/06 10:04:32 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:38:54 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ int	find_end_inter(char *str, int type)
 			|| type != CMD)
 		{
 			h++;
-			while (str[h] == ' ')
+			if(str[h] == '?')
+				return(h++);
+			while (ft_isblank(str[h]) == 1)
 				h++;
 			while (str[h] && (ft_isalnum(str[h]) == 1 || str[h] == '_'
 					|| str[h] == '?'))
