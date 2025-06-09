@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_line_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:04:30 by mniemaz           #+#    #+#             */
-/*   Updated: 2025/06/09 13:53:27 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:12:10 by mniemaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	find_end_inter(char *str, int type)
 			|| type != CMD)
 		{
 			h++;
-			if(str[h] == '?')
-				return(h++);
+			if (str[h] == '?')
+				return (h++);
 			while (ft_isblank(str[h]) == 1)
 				h++;
 			while (str[h] && (ft_isalnum(str[h]) == 1 || str[h] == '_'
