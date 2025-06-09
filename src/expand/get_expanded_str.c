@@ -18,7 +18,10 @@ void	copy_inter(char *expanded, char *inter, size_t i, size_t *j)
 
 	k = 0;
 	if (!inter)
+	{
+		*j = k + i;	
 		return ;
+	}
 	while (inter[k])
 	{
 		expanded[i + k] = inter[k];
