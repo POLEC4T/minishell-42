@@ -6,11 +6,33 @@
 /*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:52:09 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/06 10:57:41 by nle-gued         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:16:46 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_char_in_quotes(int index, const char *s)
+{
+	int	in_quote;
+	int	i;
+
+	in_quote = 0;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '"' && (i == 0 || s[i - 1] != '\\'))
+		{
+			in_quote = !in_quote;
+		}
+		if (i == index)
+		{
+			return (in_quote);
+		}
+		i++;
+	}
+	return (0);
+}
 
 size_t	handle_redirection(t_context *ctx, t_str_index *rl, t_cmd *cmd,
 		size_t *i_redir)

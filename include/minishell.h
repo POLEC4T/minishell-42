@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 09:53:03 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/09 13:24:32 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 15:17:01 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,7 @@ size_t				handle_argument(char *str, size_t i, t_cmd *cmd,
 						size_t *args);
 size_t				handle_redirection(t_context *ctx, t_str_index *rl,
 						t_cmd *cmd, size_t *i_redir);
+int					is_char_in_quotes(int index, const char *s);
 
 // syntax
 int					is_syntax_valid(t_context *ctx, char *str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mniemaz <mniemaz@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: nle-gued <nle-gued@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:26:23 by nle-gued          #+#    #+#             */
-/*   Updated: 2025/06/09 15:12:52 by mniemaz          ###   ########.fr       */
+/*   Updated: 2025/06/09 15:16:29 by nle-gued         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,6 @@ static t_redir_type	get_redir_type(char *str, size_t *i)
 	else if (str[*i] == '<')
 		redir_type = get_input_redir_type(str, i);
 	return (redir_type);
-}
-
-static int	is_char_in_quotes(int index, const char *s)
-{
-	int	in_quote;
-
-	in_quote = 0;
-	for (int i = 0; s[i] != '\0'; ++i)
-	{
-		if (s[i] == '"' && (i == 0 || s[i - 1] != '\\'))
-		{
-			in_quote = !in_quote;
-		}
-		if (i == index)
-		{
-			return (in_quote);
-		}
-	}
-	return (0);
 }
 
 /**
